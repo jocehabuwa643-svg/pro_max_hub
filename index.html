@@ -4,1968 +4,1784 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pro Max Hub — Ультра-премиальный центр доступа</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<meta name="description" content="Pro Max Hub — трейдинг-утилиты, проп-трейдинг, доступ ко всем нейросетям и премиум VPN. Спокойный заработок без стресса, начальников и офисов.">
+<meta name="theme-color" content="#050214">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Pro Max Hub — Ультра-премиальный центр доступа">
+<meta property="og:description" content="Твой путь к финансовой свободе: трейдинг, нейросети, VPN.">
+<meta property="og:image" content="assets/img/og.jpg">
+<meta property="og:locale" content="ru_RU">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="assets/img/og.jpg">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        fontFamily: {
-          'display': ['Syne', 'sans-serif'],
-          'body': ['Inter', 'sans-serif'],
-          'mono': ['Space Grotesk', 'sans-serif'],
-        },
-        colors: {
-          'cosmic': {
-            900: '#050214',
-            800: '#0f051d',
-            700: '#1a0b2e',
-            600: '#241142',
-          },
-          'neon': {
-            violet: '#a78bfa',
-            blue: '#60a5fa',
-            pink: '#e879f9',
-            cyan: '#22d3ee',
-            emerald: '#10b981',
-            gold: '#fbbf24',
-            red: '#ef4444',
-          }
-        }
-      }
-    }
-  }
-</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap">
+
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'Inter', sans-serif;
-    background: #050214;
-    color: #e5e7eb;
-    overflow-x: hidden;
-    position: relative;
-  }
-
-  /* Глобальный фоновый слой */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse at 20% 10%, rgba(167, 139, 250, 0.18) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 80%, rgba(96, 165, 250, 0.15) 0%, transparent 50%),
-      radial-gradient(ellipse at 50% 50%, rgba(232, 121, 249, 0.08) 0%, transparent 60%),
-      linear-gradient(135deg, #050214 0%, #0f051d 50%, #1a0b2e 100%);
-    z-index: -3;
-    pointer-events: none;
-  }
-
-  /* Звёздная пыль — постоянный слой */
-  .stars {
-    position: fixed;
-    inset: 0;
-    z-index: -2;
-    pointer-events: none;
-    background-image:
-      radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,0.4), transparent),
-      radial-gradient(1px 1px at 60px 120px, rgba(167,139,250,0.5), transparent),
-      radial-gradient(1px 1px at 150px 80px, rgba(255,255,255,0.3), transparent),
-      radial-gradient(2px 2px at 240px 200px, rgba(96,165,250,0.4), transparent),
-      radial-gradient(1px 1px at 320px 160px, rgba(255,255,255,0.5), transparent),
-      radial-gradient(1px 1px at 400px 90px, rgba(232,121,249,0.4), transparent),
-      radial-gradient(2px 2px at 480px 250px, rgba(167,139,250,0.3), transparent),
-      radial-gradient(1px 1px at 560px 40px, rgba(255,255,255,0.4), transparent);
-    background-size: 600px 300px;
-    background-repeat: repeat;
-    animation: starDrift 120s linear infinite;
-    opacity: 0.7;
-  }
-
-  @keyframes starDrift {
-    0% { background-position: 0 0; }
-    100% { background-position: 600px 300px; }
-  }
-
-  /* Ультра-премиальный Glassmorphism */
-  .ultra-glass {
-    background:
-      linear-gradient(135deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.02) 100%),
-      rgba(20, 10, 40, 0.45);
-    backdrop-filter: blur(40px) saturate(180%);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
-    border: 1px solid rgba(167, 139, 250, 0.25);
-    border-radius: 28px;
-    box-shadow:
-      0 10px 50px 0 rgba(0, 0, 0, 0.5),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.15),
-      inset 0 -1px 0 0 rgba(0, 0, 0, 0.3),
-      0 0 80px -20px rgba(167, 139, 250, 0.2);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .ultra-glass::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
-    transition: left 1.2s ease;
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  .ultra-glass:hover::before { left: 100%; }
-
-  .ultra-glass::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.8), transparent);
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  .ultra-glass:hover {
-    transform: translateY(-10px);
-    border-color: rgba(167, 139, 250, 0.55);
-    box-shadow:
-      0 20px 70px 0 rgba(0, 0, 0, 0.65),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.22),
-      0 0 120px -10px rgba(167, 139, 250, 0.45);
-  }
-
-  /* Кинематографические заголовки */
-  .cinematic-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    background: linear-gradient(135deg, #ffffff 0%, #a78bfa 50%, #60a5fa 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    filter: drop-shadow(0 0 40px rgba(167, 139, 250, 0.5));
-    letter-spacing: -0.02em;
-    line-height: 1.05;
-  }
-
-  .cinematic-title-gold {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    background: linear-gradient(135deg, #fef3c7 0%, #fbbf24 50%, #f59e0b 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    filter: drop-shadow(0 0 40px rgba(251, 191, 36, 0.5));
-    letter-spacing: -0.02em;
-    line-height: 1.05;
-  }
-
-  .cinematic-title-pink {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    background: linear-gradient(135deg, #ffffff 0%, #f0abfc 50%, #e879f9 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    filter: drop-shadow(0 0 40px rgba(232, 121, 249, 0.55));
-    letter-spacing: -0.02em;
-    line-height: 1.05;
-  }
-
-  /* Премиальные кнопки */
-  .premium-button {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 18px 38px;
-    background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #3b82f6 100%);
-    border-radius: 18px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 16px;
-    letter-spacing: 0.02em;
-    color: white;
-    text-decoration: none;
-    box-shadow:
-      0 6px 30px rgba(139, 92, 246, 0.55),
-      inset 0 1px 0 rgba(255, 255, 255, 0.35),
-      inset 0 -2px 4px rgba(0, 0, 0, 0.25);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 1;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-  }
-
-  .premium-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
-    transition: left 0.7s ease;
-    z-index: 2;
-  }
-
-  .premium-button::after {
-    content: '';
-    position: absolute;
-    inset: -6px;
-    border-radius: 24px;
-    background: linear-gradient(135deg, #8b5cf6, #3b82f6);
-    opacity: 0.5;
-    z-index: -1;
-    filter: blur(20px);
-    animation: buttonPulse 3s ease-in-out infinite;
-  }
-
-  @keyframes buttonPulse {
-    0%, 100% { opacity: 0.45; transform: scale(1); }
-    50% { opacity: 0.85; transform: scale(1.08); }
-  }
-
-  .premium-button > * { position: relative; z-index: 3; }
-
-  .premium-button:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow:
-      0 14px 45px rgba(139, 92, 246, 0.75),
-      inset 0 1px 0 rgba(255, 255, 255, 0.5),
-      0 0 60px rgba(139, 92, 246, 0.6);
-  }
-
-  .premium-button:hover::before { left: 100%; }
-
-  .premium-button:active {
-    transform: translateY(-2px) scale(0.98);
-  }
-
-  .premium-button .arrow {
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .premium-button:hover .arrow {
-    transform: translateX(8px);
-  }
-
-  .premium-button-gold {
-    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-    box-shadow:
-      0 6px 30px rgba(251, 191, 36, 0.55),
-      inset 0 1px 0 rgba(255, 255, 255, 0.4),
-      inset 0 -2px 4px rgba(0, 0, 0, 0.25);
-  }
-  .premium-button-gold::after { background: linear-gradient(135deg, #fbbf24, #d97706); }
-  .premium-button-gold:hover {
-    box-shadow: 0 14px 45px rgba(251, 191, 36, 0.8), inset 0 1px 0 rgba(255,255,255,0.5);
-  }
-
-  .premium-button-emerald {
-    background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
-    box-shadow:
-      0 6px 30px rgba(16, 185, 129, 0.55),
-      inset 0 1px 0 rgba(255, 255, 255, 0.35),
-      inset 0 -2px 4px rgba(0, 0, 0, 0.25);
-  }
-  .premium-button-emerald::after { background: linear-gradient(135deg, #10b981, #047857); }
-  .premium-button-emerald:hover {
-    box-shadow: 0 14px 45px rgba(16, 185, 129, 0.8), inset 0 1px 0 rgba(255,255,255,0.5);
-  }
-
-  .premium-button-pink {
-    background: linear-gradient(135deg, #e879f9 0%, #d946ef 50%, #a21caf 100%);
-    box-shadow:
-      0 6px 30px rgba(232, 121, 249, 0.55),
-      inset 0 1px 0 rgba(255, 255, 255, 0.4),
-      inset 0 -2px 4px rgba(0, 0, 0, 0.25);
-  }
-  .premium-button-pink::after { background: linear-gradient(135deg, #e879f9, #a21caf); }
-  .premium-button-pink:hover {
-    box-shadow: 0 14px 45px rgba(232, 121, 249, 0.8), inset 0 1px 0 rgba(255,255,255,0.5);
-  }
-
-  .premium-button-cyan {
-    background: linear-gradient(135deg, #22d3ee 0%, #0891b2 50%, #0e7490 100%);
-    box-shadow:
-      0 6px 30px rgba(34, 211, 238, 0.55),
-      inset 0 1px 0 rgba(255, 255, 255, 0.4),
-      inset 0 -2px 4px rgba(0, 0, 0, 0.25);
-  }
-  .premium-button-cyan::after { background: linear-gradient(135deg, #22d3ee, #0e7490); }
-  .premium-button-cyan:hover {
-    box-shadow: 0 14px 45px rgba(34, 211, 238, 0.8), inset 0 1px 0 rgba(255,255,255,0.5);
-  }
-
-  /* Бейджи дохода */
-  .income-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 22px;
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.22) 0%, rgba(34, 211, 238, 0.18) 100%);
-    border: 1px solid rgba(16, 185, 129, 0.45);
-    border-radius: 14px;
-    font-weight: 600;
-    font-size: 15px;
-    color: #34d399;
-    box-shadow:
-      0 4px 20px rgba(16, 185, 129, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(20px);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .income-badge::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 30% 50%, rgba(52, 211, 153, 0.15), transparent 60%);
-    pointer-events: none;
-  }
-
-  .income-badge-gold {
-    background: linear-gradient(135deg, rgba(251, 191, 36, 0.22) 0%, rgba(245, 158, 11, 0.18) 100%);
-    border: 1px solid rgba(251, 191, 36, 0.45);
-    color: #fcd34d;
-    box-shadow: 0 4px 20px rgba(251, 191, 36, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  }
-
-  .income-badge-pink {
-    background: linear-gradient(135deg, rgba(232, 121, 249, 0.22) 0%, rgba(217, 70, 239, 0.18) 100%);
-    border: 1px solid rgba(232, 121, 249, 0.45);
-    color: #f0abfc;
-    box-shadow: 0 4px 20px rgba(232, 121, 249, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  }
-
-  /* 3D Орбитальные анимации */
-  .orbit-container {
-    position: relative;
-    width: 220px;
-    height: 220px;
-    margin: 0 auto;
-    perspective: 1400px;
-  }
-
-  .orbit-center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 70px;
-    height: 70px;
-    background: radial-gradient(circle, rgba(167, 139, 250, 0.95) 0%, rgba(139, 92, 246, 0.5) 100%);
-    border-radius: 50%;
-    box-shadow:
-      0 0 60px rgba(167, 139, 250, 0.8),
-      0 0 120px rgba(167, 139, 250, 0.4),
-      inset 0 0 25px rgba(255, 255, 255, 0.35);
-    animation: pulse 3s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% {
-      transform: translate(-50%, -50%) scale(1);
-      box-shadow: 0 0 60px rgba(167, 139, 250, 0.8), 0 0 120px rgba(167, 139, 250, 0.4);
-    }
-    50% {
-      transform: translate(-50%, -50%) scale(1.12);
-      box-shadow: 0 0 90px rgba(167, 139, 250, 1), 0 0 180px rgba(167, 139, 250, 0.6);
-    }
-  }
-
-  .orbit-ring {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    border: 2px solid rgba(167, 139, 250, 0.35);
-    border-radius: 50%;
-    transform-style: preserve-3d;
-    box-shadow: 0 0 30px rgba(167, 139, 250, 0.15);
-  }
-
-  .orbit-ring-1 {
-    width: 160px;
-    height: 160px;
-    margin: -80px 0 0 -80px;
-    animation: orbit1 12s linear infinite;
-  }
-
-  .orbit-ring-2 {
-    width: 210px;
-    height: 210px;
-    margin: -105px 0 0 -105px;
-    animation: orbit2 18s linear infinite;
-    border-color: rgba(96, 165, 250, 0.25);
-  }
-
-  .orbit-ring-3 {
-    width: 260px;
-    height: 260px;
-    margin: -130px 0 0 -130px;
-    animation: orbit3 24s linear infinite;
-    border-color: rgba(232, 121, 249, 0.2);
-  }
-
-  @keyframes orbit1 {
-    from { transform: rotateX(65deg) rotateZ(0deg); }
-    to { transform: rotateX(65deg) rotateZ(360deg); }
-  }
-  @keyframes orbit2 {
-    from { transform: rotateY(50deg) rotateZ(0deg); }
-    to { transform: rotateY(50deg) rotateZ(-360deg); }
-  }
-  @keyframes orbit3 {
-    from { transform: rotateX(-40deg) rotateZ(0deg); }
-    to { transform: rotateX(-40deg) rotateZ(360deg); }
-  }
-
-  .orbit-item {
-    position: absolute;
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    font-weight: bold;
-  }
-
-  .arrow-call {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    box-shadow: 0 0 40px rgba(16, 185, 129, 0.8), inset 0 0 10px rgba(255,255,255,0.3);
-    top: -22px;
-    left: 50%;
-    margin-left: -22px;
-  }
-  .arrow-put {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-    box-shadow: 0 0 40px rgba(239, 68, 68, 0.8), inset 0 0 10px rgba(255,255,255,0.3);
-    bottom: -22px;
-    left: 50%;
-    margin-left: -22px;
-  }
-
-  .coin-item {
-    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-    border-radius: 50%;
-    box-shadow: 0 0 40px rgba(251, 191, 36, 0.8), inset 0 0 12px rgba(255,255,255,0.4);
-    color: #78350f;
-    top: -22px;
-    left: 50%;
-    margin-left: -22px;
-  }
-
-  .dollar-item {
-    background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
-    border-radius: 50%;
-    box-shadow: 0 0 40px rgba(251, 191, 36, 0.8), inset 0 0 12px rgba(255,255,255,0.4);
-    color: #78350f;
-    bottom: -22px;
-    left: 50%;
-    margin-left: -22px;
-  }
-
-  /* Глобус для VPN */
-  .globe-container {
-    position: relative;
-    width: 220px;
-    height: 220px;
-    margin: 0 auto;
-    perspective: 1400px;
-  }
-
-  .globe {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 160px;
-    height: 160px;
-    margin: -80px 0 0 -80px;
-    border: 3px solid rgba(34, 211, 238, 0.5);
-    border-radius: 50%;
-    transform-style: preserve-3d;
-    animation: globeRotate 24s linear infinite;
-    box-shadow:
-      0 0 60px rgba(34, 211, 238, 0.5),
-      inset 0 0 40px rgba(34, 211, 238, 0.2);
-  }
-
-  .globe::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 2px;
-    height: 100%;
-    background: rgba(34, 211, 238, 0.4);
-    transform: translateX(-50%);
-  }
-
-  .globe::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: rgba(34, 211, 238, 0.4);
-    transform: translateY(-50%);
-  }
-
-  .globe-ring {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    border: 2px solid rgba(34, 211, 238, 0.35);
-    border-radius: 50%;
-  }
-
-  .globe-ring-1 {
-    width: 160px;
-    height: 80px;
-    margin: -40px 0 0 -80px;
-    transform: rotateX(75deg);
-  }
-
-  .globe-ring-2 {
-    width: 160px;
-    height: 120px;
-    margin: -60px 0 0 -80px;
-    transform: rotateX(75deg) rotateZ(45deg);
-  }
-
-  @keyframes globeRotate {
-    from { transform: rotateY(0deg) rotateX(15deg); }
-    to { transform: rotateY(360deg) rotateX(15deg); }
-  }
-
-  .globe-signal {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background: #22d3ee;
-    border-radius: 50%;
-    box-shadow: 0 0 25px rgba(34, 211, 238, 1), 0 0 50px rgba(34, 211, 238, 0.6);
-    animation: signalPulse 2s ease-in-out infinite;
-  }
-
-  @keyframes signalPulse {
-    0%, 100% { transform: scale(1); opacity: 0.8; }
-    50% { transform: scale(1.4); opacity: 1; }
-  }
-
-  /* Нейронные связи */
-  .neural-container {
-    position: relative;
-    width: 220px;
-    height: 220px;
-    margin: 0 auto;
-  }
-
-  .neural-node {
-    position: absolute;
-    width: 36px;
-    height: 36px;
-    background: radial-gradient(circle, rgba(232, 121, 249, 0.95) 0%, rgba(217, 70, 239, 0.5) 100%);
-    border-radius: 50%;
-    box-shadow: 0 0 30px rgba(232, 121, 249, 0.8), 0 0 60px rgba(232, 121, 249, 0.4);
-    animation: neuralPulse 2.5s ease-in-out infinite;
-  }
-
-  @keyframes neuralPulse {
-    0%, 100% {
-      transform: scale(1);
-      box-shadow: 0 0 30px rgba(232, 121, 249, 0.8);
-    }
-    50% {
-      transform: scale(1.25);
-      box-shadow: 0 0 50px rgba(232, 121, 249, 1), 0 0 80px rgba(232, 121, 249, 0.6);
-    }
-  }
-
-  .neural-node-1 { top: 15%; left: 15%; animation-delay: 0s; }
-  .neural-node-2 { top: 15%; right: 15%; animation-delay: 0.4s; }
-  .neural-node-3 { bottom: 15%; left: 25%; animation-delay: 0.8s; }
-  .neural-node-4 { bottom: 15%; right: 25%; animation-delay: 1.2s; }
-  .neural-node-5 { top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: 1.6s;
-    width: 50px; height: 50px;
-    background: radial-gradient(circle, rgba(167, 139, 250, 0.95) 0%, rgba(139, 92, 246, 0.5) 100%);
-    box-shadow: 0 0 40px rgba(167, 139, 250, 0.9), 0 0 80px rgba(167, 139, 250, 0.5);
-  }
-
-  .neural-line {
-    position: absolute;
-    height: 2px;
-    background: linear-gradient(90deg, rgba(232, 121, 249, 0.7), rgba(167, 139, 250, 0.7));
-    transform-origin: left center;
-    animation: neuralLinePulse 2.5s ease-in-out infinite;
-    box-shadow: 0 0 10px rgba(232, 121, 249, 0.5);
-  }
-
-  @keyframes neuralLinePulse {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
-  }
-
-  /* === Тематические анимированные фоны === */
-
-  /* Японские свечи для Fixed Contracts */
-  .section-bg-candles {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .candle-group {
-    position: absolute;
-    bottom: -100px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    animation: candleRise 25s linear infinite;
-    opacity: 0.22;
-  }
-
-  .candle-body {
-    width: 8px;
-    border-radius: 2px;
-  }
-  .candle-wick {
-    width: 2px;
-    height: 20px;
-    background: currentColor;
-    opacity: 0.6;
-  }
-  .candle-up { color: #10b981; }
-  .candle-up .candle-body { background: linear-gradient(180deg, #10b981, #059669); }
-  .candle-down { color: #ef4444; }
-  .candle-down .candle-body { background: linear-gradient(180deg, #ef4444, #dc2626); }
-
-  @keyframes candleRise {
-    0% { transform: translateY(0); opacity: 0; }
-    10% { opacity: 0.25; }
-    90% { opacity: 0.25; }
-    100% { transform: translateY(-130vh); opacity: 0; }
-  }
-
-  /* Сетка терминала */
-  .terminal-grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(167, 139, 250, 0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(167, 139, 250, 0.06) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
-    z-index: 0;
-    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
-    -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
-  }
-
-  /* Монеты для Prop Trading */
-  .section-bg-coins {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .floating-coin {
-    position: absolute;
-    font-size: 28px;
-    opacity: 0.18;
-    animation: coinFloat 20s linear infinite;
-    filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.6));
-  }
-
-  @keyframes coinFloat {
-    0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
-    10% { opacity: 0.25; }
-    90% { opacity: 0.25; }
-    100% { transform: translateY(-20vh) rotate(720deg); opacity: 0; }
-  }
-
-  /* Нейронный фон */
-  .section-bg-neural {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .floating-node {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background: radial-gradient(circle, #e879f9 0%, transparent 70%);
-    border-radius: 50%;
-    animation: nodeFloat 18s linear infinite;
-    box-shadow: 0 0 20px rgba(232, 121, 249, 0.6);
-  }
-
-  @keyframes nodeFloat {
-    0% { transform: translate(0, 0) scale(0.5); opacity: 0; }
-    25% { opacity: 0.8; transform: translate(30px, -40px) scale(1); }
-    50% { opacity: 0.6; transform: translate(-20px, -100px) scale(0.8); }
-    75% { opacity: 0.8; transform: translate(40px, -160px) scale(1.1); }
-    100% { transform: translate(0, -220px) scale(0.5); opacity: 0; }
-  }
-
-  /* VPN сетевой фон */
-  .section-bg-network {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .network-packet {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    background: #22d3ee;
-    border-radius: 50%;
-    box-shadow: 0 0 20px rgba(34, 211, 238, 1), 0 0 40px rgba(34, 211, 238, 0.6);
-    animation: packetFlow 10s linear infinite;
-  }
-
-  @keyframes packetFlow {
-    0% { transform: translateX(-100px); opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { transform: translateX(calc(100vw + 100px)); opacity: 0; }
-  }
-
-  /* Анимация появления */
-  .fade-in-up {
-    opacity: 0;
-    transform: translateY(50px);
-    transition: all 1.1s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .fade-in-up.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Мотивационные блоки */
-  .motivation-block {
-    background:
-      linear-gradient(135deg, rgba(139, 92, 246, 0.18) 0%, rgba(59, 130, 246, 0.14) 100%),
-      rgba(20, 10, 40, 0.35);
-    backdrop-filter: blur(45px) saturate(180%);
-    border: 1px solid rgba(167, 139, 250, 0.35);
-    border-radius: 36px;
-    padding: 70px 50px;
-    box-shadow:
-      0 12px 60px rgba(0, 0, 0, 0.45),
-      inset 0 1px 0 rgba(255, 255, 255, 0.12),
-      0 0 100px -20px rgba(167, 139, 250, 0.25);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .motivation-block::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.9), transparent);
-  }
-
-  .motivation-block-gold {
-    background:
-      linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(245, 158, 11, 0.1) 100%),
-      rgba(20, 10, 40, 0.35);
-    border-color: rgba(251, 191, 36, 0.35);
-    box-shadow:
-      0 12px 60px rgba(0, 0, 0, 0.45),
-      inset 0 1px 0 rgba(255, 255, 255, 0.12),
-      0 0 100px -20px rgba(251, 191, 36, 0.25);
-  }
-  .motivation-block-gold::before {
-    background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.9), transparent);
-  }
-
-  .motivation-block-pink {
-    background:
-      linear-gradient(135deg, rgba(232, 121, 249, 0.15) 0%, rgba(217, 70, 239, 0.1) 100%),
-      rgba(20, 10, 40, 0.35);
-    border-color: rgba(232, 121, 249, 0.35);
-    box-shadow:
-      0 12px 60px rgba(0, 0, 0, 0.45),
-      inset 0 1px 0 rgba(255, 255, 255, 0.12),
-      0 0 100px -20px rgba(232, 121, 249, 0.25);
-  }
-  .motivation-block-pink::before {
-    background: linear-gradient(90deg, transparent, rgba(232, 121, 249, 0.9), transparent);
-  }
-
-  .motivation-block-cyan {
-    background:
-      linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(8, 145, 178, 0.1) 100%),
-      rgba(20, 10, 40, 0.35);
-    border-color: rgba(34, 211, 238, 0.35);
-    box-shadow:
-      0 12px 60px rgba(0, 0, 0, 0.45),
-      inset 0 1px 0 rgba(255, 255, 255, 0.12),
-      0 0 100px -20px rgba(34, 211, 238, 0.25);
-  }
-  .motivation-block-cyan::before {
-    background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.9), transparent);
-  }
-
-  /* Scroll indicator */
-  .scroll-indicator {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    animation: scrollBounce 2.5s ease-in-out infinite;
-  }
-
-  @keyframes scrollBounce {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(12px); }
-  }
-
-  /* Парящие объекты */
-  .floating-object {
-    position: absolute;
-    animation: floatObject 7s ease-in-out infinite;
-    pointer-events: none;
-    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.4));
-  }
-
-  @keyframes floatObject {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-25px) rotate(8deg); }
-  }
-
-  /* Eyebrow chip */
-  .eyebrow-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 18px;
-    border-radius: 999px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    backdrop-filter: blur(20px);
-    border: 1px solid;
-  }
-
-  /* Feature grid item */
-  .feature-item {
-    padding: 18px;
-    background: rgba(167, 139, 250, 0.08);
-    border: 1px solid rgba(167, 139, 250, 0.18);
-    border-radius: 18px;
-    transition: all 0.4s ease;
-  }
-  .feature-item:hover {
-    background: rgba(167, 139, 250, 0.15);
-    border-color: rgba(167, 139, 250, 0.4);
-    transform: translateY(-3px);
-  }
-
-  /* Tag pill */
-  .tag-pill {
-    padding: 6px 14px;
-    background: rgba(167, 139, 250, 0.15);
-    border: 1px solid rgba(167, 139, 250, 0.3);
-    border-radius: 999px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-  }
-
-  /* Hero logo sphere */
-  .hero-logo-sphere {
-    position: relative;
-    width: 180px;
-    height: 180px;
-    margin: 0 auto;
-    border-radius: 50%;
-    background:
-      radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3) 0%, transparent 50%),
-      radial-gradient(circle at 70% 70%, rgba(139, 92, 246, 0.5) 0%, transparent 60%),
-      linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #3b82f6 100%);
-    box-shadow:
-      0 0 80px rgba(139, 92, 246, 0.6),
-      0 0 160px rgba(139, 92, 246, 0.3),
-      inset -15px -15px 40px rgba(0,0,0,0.3),
-      inset 15px 15px 40px rgba(255,255,255,0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: sphereFloat 5s ease-in-out infinite;
-  }
-
-  @keyframes sphereFloat {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-15px) rotate(3deg); }
-  }
-
-  .hero-logo-sphere::before {
-    content: '';
-    position: absolute;
-    inset: -20px;
-    border-radius: 50%;
-    border: 2px solid rgba(167, 139, 250, 0.3);
-    animation: sphereRing 8s linear infinite;
-  }
-  .hero-logo-sphere::after {
-    content: '';
-    position: absolute;
-    inset: -40px;
-    border-radius: 50%;
-    border: 1px solid rgba(96, 165, 250, 0.2);
-    animation: sphereRing 12s linear infinite reverse;
-  }
-
-  @keyframes sphereRing {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  /* Divider */
-  .premium-divider {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    margin: 30px 0;
-  }
-  .premium-divider .line {
-    height: 1px;
-    width: 80px;
-    background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.8), transparent);
-  }
-
-  /* Mobile optimizations */
-  @media (max-width: 768px) {
-    .orbit-container, .globe-container, .neural-container {
-      width: 180px;
-      height: 180px;
-    }
-    .orbit-ring-1 { width: 130px; height: 130px; margin: -65px 0 0 -65px; }
-    .orbit-ring-2 { width: 170px; height: 170px; margin: -85px 0 0 -85px; }
-    .orbit-ring-3 { width: 210px; height: 210px; margin: -105px 0 0 -105px; }
-    .orbit-center { width: 55px; height: 55px; }
-    .orbit-item { width: 36px; height: 36px; font-size: 18px; }
-    .arrow-call, .arrow-put { top: -18px; margin-left: -18px; width: 36px; height: 36px; }
-    .arrow-put { bottom: -18px; top: auto; }
-    .coin-item, .dollar-item { top: -18px; margin-left: -18px; width: 36px; height: 36px; }
-    .dollar-item { bottom: -18px; top: auto; }
-    .motivation-block { padding: 50px 28px; }
-    .hero-logo-sphere { width: 140px; height: 140px; }
-    .floating-object { display: none; }
-  }
-
-  /* YouTube play button */
-  .youtube-play {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow:
-      0 0 60px rgba(239, 68, 68, 0.7),
-      0 0 120px rgba(239, 68, 68, 0.4),
-      inset 0 0 25px rgba(255, 255, 255, 0.25);
-    animation: youtubePulse 2.5s ease-in-out infinite;
-    position: relative;
-    margin: 0 auto;
-  }
-
-  .youtube-play::before {
-    content: '';
-    position: absolute;
-    inset: -12px;
-    border-radius: 50%;
-    border: 2px solid rgba(239, 68, 68, 0.5);
-    animation: youtubeRing 2.5s ease-in-out infinite;
-  }
-
-  @keyframes youtubePulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.08); }
-  }
-
-  @keyframes youtubeRing {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.3); opacity: 0; }
-  }
-
-  .youtube-play-triangle {
-    width: 0;
-    height: 0;
-    border-left: 22px solid white;
-    border-top: 14px solid transparent;
-    border-bottom: 14px solid transparent;
-    margin-left: 8px;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-  }
+/* ============================================================
+   PRO MAX HUB — единый production-файл
+   Шрифты: Unbounded (display, кириллица) · Manrope (body,
+   кириллица) · JetBrains Mono (цифры) · Syne (только латинский
+   вордмарк автора).
+   ============================================================ */
+
+/* ---------------- ТОКЕНЫ ---------------- */
+:root{
+  /* deep cosmic */
+  --void:#030110; --c900:#050214; --c800:#0f051d; --c700:#1a0b2e;
+  --c600:#241142; --c550:#2d1550;
+  /* lilac */
+  --li-50:#f5f3ff; --li-100:#ede9fe; --li-200:#ddd6fe; --li-300:#c4b5fd;
+  --li-400:#a78bfa; --li-500:#8b5cf6; --li-600:#7c3aed;
+  /* soft blue */
+  --bl-200:#bfdbfe; --bl-300:#93c5fd; --bl-400:#60a5fa; --bl-500:#3b82f6;
+  /* gray */
+  --g-50:#f9fafb; --g-100:#f3f4f6; --g-200:#e5e7eb; --g-300:#d1d5db; --g-400:#9ca3af;
+  /* акценты */
+  --cy:#22d3ee; --cy-300:#67e8f9;
+  --go:#fbbf24; --go-300:#fcd34d;
+  --pk:#e879f9; --pk-300:#f0abfc;
+  --em:#10b981; --em-300:#6ee7b7;
+  --rd:#ef4444; --rd-300:#fca5a5;
+
+  --rgb-li:167,139,250; --rgb-bl:96,165,250; --rgb-cy:34,211,238;
+  --rgb-go:251,191,36; --rgb-pk:232,121,249; --rgb-em:16,185,129; --rgb-rd:239,68,68;
+
+  /* тема секции (переопределяется) */
+  --acc:var(--li-400); --acc-soft:var(--li-300); --rgb-acc:167,139,250;
+
+  --f-display:'Unbounded',system-ui,sans-serif;
+  --f-body:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-num:'JetBrains Mono',ui-monospace,monospace;
+
+  /* fluid-шкала */
+  --fs-h1:clamp(2.5rem,1.4rem + 4.4vw,5.5rem);
+  --fs-h2:clamp(1.875rem,1.15rem + 2.9vw,3.75rem);
+  --fs-h3:clamp(1.25rem,1.05rem + .8vw,1.75rem);
+  --fs-lead:clamp(1.0625rem,1rem + .5vw,1.4375rem);
+  --fs-body:clamp(.9375rem,.9rem + .2vw,1.0625rem);
+  --fs-sm:clamp(.8125rem,.79rem + .1vw,.875rem);
+  --fs-eyebrow:clamp(.6875rem,.66rem + .1vw,.75rem);
+  --fs-stat:clamp(2rem,1.3rem + 2.6vw,3.25rem);
+  --fs-name:clamp(2rem,1.1rem + 3.6vw,4.5rem);
+
+  /* радиусы — осознанные, не единый rounded */
+  --r-xs:8px; --r-sm:12px; --r-md:16px; --r-lg:22px; --r-xl:28px; --r-pill:999px;
+
+  --e-out:cubic-bezier(.22,1,.36,1);
+  --e-io:cubic-bezier(.65,0,.35,1);
+
+  --pad-sec:clamp(72px,9vw,150px);
+  --gap:clamp(16px,1.6vw,26px);
+  --wrap:1240px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;overflow-x:hidden;overflow-x:clip;scroll-padding-top:24px}
+body{
+  font-family:var(--f-body);
+  font-size:var(--fs-body);
+  line-height:1.65;
+  color:var(--g-200);
+  background:var(--c900);
+  overflow-x:hidden;overflow-x:clip;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+}
+img,svg,canvas,video{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+ul{list-style:none}
+
+/* ---------------- ПЕРЕНОСЫ (БАГ-1.3) ---------------- */
+p,li,dd,figcaption{
+  overflow-wrap:break-word;
+  word-break:normal;
+  hyphens:auto;
+  -webkit-hyphens:auto;
+}
+h1,h2,h3,h4{
+  overflow-wrap:break-word;
+  word-break:normal;
+  hyphens:manual;              /* заголовки НЕ переносим по слогам */
+  -webkit-hyphens:manual;
+  text-wrap:balance;
+}
+.lead,.copy{max-width:68ch;margin-inline:auto}
+.copy--tight{max-width:56ch}
+
+/* ---------------- ФОН ---------------- */
+#ambient{position:fixed;inset:0;z-index:-3;width:100%;height:100%;pointer-events:none}
+.bg-base{
+  position:fixed;inset:0;z-index:-4;pointer-events:none;
+  background:
+    radial-gradient(ellipse 80% 55% at 22% 8%,rgba(var(--rgb-li),.20) 0%,transparent 60%),
+    radial-gradient(ellipse 70% 50% at 80% 78%,rgba(var(--rgb-bl),.16) 0%,transparent 62%),
+    linear-gradient(170deg,var(--c900) 0%,var(--c800) 46%,var(--c700) 100%);
+}
+.bg-vignette{
+  position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:radial-gradient(135% 100% at 50% 42%,transparent 38%,rgba(3,1,16,.5) 74%,rgba(3,1,16,.9) 100%);
+}
+.bg-grain{
+  position:fixed;inset:-60px;z-index:-1;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------------- РАСКЛАДКА ---------------- */
+.sec{position:relative;padding:var(--pad-sec) clamp(16px,4vw,40px);overflow:hidden}
+.wrap{position:relative;z-index:2;max-width:var(--wrap);margin-inline:auto}
+.wrap--narrow{max-width:1000px}
+.center{text-align:center}
+.stack{display:flex;flex-direction:column}
+
+/* морфинг-шов между секциями (БАГ-2.2) */
+.sec::before{
+  content:'';position:absolute;left:0;right:0;top:-1px;height:180px;z-index:1;
+  pointer-events:none;
+  background:linear-gradient(180deg,rgba(var(--rgb-acc),.08),transparent 78%);
+  -webkit-mask-image:linear-gradient(180deg,#000,transparent);
+          mask-image:linear-gradient(180deg,#000,transparent);
+  opacity:0;
+}
+.sec.in::before{opacity:1;transition:opacity 1.2s var(--e-out)}
+
+/* ---------------- ТИПОГРАФИКА ---------------- */
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:7px 16px;border-radius:var(--r-pill);
+  font-family:var(--f-num);font-size:var(--fs-eyebrow);font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--acc-soft);
+  background:rgba(var(--rgb-acc),.09);
+  border:1px solid rgba(var(--rgb-acc),.30);
+  white-space:nowrap;
+}
+.eyebrow .ic{width:13px;height:13px;flex:none;opacity:.85}
+
+/* Кинематографический заголовок.
+   ВАЖНО: сплошной светлый цвет + многослойное свечение.
+   Никакого background-clip:text на анимируемом тексте —
+   при обёртывании слов он перестаёт красить глифы и текст
+   становится невидимым (это и был баг со скриншотов). */
+.h-cine{
+  font-family:var(--f-display);
+  font-weight:800;
+  font-size:var(--fs-h2);
+  line-height:1.08;
+  letter-spacing:-.02em;
+  color:var(--li-50);
+  text-shadow:
+    0 1px 0 rgba(0,0,0,.5),
+    0 0 24px rgba(var(--rgb-acc),.42),
+    0 0 68px rgba(var(--rgb-acc),.22);
+  margin-bottom:.5em;
+}
+h1.h-cine{font-size:var(--fs-h1);letter-spacing:-.035em;line-height:1.02}
+.h-cine .accent{color:var(--acc-soft)}
+
+/* маска для построчно-пословного reveal */
+.rv-word{display:inline-block;overflow:hidden;vertical-align:bottom}
+.rv-word > span{display:inline-block;will-change:transform}
+
+.lead{
+  font-size:var(--fs-lead);font-weight:300;line-height:1.6;color:var(--g-300);
+}
+.lead strong,.copy strong{color:var(--acc-soft);font-weight:600}
+.copy{color:var(--g-400);line-height:1.7}
+.muted{color:var(--g-400)}
+.num{font-family:var(--f-num);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+
+.h3{
+  font-family:var(--f-display);font-weight:700;font-size:var(--fs-h3);
+  line-height:1.22;letter-spacing:-.015em;color:var(--g-50);
+  margin-bottom:.5em;
+}
+
+/* ---------------- ИКОНКИ (БАГ-4) ---------------- */
+.ic{width:1em;height:1em;stroke:currentColor;fill:none;
+    stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.ic-box{
+  width:52px;height:52px;flex:none;border-radius:var(--r-md);
+  display:grid;place-items:center;
+  color:var(--acc-soft);
+  background:linear-gradient(150deg,rgba(var(--rgb-acc),.20),rgba(var(--rgb-acc),.05));
+  border:1px solid rgba(var(--rgb-acc),.28);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10);
+  transition:transform .45s var(--e-out),box-shadow .45s var(--e-out);
+}
+.ic-box .ic{width:24px;height:24px}
+.ic-box--sm{width:40px;height:40px;border-radius:var(--r-sm)}
+.ic-box--sm .ic{width:19px;height:19px}
+/* emoji остаются только как контент-акцент, в единой оправе */
+.emo{
+  display:inline-grid;place-items:center;width:1.35em;height:1.35em;
+  font-size:1em;line-height:1;flex:none;
+  font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;
+}
+
+/* ---------------- ПОВЕРХНОСТИ ---------------- */
+.card{
+  position:relative;display:flex;flex-direction:column;
+  padding:clamp(22px,2.4vw,32px);
+  border-radius:var(--r-lg);
+  background:linear-gradient(168deg,rgba(255,255,255,.055),rgba(255,255,255,.015) 55%),
+             linear-gradient(180deg,rgba(36,17,66,.55),rgba(10,4,26,.62));
+  border:1px solid rgba(var(--rgb-acc),.18);
+  box-shadow:0 1px 0 rgba(255,255,255,.06) inset,
+             0 18px 44px -26px rgba(0,0,0,.9);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  transition:transform .5s var(--e-out),border-color .5s var(--e-out),box-shadow .5s var(--e-out);
+  height:100%;
+}
+.card:hover,.card:focus-within{
+  transform:translateY(-6px);
+  border-color:rgba(var(--rgb-acc),.42);
+  box-shadow:0 1px 0 rgba(255,255,255,.10) inset,
+             0 34px 70px -30px rgba(0,0,0,.95),
+             0 0 60px -32px rgba(var(--rgb-acc),.6);
+}
+.card:hover .ic-box{transform:translateY(-2px);box-shadow:0 10px 26px -14px rgba(var(--rgb-acc),.8)}
+/* тонкая световая кромка сверху */
+.card::after{
+  content:'';position:absolute;left:14%;right:14%;top:0;height:1px;border-radius:1px;
+  background:linear-gradient(90deg,transparent,rgba(var(--rgb-acc),.7),transparent);
+  opacity:.55;transition:opacity .5s var(--e-out);
+}
+.card:hover::after{opacity:1}
+/* «терминальные» карточки — срезанный угол вместо общего скругления */
+.card--term{
+  border-radius:0;
+  clip-path:polygon(20px 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%,0 20px);
+}
+.card--term::after{left:20px;right:8%}
+
+.panel{
+  position:relative;border-radius:var(--r-xl);
+  padding:clamp(30px,4.4vw,68px) clamp(20px,3.4vw,56px);
+  background:linear-gradient(165deg,rgba(var(--rgb-acc),.10),rgba(255,255,255,.012) 60%),
+             linear-gradient(180deg,rgba(26,11,46,.5),rgba(8,3,22,.6));
+  border:1px solid rgba(var(--rgb-acc),.20);
+  box-shadow:0 1px 0 rgba(255,255,255,.07) inset,0 40px 90px -60px #000;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  overflow:hidden;
+}
+.panel::before{
+  content:'';position:absolute;left:0;right:0;top:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(var(--rgb-acc),.8),transparent);
+}
+
+/* ---------------- СЕТКИ (БАГ-3.3) ---------------- */
+.grid{display:grid;gap:var(--gap);align-items:stretch}
+/* min-width:auto у grid-элементов даёт «распирание» трека длинным
+   неразрывным содержимым и вылет за вьюпорт на узких экранах */
+.grid > *{min-width:0}
+.g-2{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.g-3{grid-template-columns:repeat(auto-fit,minmax(min(100%,286px),1fr))}
+.g-4{grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr))}
+.g-feat{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+@media (min-width:1024px){
+  .g-prop{grid-template-columns:1.45fr 1fr}
+}
+.g-prop{grid-template-columns:1fr}
+
+/* CTA всегда прижата к низу карточки */
+.card .push{margin-top:auto}
+.card > * + *{margin-top:14px}
+
+/* ---------------- КНОПКИ (БАГ-3.1 / 3.2) ---------------- */
+.btn-row{
+  display:flex;flex-wrap:wrap;gap:14px;
+  align-items:stretch;justify-content:center;
+}
+.btn-row--start{justify-content:flex-start}
+.btn{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;
+  gap:10px;
+  min-height:54px;padding:15px 28px;
+  border-radius:var(--r-md);
+  font-family:var(--f-body);font-weight:700;font-size:clamp(.9375rem,.9rem + .2vw,1.0625rem);
+  letter-spacing:.005em;line-height:1.2;text-align:center;
+  border:1px solid transparent;
+  isolation:isolate;overflow:hidden;
+  transition:transform .35s var(--e-out),box-shadow .35s var(--e-out),
+             background-color .35s var(--e-out),border-color .35s var(--e-out);
+  -webkit-tap-highlight-color:transparent;
+}
+.btn .ic{width:19px;height:19px;flex:none}
+.btn .ic--arrow{transition:transform .35s var(--e-out)}
+.btn:hover .ic--arrow{transform:translateX(5px)}
+.btn:active{transform:translateY(1px) scale(.99);transition-duration:.09s}
+.btn--full{width:100%}
+/* сдержанный световой проход вместо «дешёвого» блика */
+.btn::before{
+  content:'';position:absolute;inset:0;z-index:-1;opacity:0;
+  background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.20),transparent 70%);
+  transform:translateX(-60%);
+  transition:opacity .3s linear,transform .8s var(--e-out);
+}
+.btn:hover::before{opacity:1;transform:translateX(60%)}
+
+.btn--primary{
+  background:linear-gradient(135deg,#7c3aed,#6366f1 52%,#2563eb);
+  color:#fff;border-color:rgba(255,255,255,.18);
+  box-shadow:0 10px 30px -14px rgba(124,58,237,.9),inset 0 1px 0 rgba(255,255,255,.28);
+}
+.btn--primary:hover{transform:translateY(-3px);
+  box-shadow:0 20px 44px -16px rgba(124,58,237,1),inset 0 1px 0 rgba(255,255,255,.4)}
+
+.btn--gold{
+  background:linear-gradient(135deg,#fcd34d,#fbbf24 52%,#f59e0b);
+  color:#3b1d00;border-color:rgba(255,255,255,.4);
+  box-shadow:0 10px 30px -14px rgba(251,191,36,.9),inset 0 1px 0 rgba(255,255,255,.5);
+}
+.btn--gold:hover{transform:translateY(-3px);box-shadow:0 20px 44px -16px rgba(251,191,36,1)}
+
+.btn--emerald{
+  background:linear-gradient(135deg,#6ee7b7,#34d399 52%,#10b981);
+  color:#022c22;border-color:rgba(255,255,255,.38);
+  box-shadow:0 10px 30px -14px rgba(16,185,129,.9),inset 0 1px 0 rgba(255,255,255,.45);
+}
+.btn--emerald:hover{transform:translateY(-3px);box-shadow:0 20px 44px -16px rgba(16,185,129,1)}
+
+.btn--pink{
+  background:linear-gradient(135deg,#f0abfc,#e879f9 52%,#d946ef);
+  color:#2b0733;border-color:rgba(255,255,255,.42);
+  box-shadow:0 10px 30px -14px rgba(232,121,249,.9),inset 0 1px 0 rgba(255,255,255,.5);
+}
+.btn--pink:hover{transform:translateY(-3px);box-shadow:0 20px 44px -16px rgba(232,121,249,1)}
+
+.btn--cyan{
+  background:linear-gradient(135deg,#67e8f9,#22d3ee 52%,#06b6d4);
+  color:#04232c;border-color:rgba(255,255,255,.42);
+  box-shadow:0 10px 30px -14px rgba(34,211,238,.9),inset 0 1px 0 rgba(255,255,255,.5);
+}
+.btn--cyan:hover{transform:translateY(-3px);box-shadow:0 20px 44px -16px rgba(34,211,238,1)}
+
+.btn--red{
+  background:linear-gradient(135deg,#dc2626,#c81e1e 52%,#b91c1c);
+  color:#fff;border-color:rgba(255,255,255,.22);
+  box-shadow:0 10px 30px -14px rgba(220,38,38,.9),inset 0 1px 0 rgba(255,255,255,.26);
+}
+.btn--red:hover{transform:translateY(-3px);box-shadow:0 20px 44px -16px rgba(220,38,38,1)}
+
+.btn--ghost{
+  background:rgba(255,255,255,.045);
+  color:var(--g-50);
+  border-color:rgba(var(--rgb-acc),.45);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+.btn--ghost:hover{transform:translateY(-3px);
+  background:rgba(var(--rgb-acc),.14);border-color:rgba(var(--rgb-acc),.85)}
+
+/* ---------------- БЕЙДЖ ДОХОДА ---------------- */
+.badge{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 16px;
+  border-radius:var(--r-sm);
+  border:1px solid rgba(var(--rgb-acc),.32);
+  border-left:3px solid var(--acc);
+  background:rgba(var(--rgb-acc),.10);
+  color:var(--acc-soft);
+  font-weight:600;font-size:var(--fs-sm);line-height:1.4;
+}
+.badge .ic{width:18px;height:18px;flex:none}
+
+/* ---------------- ТЕГИ ---------------- */
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{
+  padding:5px 12px;border-radius:var(--r-pill);
+  font-family:var(--f-num);font-size:.75rem;font-weight:500;letter-spacing:.02em;
+  color:var(--g-300);
+  background:rgba(var(--rgb-acc),.10);
+  border:1px solid rgba(var(--rgb-acc),.22);
+}
+
+/* ---------------- СТАТИСТИКА ---------------- */
+.stat{
+  font-family:var(--f-display);font-weight:800;font-size:var(--fs-stat);
+  line-height:1;letter-spacing:-.03em;color:var(--li-50);
+  text-shadow:0 0 26px rgba(var(--rgb-acc),.45);
+}
+.stat-label{
+  margin-top:10px;font-family:var(--f-num);font-size:var(--fs-eyebrow);
+  letter-spacing:.13em;text-transform:uppercase;color:var(--g-400);
+}
+
+/* ---------------- HERO ---------------- */
+/* justify-items:stretch обязателен: place-items:center заставлял
+   .wrap брать max-content и вылезать за 320px-вьюпорт */
+.hero{
+  min-height:100svh;display:grid;
+  align-items:center;justify-items:stretch;
+  padding-top:clamp(90px,12vh,150px);
+}
+.hero > .wrap{width:100%}
+.hero-orb{
+  position:relative;width:clamp(96px,12vw,140px);aspect-ratio:1;margin:0 auto 34px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 32% 30%,rgba(255,255,255,.5),transparent 46%),
+    radial-gradient(circle at 68% 72%,rgba(139,92,246,.6),transparent 62%),
+    linear-gradient(150deg,#8b5cf6,#6366f1 52%,#3b82f6);
+  box-shadow:0 0 70px rgba(139,92,246,.55),0 0 140px rgba(139,92,246,.25),
+             inset -12px -12px 34px rgba(0,0,0,.35),inset 12px 12px 34px rgba(255,255,255,.18);
+  display:grid;place-items:center;color:#fff;
+}
+.hero-orb .ic{width:44%;height:44%;stroke-width:1.6}
+.hero-orb::after{
+  content:'';position:absolute;inset:-16px;border-radius:50%;
+  border:1px solid rgba(var(--rgb-li),.28);
+}
+.hero-stats{margin:clamp(30px,4vw,52px) auto clamp(28px,3.6vw,44px);max-width:860px}
+.hero-stats .card{padding:22px 18px;text-align:center;align-items:center}
+
+.scroll-hint{
+  display:inline-flex;flex-direction:column;align-items:center;gap:8px;
+  margin-top:clamp(26px,3.4vw,44px);
+  font-family:var(--f-num);font-size:.6875rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--g-400);
+  padding:10px 14px;border-radius:var(--r-pill);
+  transition:color .3s var(--e-out),transform .3s var(--e-out);
+}
+.scroll-hint:hover{color:var(--acc-soft);transform:translateY(2px)}
+.scroll-hint .ic{width:16px;height:16px;animation:hintY 2.6s var(--e-io) infinite}
+@keyframes hintY{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+/* ---------------- ИНФОГРАФИКИ ---------------- */
+.figure{
+  position:relative;margin:0 0 clamp(30px,3.6vw,52px);
+  border-radius:var(--r-lg);overflow:hidden;
+  border:1px solid rgba(var(--rgb-acc),.18);
+  background:linear-gradient(180deg,rgba(15,5,29,.55),rgba(5,2,20,.7));
+}
+.figure canvas,.figure svg{display:block;width:100%}
+.hud{
+  position:absolute;top:12px;left:16px;right:16px;z-index:2;
+  display:flex;justify-content:space-between;gap:12px;
+  font-family:var(--f-num);font-size:.75rem;letter-spacing:.08em;color:var(--g-400);
+  pointer-events:none;
+}
+.hud b{font-size:1.05rem;font-weight:700;letter-spacing:-.01em;transition:color .2s linear}
+.hud b.up{color:var(--em-300)} .hud b.down{color:var(--rd-300)}
+
+.flow{width:100%;height:auto}
+.flow text{font-family:var(--f-num);font-size:11px;letter-spacing:.08em;fill:var(--g-400)}
+.speed{display:flex;gap:4px;justify-content:center;padding:0 0 16px}
+.speed i{display:block;width:22px;height:5px;border-radius:2px;background:rgba(var(--rgb-cy),.18);
+  transition:background .35s var(--e-out),box-shadow .35s var(--e-out)}
+.speed i.on{background:var(--cy);box-shadow:0 0 10px rgba(var(--rgb-cy),.85)}
+
+/* ---------------- ТЕМЫ СЕКЦИЙ ---------------- */
+#contracts{--acc:var(--em);--acc-soft:var(--em-300);--rgb-acc:16,185,129}
+#prop,#motivation-2{--acc:var(--go);--acc-soft:var(--go-300);--rgb-acc:251,191,36}
+#neural{--acc:var(--pk);--acc-soft:var(--pk-300);--rgb-acc:232,121,249}
+#vpn,#motivation-3{--acc:var(--cy);--acc-soft:var(--cy-300);--rgb-acc:34,211,238}
+#youtube{--acc:var(--rd);--acc-soft:var(--rd-300);--rgb-acc:239,68,68}
+
+/* ---------------- ЦИТАТА ---------------- */
+.quote{
+  margin-top:clamp(24px,3vw,38px);
+  font-size:var(--fs-lead);font-style:italic;color:var(--cy-300);
+  text-shadow:0 0 22px rgba(var(--rgb-cy),.35);
+}
+
+/* ---------------- ГОРОДА ---------------- */
+.city{align-items:center;text-align:center;padding:24px 16px}
+.city .emo{font-size:1.9rem;margin-bottom:6px}
+.city b{font-family:var(--f-display);font-weight:700;font-size:1.0625rem;color:var(--g-50)}
+.city span{font-size:.8125rem;color:var(--g-400)}
+
+/* ---------------- 18+ БЛОК ---------------- */
+.note-18{
+  padding:18px 20px;border-radius:var(--r-md);
+  border-left:3px solid var(--pk);
+  background:rgba(var(--rgb-pk),.10);
+  color:var(--pk-300);font-weight:600;line-height:1.6;
+}
+
+/* ---------------- YOUTUBE ---------------- */
+.play{
+  display:grid;place-items:center;width:84px;aspect-ratio:1;margin:0 auto;
+  border-radius:50%;color:#fff;
+  background:linear-gradient(140deg,#ef4444,#b91c1c);
+  box-shadow:0 0 50px rgba(var(--rgb-rd),.55),inset 0 2px 0 rgba(255,255,255,.28);
+  transition:transform .4s var(--e-out),box-shadow .4s var(--e-out);
+}
+.play .ic{width:32px;height:32px;fill:currentColor;stroke:none;margin-left:4px}
+a:hover > .play{transform:scale(1.06);box-shadow:0 0 78px rgba(var(--rgb-rd),.75)}
+.slogan-grid .card{align-items:center;text-align:center;justify-content:center;min-height:104px}
+.slogan-grid .card p{font-family:var(--f-display);font-weight:600;font-size:1rem;
+  line-height:1.4;color:var(--g-50)}
+
+/* ---------------- ФУТЕР (БАГ-5) ---------------- */
+.footer{
+  position:relative;overflow:hidden;
+  padding:clamp(80px,10vw,150px) clamp(16px,4vw,40px) clamp(44px,5vw,70px);
+  background:linear-gradient(180deg,transparent,var(--c900) 26%,var(--void));
+}
+.footer-plate{
+  position:absolute;inset:0;z-index:0;opacity:.3;pointer-events:none;
+  background:url('assets/img/footer-backplate.jpg') center/cover no-repeat,
+             radial-gradient(70% 50% at 50% 108%,rgba(var(--rgb-li),.4),transparent 66%);
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 32%,#000 76%,transparent);
+          mask-image:linear-gradient(180deg,transparent,#000 32%,#000 76%,transparent);
+}
+.footer-inner{position:relative;z-index:2;max-width:1080px;margin-inline:auto;text-align:center}
+.footer-role{
+  font-family:var(--f-num);font-size:var(--fs-eyebrow);font-weight:500;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--li-300);opacity:.8;
+  margin-bottom:18px;
+}
+.author{
+  font-family:var(--f-display);font-weight:800;
+  font-size:var(--fs-name);line-height:1.05;letter-spacing:-.01em;
+  color:var(--li-50);
+  text-shadow:
+    0 2px 0 rgba(0,0,0,.5),
+    0 0 30px rgba(var(--rgb-li),.55),
+    0 0 90px rgba(var(--rgb-li),.28);
+  margin-bottom:14px;
+}
+.author-latin{
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:clamp(.75rem,.7rem + .3vw,1rem);
+  letter-spacing:.5em;text-indent:.5em;text-transform:uppercase;
+  color:var(--g-400);opacity:.7;
+}
+.footer-tag{margin:26px auto 0;max-width:46ch;color:var(--g-300);font-weight:300;
+  font-size:clamp(1rem,.95rem + .3vw,1.1875rem)}
+.footer-nav{
+  display:flex;flex-wrap:wrap;gap:10px 26px;justify-content:center;
+  margin:clamp(30px,4vw,48px) 0 0;
+}
+.footer-nav a{
+  font-family:var(--f-num);font-size:.8125rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--g-400);padding:8px 4px;position:relative;transition:color .3s var(--e-out);
+}
+.footer-nav a::after{
+  content:'';position:absolute;left:4px;right:4px;bottom:2px;height:1px;
+  background:var(--li-400);transform:scaleX(0);transform-origin:left;
+  transition:transform .4s var(--e-out);
+}
+.footer-nav a:hover{color:var(--li-200)}
+.footer-nav a:hover::after{transform:scaleX(1)}
+.footer-rule{width:min(420px,70vw);height:1px;margin:34px auto 20px;
+  background:linear-gradient(90deg,transparent,rgba(var(--rgb-li),.5),transparent)}
+.footer-meta{font-family:var(--f-num);font-size:.75rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--g-400);opacity:.6}
+
+/* ---------------- A11Y ---------------- */
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+.skip{
+  position:fixed;top:-70px;left:14px;z-index:99;
+  padding:12px 20px;border-radius:var(--r-sm);
+  background:var(--c600);color:var(--g-50);border:1px solid rgba(var(--rgb-li),.5);
+  font-family:var(--f-num);font-size:.8125rem;
+  transition:top .25s var(--e-out);
+}
+.skip:focus{top:14px}
+:where(a,button,[tabindex]):focus-visible{
+  outline:2px solid var(--acc-soft);outline-offset:3px;border-radius:var(--r-xs);
+}
+
+/* ---------------- ПОЯВЛЕНИЕ ---------------- */
+[data-rv]{opacity:0}
+html.no-js [data-rv],html.rv-done [data-rv]{opacity:1}
+
+/* ---------------- REDUCED MOTION ---------------- */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;scroll-behavior:auto!important;
+  }
+  #ambient{display:none}
+  [data-rv]{opacity:1!important;transform:none!important;clip-path:none!important}
+  .rv-word > span{transform:none!important}
+  .card:hover,.btn:hover{transform:none!important}
+}
+
+/* ---------------- ПОВЫШЕННЫЙ КОНТРАСТ ---------------- */
+@media (prefers-contrast:more){
+  .card,.panel{background:rgba(6,2,18,.94);border-color:rgba(var(--rgb-acc),.6);
+    backdrop-filter:none;-webkit-backdrop-filter:none}
+  .copy,.muted{color:var(--g-300)}
+  #ambient,.bg-grain{display:none}
+  .h-cine,.author{text-shadow:none}
+}
+
+/* ---------------- УЗКИЕ ЭКРАНЫ ---------------- */
+@media (max-width:420px){
+  .btn{width:100%;padding:15px 20px}
+  .btn-row{gap:12px}
+  .eyebrow{white-space:normal;text-align:center}
+}
+@media (min-width:2200px){
+  :root{--wrap:1440px}
+}
 </style>
 </head>
+
 <body>
+<script>document.documentElement.classList.remove('no-js');</script>
 
-<div class="stars"></div>
+<a class="skip" href="#contracts">Перейти к инструментам заработка</a>
 
-<!-- ============ HERO SECTION ============ -->
-<section class="relative min-h-screen flex items-center justify-center px-4 py-20 overflow-hidden">
-  <!-- Фоновые орбы -->
-  <div class="absolute top-20 left-10 w-[500px] h-[500px] bg-purple-500 rounded-full filter blur-[140px] opacity-25 animate-pulse"></div>
-  <div class="absolute bottom-20 right-10 w-[500px] h-[500px] bg-blue-500 rounded-full filter blur-[140px] opacity-25 animate-pulse" style="animation-delay: 1.2s;"></div>
-  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pink-500 rounded-full filter blur-[160px] opacity-15 animate-pulse" style="animation-delay: 2.4s;"></div>
+<div class="bg-base" aria-hidden="true"></div>
+<canvas id="ambient" aria-hidden="true"></canvas>
+<div class="bg-vignette" aria-hidden="true"></div>
+<div class="bg-grain" aria-hidden="true"></div>
 
-  <!-- Парящие 3D объекты -->
-  <div class="floating-object top-32 left-[8%] text-6xl" style="animation-delay: 0s;">💰</div>
-  <div class="floating-object top-40 right-[10%] text-5xl" style="animation-delay: 1.2s;">🪐</div>
-  <div class="floating-object bottom-40 left-[10%] text-5xl" style="animation-delay: 2.4s;">⏰</div>
-  <div class="floating-object bottom-32 right-[8%] text-6xl" style="animation-delay: 3.6s;">🛡️</div>
-  <div class="floating-object top-[60%] left-[5%] text-4xl" style="animation-delay: 1.8s;">💎</div>
-  <div class="floating-object top-[40%] right-[5%] text-4xl" style="animation-delay: 2.8s;">🧠</div>
+<!-- ============ SVG-СПРАЙТ ИКОНОК ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v15M6 13l6 6 6-6"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></symbol>
+<symbol id="i-rocket" viewBox="0 0 24 24"><path d="M12 2c3.5 2.2 5.5 6 5.5 10.5L12 18l-5.5-5.5C6.5 8 8.5 4.2 12 2Z"/><circle cx="12" cy="10" r="2"/><path d="M8 17.5 5.5 22l4.5-2M16 17.5 18.5 22 14 20"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 20h18M6 16V9M11 16V5M16 16v-6M21 16v-9"/></symbol>
+<symbol id="i-candle" viewBox="0 0 24 24"><path d="M7 3v3.5M7 17.5V21M17 3v5M17 16v5"/><rect x="4.5" y="6.5" width="5" height="11" rx="1"/><rect x="14.5" y="8" width="5" height="8" rx="1"/></symbol>
+<symbol id="i-currency" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15 8.5a3.5 3.5 0 1 0 0 7M8 10.5h4M8 13.5h4"/></symbol>
+<symbol id="i-exchange" viewBox="0 0 24 24"><path d="M4 8h13l-3-3M20 16H7l3 3"/></symbol>
+<symbol id="i-laptop" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="11" rx="2"/><path d="M2 19h20"/></symbol>
+<symbol id="i-building" viewBox="0 0 24 24"><path d="M4 21V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v16M15 21V10h4a1 1 0 0 1 1 1v10M3 21h18"/><path d="M7.5 8h1.5M7.5 12h1.5M7.5 16h1.5"/></symbol>
+<symbol id="i-brain" viewBox="0 0 24 24"><path d="M12 5.5A3 3 0 0 0 6.2 6 3 3 0 0 0 4.6 11a3 3 0 0 0 1 4.6A3 3 0 0 0 12 18.5Z"/><path d="M12 5.5A3 3 0 0 1 17.8 6 3 3 0 0 1 19.4 11a3 3 0 0 1-1 4.6A3 3 0 0 1 12 18.5Z"/><path d="M12 5.5v13"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10" width="15" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.2 2.9 7.6 7 9 4.1-1.4 7-4.8 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.6 3.8 9S14.5 18.5 12 21c-2.5-2.5-3.8-5.6-3.8-9S9.5 5.5 12 3Z"/></symbol>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="m4 10 8-6 8 6v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1v-9Z"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
+<symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 12h18"/></symbol>
+<symbol id="i-wallet" viewBox="0 0 24 24"><path d="M4 7a2 2 0 0 1 2-2h11v4"/><rect x="3" y="7" width="18" height="12" rx="2"/><circle cx="16.5" cy="13" r="1.2"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".8" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-zen" viewBox="0 0 24 24"><circle cx="12" cy="6.5" r="2.2"/><path d="M5 20c1.5-4 4-6 7-6s5.5 2 7 6M8 13.5 5.5 12M16 13.5 18.5 12"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="i-video" viewBox="0 0 24 24"><rect x="3" y="6" width="12" height="12" rx="2"/><path d="m15 10 6-3v10l-6-3"/></symbol>
+<symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m4 17 5-5 4 4 3-2 4 4"/></symbol>
+<symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.1 2.1 0 0 0-3-3L5 17v3Z"/><path d="m14.5 7.5 2 2"/></symbol>
+<symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></symbol>
+<symbol id="i-bot" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 4v4M8.5 13h.01M15.5 13h.01M9 16.5h6"/></symbol>
+<symbol id="i-mobile" viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/></symbol>
+<symbol id="i-tv" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M9 21h6M9 3l3 3 3-3"/></symbol>
+<symbol id="i-support" viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="13" width="4" height="6" rx="1.6"/><rect x="17.5" y="13" width="4" height="6" rx="1.6"/><path d="M19.5 19v.6a2.4 2.4 0 0 1-2.4 2.4H13"/></symbol>
+<symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="11" rx="2"/><path d="M3 13h18M12 9v11M12 9S9 4 6.8 5.6C5 6.9 6.6 9 9 9M12 9s3-5 5.2-3.4C19 6.9 17.4 9 15 9"/></symbol>
+<symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13.5a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7L11.5 6"/><path d="M14 10.5a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.5-1.5"/></symbol>
+<symbol id="i-handshake" viewBox="0 0 24 24"><path d="M8 12.5 5 9.5 9 6l3 2 3-2 4 3.5-3 3"/><path d="m12 12 2.5 2.5M9.5 14.5 12 17M7 16.5 9 18.5"/></symbol>
+<symbol id="i-diamond" viewBox="0 0 24 24"><path d="M6 4h12l3 5-9 11L3 9l3-5Z"/><path d="M3 9h18M9 4l-3 5 6 11 6-11-3-5"/></symbol>
+<symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="12" r="4"/><path d="M12 12h9l-2 2.5M17 12v3"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-infinity" viewBox="0 0 24 24"><path d="M8 12c0-2-1.4-3.5-3-3.5S2 10 2 12s1.4 3.5 3 3.5S8 14 8 12Zm0 0c0 2 1.4 3.5 3 3.5S14 14 14 12s1.4-3.5 3-3.5S20 10 20 12s-1.4 3.5-3 3.5"/></symbol>
+</defs></svg>
 
-  <div class="relative z-10 max-w-6xl mx-auto text-center">
-    <!-- Hero Logo Sphere -->
-    <div class="mb-10 fade-in-up">
-      <div class="hero-logo-sphere">
-        <span class="text-7xl" style="filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));">⚡</span>
-      </div>
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<header class="sec hero" id="hero" aria-labelledby="hero-t">
+  <div class="wrap center">
+    <div class="hero-orb" data-rv="fade" aria-hidden="true">
+      <svg class="ic"><use href="#i-bolt"/></svg>
     </div>
 
-    <!-- Eyebrow -->
-    <div class="mb-6 fade-in-up">
-      <span class="eyebrow-chip bg-purple-500/15 border-purple-400/40 text-purple-200">
-        <span>✦</span>
-        <span>Ультра-премиальный доступ</span>
-      </span>
-    </div>
+    <p data-rv="fade"><span class="eyebrow"><svg class="ic"><use href="#i-spark"/></svg>Ультра-премиальный доступ</span></p>
 
-    <!-- Заголовок -->
-    <h1 class="cinematic-title text-6xl md:text-8xl lg:text-9xl mb-6 fade-in-up">
-      Pro Max Hub
-    </h1>
+    <h1 class="h-cine" id="hero-t" data-rv="words">Pro Max Hub</h1>
 
-    <!-- Divider -->
-    <div class="premium-divider fade-in-up">
-      <div class="line"></div>
-      <span class="text-3xl text-purple-300" style="filter: drop-shadow(0 0 20px rgba(167, 139, 250, 0.8));">✦</span>
-      <div class="line"></div>
-    </div>
-
-    <!-- Подзаголовок -->
-    <p class="text-xl md:text-2xl lg:text-3xl text-gray-200 mb-4 max-w-4xl mx-auto leading-relaxed font-light fade-in-up" style="text-shadow: 0 2px 20px rgba(0,0,0,0.5);">
-      Твой путь к <span class="text-purple-300 font-semibold">финансовой свободе</span>.
+    <p class="lead copy--tight" data-rv="up" style="margin-inline:auto">
+      Твой путь к <strong>финансовой свободе</strong>.
     </p>
-    <p class="text-lg md:text-xl text-gray-400 mb-14 max-w-3xl mx-auto leading-relaxed fade-in-up">
-      Спокойный заработок без стресса, начальников и офисов.<br class="hidden md:block">
+    <p class="copy" data-rv="up" style="margin-top:14px">
+      Спокойный заработок без стресса, начальников и офисов.
       Работай из дома. Живи на своих условиях. Зарабатывай столько, сколько хочешь.
     </p>
 
-    <!-- Статистика -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-14 max-w-4xl mx-auto fade-in-up">
-      <div class="ultra-glass p-6 text-center">
-        <div class="text-5xl font-bold cinematic-title mb-2">7+</div>
-        <div class="text-sm text-gray-400 uppercase tracking-wider">Инструментов заработка</div>
-      </div>
-      <div class="ultra-glass p-6 text-center">
-        <div class="text-5xl font-bold cinematic-title mb-2">24/7</div>
-        <div class="text-sm text-gray-400 uppercase tracking-wider">Доступ из любой точки</div>
-      </div>
-      <div class="ultra-glass p-6 text-center">
-        <div class="text-5xl font-bold cinematic-title mb-2">₽ + $</div>
-        <div class="text-sm text-gray-400 uppercase tracking-wider">Доход в любой валюте</div>
-      </div>
+    <div class="grid g-3 hero-stats" data-rv="stagger">
+      <div class="card"><div class="stat" data-count>7+</div><div class="stat-label">Инструментов заработка</div></div>
+      <div class="card"><div class="stat" data-count>24/7</div><div class="stat-label">Доступ из любой точки</div></div>
+      <div class="card"><div class="stat">₽ + $</div><div class="stat-label">Доход в любой валюте</div></div>
     </div>
 
-    <!-- CTA кнопки -->
-    <div class="flex flex-col sm:flex-row gap-5 justify-center items-center fade-in-up">
-      <a href="#contracts" class="premium-button premium-button-gold text-lg">
-        <span>🚀</span>
-        <span>Начать зарабатывать</span>
-        <span class="arrow">→</span>
+    <div class="btn-row" data-rv="stagger">
+      <a href="#contracts" class="btn btn--gold">
+        <svg class="ic"><use href="#i-rocket"/></svg>
+        Начать зарабатывать
+        <svg class="ic ic--arrow"><use href="#i-arrow"/></svg>
       </a>
-      <a href="#motivation-1" class="premium-button text-lg" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.25) 0%, rgba(59, 130, 246, 0.25) 100%); border: 2px solid rgba(167, 139, 250, 0.5);">
-        <span>✦</span>
-        <span>Узнать больше</span>
+      <a href="#motivation-1" class="btn btn--ghost">
+        <svg class="ic"><use href="#i-spark"/></svg>
+        Узнать больше
       </a>
     </div>
-  </div>
 
-  <!-- Scroll indicator -->
-  <div class="scroll-indicator">
-    <div class="w-7 h-12 border-2 border-purple-400/60 rounded-full flex items-start justify-center p-2 backdrop-blur-sm">
-      <div class="w-1.5 h-3 bg-purple-300 rounded-full animate-bounce" style="box-shadow: 0 0 10px rgba(167, 139, 250, 0.8);"></div>
-    </div>
+    <a class="scroll-hint" href="#motivation-1" data-rv="fade">
+      Листай ниже
+      <svg class="ic" aria-hidden="true"><use href="#i-down"/></svg>
+    </a>
   </div>
-</section>
+</header>
 
-<!-- ============ МОТИВАЦИОННЫЙ БЛОК #1 — СВОБОДА ============ -->
-<section id="motivation-1" class="relative py-24 md:py-32 px-4">
-  <div class="max-w-6xl mx-auto">
-    <div class="motivation-block fade-in-up">
-      <div class="text-center mb-12">
-        <span class="eyebrow-chip bg-purple-500/15 border-purple-400/40 text-purple-200 mb-5 inline-flex">
-          <span>✦</span>
-          <span>Свобода и независимость</span>
-        </span>
-        <h2 class="cinematic-title text-5xl md:text-7xl mb-6">
-          Работа из дома
-        </h2>
-        <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+<!-- ============ МОТИВАЦИЯ 1 ============ -->
+<section class="sec" id="motivation-1" aria-labelledby="m1-t">
+  <div class="wrap wrap--narrow">
+    <div class="panel">
+      <div class="center" style="margin-bottom:clamp(28px,3.4vw,46px)">
+        <p data-rv="fade"><span class="eyebrow"><svg class="ic"><use href="#i-spark"/></svg>Свобода и независимость</span></p>
+        <h2 class="h-cine" id="m1-t" data-rv="words">Работа из дома</h2>
+        <p class="lead copy--tight" data-rv="up">
           Забудь о пробках, офисах и ранних подъёмах. Твоё рабочее место — там, где тебе комфортно.
-          Чашка кофе, удобный диван, свой график — и <span class="text-purple-300 font-semibold">стабильный доход каждый день</span>.
+          Чашка кофе, удобный диван, свой график — и <strong>стабильный доход каждый день</strong>.
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="ultra-glass p-7">
-          <div class="text-5xl mb-4">🏠</div>
-          <h3 class="text-2xl font-bold mb-3 cinematic-title" style="font-size: 1.75rem;">Свобода места</h3>
-          <p class="text-gray-400 leading-relaxed">Работай из любой точки мира — Москва, Бали, Дубай, Лиссабон. Главное — ноутбук и интернет.</p>
-        </div>
-        <div class="ultra-glass p-7">
-          <div class="text-5xl mb-4">⏰</div>
-          <h3 class="text-2xl font-bold mb-3 cinematic-title" style="font-size: 1.75rem;">Свобода времени</h3>
-          <p class="text-gray-400 leading-relaxed">Сам выбираешь, когда и сколько работать. Утром, днём или ночью — решаешь только ты.</p>
-        </div>
-        <div class="ultra-glass p-7">
-          <div class="text-5xl mb-4">💼</div>
-          <h3 class="text-2xl font-bold mb-3 cinematic-title" style="font-size: 1.75rem;">Без начальников</h3>
-          <p class="text-gray-400 leading-relaxed">Никаких отчётов, планёрок, "надо задержаться". Ты сам себе босс и сам строишь свой день.</p>
-        </div>
-        <div class="ultra-glass p-7">
-          <div class="text-5xl mb-4">💰</div>
-          <h3 class="text-2xl font-bold mb-3 cinematic-title" style="font-size: 1.75rem;">Без лишних затрат</h3>
-          <p class="text-gray-400 leading-relaxed">Экономия на дороге, обедах в кафе, офисной одежде. Все деньги остаются у тебя.</p>
-        </div>
+      <div class="grid g-2" data-rv="stagger">
+        <article class="card">
+          <div class="ic-box"><svg class="ic"><use href="#i-home"/></svg></div>
+          <h3 class="h3">Свобода места</h3>
+          <p class="copy">Работай из любой точки мира — Москва, Бали, Дубай, Лиссабон. Главное — ноутбук и интернет.</p>
+        </article>
+        <article class="card">
+          <div class="ic-box"><svg class="ic"><use href="#i-clock"/></svg></div>
+          <h3 class="h3">Свобода времени</h3>
+          <p class="copy">Сам выбираешь, когда и сколько работать. Утром, днём или ночью — решаешь только ты.</p>
+        </article>
+        <article class="card">
+          <div class="ic-box"><svg class="ic"><use href="#i-briefcase"/></svg></div>
+          <h3 class="h3">Без начальников</h3>
+          <p class="copy">Никаких отчётов, планёрок, «надо задержаться». Ты сам себе босс и сам строишь свой день.</p>
+        </article>
+        <article class="card">
+          <div class="ic-box"><svg class="ic"><use href="#i-wallet"/></svg></div>
+          <h3 class="h3">Без лишних затрат</h3>
+          <p class="copy">Экономия на дороге, обедах в кафе, офисной одежде. Все деньги остаются у тебя.</p>
+        </article>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ ЗАРАБОТОК НА КОНТРАКТАХ ============ -->
-<section id="contracts" class="relative py-24 md:py-32 px-4 overflow-hidden">
-  <!-- Тематический фон: японские свечи + сетка терминала -->
-  <div class="terminal-grid"></div>
-  <div class="section-bg-candles" id="candlesBg"></div>
-
-  <div class="relative z-10 max-w-7xl mx-auto">
-    <!-- 3D орбита со стрелками -->
-    <div class="orbit-container mb-10 fade-in-up">
-      <div class="orbit-center"></div>
-      <div class="orbit-ring orbit-ring-1">
-        <div class="orbit-item arrow-call">↗</div>
-        <div class="orbit-item arrow-put">↘</div>
-      </div>
-      <div class="orbit-ring orbit-ring-2"></div>
-      <div class="orbit-ring orbit-ring-3"></div>
-    </div>
-
-    <div class="text-center mb-16 fade-in-up">
-      <span class="eyebrow-chip bg-emerald-500/15 border-emerald-400/40 text-emerald-200 mb-5 inline-flex">
-        <span>✦</span>
-        <span>Trading Utilities</span>
-      </span>
-      <h2 class="cinematic-title text-5xl md:text-7xl mb-6">
-        Заработок на контрактах — легко
-      </h2>
-      <p class="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-        Профессиональные утилиты для системного заработка на криптовалюте и валюте.<br>
-        <span class="text-emerald-300 font-semibold">Автоматические сигналы</span> — минимум усилий, максимум результата.
+<!-- ============ КОНТРАКТЫ ============ -->
+<section class="sec" id="contracts" aria-labelledby="c-t">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:clamp(30px,3.6vw,52px)">
+      <p data-rv="fade"><span class="eyebrow"><svg class="ic"><use href="#i-candle"/></svg>Trading Utilities</span></p>
+      <h2 class="h-cine" id="c-t" data-rv="words">Заработок на контрактах&nbsp;— легко</h2>
+      <p class="lead" data-rv="up">
+        Профессиональные утилиты для системного заработка на криптовалюте и валюте.
+        <strong>Автоматические сигналы</strong> — минимум усилий, максимум результата.
       </p>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-7">
-      <!-- Карточка 1: Утилита для заработка (BTC) -->
-      <div class="ultra-glass p-8 fade-in-up">
-        <div class="flex items-center justify-between mb-5">
-          <span class="eyebrow-chip bg-yellow-500/20 border-yellow-400/50 text-yellow-200" style="padding: 6px 14px; font-size: 11px;">
-            🔥 Хит
-          </span>
-          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-400 to-amber-600 flex items-center justify-center text-3xl font-bold text-white" style="box-shadow: 0 0 30px rgba(251, 191, 36, 0.6), inset 0 2px 4px rgba(255,255,255,0.3);">₿</div>
-        </div>
-        <h3 class="text-2xl font-bold mb-4" style="font-family: 'Syne', sans-serif;">Утилита для заработка</h3>
-        <p class="text-gray-400 mb-6 leading-relaxed">
-          Профессиональный анализ микроструктуры рынка Bitcoin. Автоматический поиск точных сигналов для скальпинга на 5-минутном таймфрейме. Система сама определяет лучшие точки входа.
-        </p>
-        <div class="flex flex-wrap gap-2 mb-6">
-          <span class="tag-pill">5-мин таймфрейм</span>
-          <span class="tag-pill">Авто-сигналы</span>
-          <span class="tag-pill">Для новичков</span>
-        </div>
-        <div class="income-badge mb-7 w-full justify-center">
-          <span>💰</span>
-          <span>Возможный доход: 1 500 – 5 000 ₽ / день</span>
-        </div>
-        <a href="https://jocehabuwa643-svg.github.io/gordeev_btc_radar" target="_blank" rel="noopener" class="premium-button w-full">
-          <span>🚀</span>
-          <span>Запустить утилиту</span>
-          <span class="arrow">→</span>
-        </a>
-      </div>
+    <figure class="figure" data-rv="up" id="term">
+      <div class="hud"><span>BTC / USDT · 5M</span><b id="px">68 400.00</b></div>
+      <canvas id="chart" height="240" aria-hidden="true"></canvas>
+      <figcaption class="sr-only">
+        Демонстрационный график микроструктуры рынка Bitcoin: японские свечи на пятиминутном
+        таймфрейме, подсвеченные зоны спроса и предложения и бегущая линия цены.
+        Данные смоделированы и приведены только для иллюстрации работы утилиты.
+      </figcaption>
+    </figure>
 
-      <!-- Карточка 2: Утилита для EUR/USD -->
-      <div class="ultra-glass p-8 fade-in-up" style="transition-delay: 0.1s;">
-        <div class="flex items-center justify-between mb-5">
-          <span class="eyebrow-chip bg-blue-500/20 border-blue-400/50 text-blue-200" style="padding: 6px 14px; font-size: 11px;">
-            📊 Ликвидность
-          </span>
-          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center text-2xl font-bold text-white" style="box-shadow: 0 0 30px rgba(96, 165, 250, 0.6), inset 0 2px 4px rgba(255,255,255,0.3);">€/$</div>
+    <div class="grid g-3" data-rv="stagger">
+      <article class="card card--term">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <span class="eyebrow"><span class="emo">🔥</span>Хит</span>
+          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-currency"/></svg></div>
         </div>
-        <h3 class="text-2xl font-bold mb-4" style="font-family: 'Syne', sans-serif;">Утилита для заработка на евро-доллар</h3>
-        <p class="text-gray-400 mb-6 leading-relaxed">
-          Мощный скальпинг на самой ликвидной валютной паре мира. Анализ паттернов ликвидности, зон спроса и предложения, объёмов. Точные сигналы на развороты тренда.
-        </p>
-        <div class="flex flex-wrap gap-2 mb-6">
-          <span class="tag-pill">24/5 работа</span>
-          <span class="tag-pill">Паттерны</span>
-          <span class="tag-pill">Универсальная</span>
-        </div>
-        <div class="income-badge mb-7 w-full justify-center">
-          <span>💰</span>
-          <span>Возможный доход: 1 500 – 6 000 ₽ / день</span>
-        </div>
-        <a href="https://jocehabuwa643-svg.github.io/eur-usdt_pro_max_terminal" target="_blank" rel="noopener" class="premium-button w-full">
-          <span>🚀</span>
-          <span>Запустить утилиту</span>
-          <span class="arrow">→</span>
+        <h3 class="h3">Утилита для заработка</h3>
+        <p class="copy">Профессиональный анализ микроструктуры рынка Bitcoin. Автоматический поиск точных сигналов для скальпинга на 5-минутном таймфрейме. Система сама определяет лучшие точки входа.</p>
+        <div class="tags"><span class="tag">5-мин таймфрейм</span><span class="tag">Авто-сигналы</span><span class="tag">Для новичков</span></div>
+        <div class="badge"><svg class="ic"><use href="#i-wallet"/></svg><span data-count>Возможный доход: 1 500 – 5 000 ₽ / день</span></div>
+        <div class="push"></div>
+        <a href="https://jocehabuwa643-svg.github.io/gordeev_btc_radar" target="_blank" rel="noopener" class="btn btn--primary btn--full">
+          <svg class="ic"><use href="#i-rocket"/></svg>Запустить утилиту
+          <svg class="ic ic--arrow"><use href="#i-arrow"/></svg>
+          <span class="sr-only">(откроется в новой вкладке)</span>
         </a>
-      </div>
+      </article>
 
-      <!-- Карточка 3: Биржа для заработка -->
-      <div class="ultra-glass p-8 fade-in-up" style="transition-delay: 0.2s;">
-        <div class="flex items-center justify-between mb-5">
-          <span class="eyebrow-chip bg-emerald-500/20 border-emerald-400/50 text-emerald-200" style="padding: 6px 14px; font-size: 11px;">
-            ⚡ Быстрый старт
-          </span>
-          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center text-3xl" style="box-shadow: 0 0 30px rgba(16, 185, 129, 0.6), inset 0 2px 4px rgba(255,255,255,0.3);">📈</div>
+      <article class="card card--term">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <span class="eyebrow"><svg class="ic"><use href="#i-chart"/></svg>Ликвидность</span>
+          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-exchange"/></svg></div>
         </div>
-        <h3 class="text-2xl font-bold mb-4" style="font-family: 'Syne', sans-serif;">Биржа для заработка</h3>
-        <p class="text-gray-400 mb-6 leading-relaxed">
-          Прозрачная торговая площадка с мгновенным исполнением ордеров. Честные котировки, низкие спреды, быстрые выплаты. Идеально для применения сигналов наших утилит.
-        </p>
-        <div class="flex flex-wrap gap-2 mb-6">
-          <span class="tag-pill">Мгновенно</span>
-          <span class="tag-pill">Низкие спреды</span>
-          <span class="tag-pill">Поддержка 24/7</span>
-        </div>
-        <div class="income-badge mb-7 w-full justify-center">
-          <span>💰</span>
-          <span>Возможный доход: 2 000 – 7 000 ₽ / день</span>
-        </div>
-        <a href="https://intrade35.bar/311164" target="_blank" rel="noopener" class="premium-button premium-button-emerald w-full">
-          <span>⚡</span>
-          <span>Открыть биржу</span>
-          <span class="arrow">→</span>
+        <h3 class="h3">Утилита для заработка на евро-доллар</h3>
+        <p class="copy">Мощный скальпинг на самой ликвидной валютной паре мира. Анализ паттернов ликвидности, зон спроса и предложения, объёмов. Точные сигналы на развороты тренда.</p>
+        <div class="tags"><span class="tag">24/5 работа</span><span class="tag">Паттерны</span><span class="tag">Универсальная</span></div>
+        <div class="badge"><svg class="ic"><use href="#i-wallet"/></svg><span data-count>Возможный доход: 1 500 – 6 000 ₽ / день</span></div>
+        <div class="push"></div>
+        <a href="https://jocehabuwa643-svg.github.io/eur-usdt_pro_max_terminal" target="_blank" rel="noopener" class="btn btn--primary btn--full">
+          <svg class="ic"><use href="#i-rocket"/></svg>Запустить утилиту
+          <svg class="ic ic--arrow"><use href="#i-arrow"/></svg>
+          <span class="sr-only">(откроется в новой вкладке)</span>
         </a>
-      </div>
+      </article>
+
+      <article class="card card--term">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <span class="eyebrow"><svg class="ic"><use href="#i-bolt"/></svg>Быстрый старт</span>
+          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-chart"/></svg></div>
+        </div>
+        <h3 class="h3">Биржа для заработка</h3>
+        <p class="copy">Прозрачная торговая площадка с мгновенным исполнением ордеров. Честные котировки, низкие спреды, быстрые выплаты. Идеально для применения сигналов наших утилит.</p>
+        <div class="tags"><span class="tag">Мгновенно</span><span class="tag">Низкие спреды</span><span class="tag">Поддержка 24/7</span></div>
+        <div class="badge"><svg class="ic"><use href="#i-wallet"/></svg><span data-count>Возможный доход: 2 000 – 7 000 ₽ / день</span></div>
+        <div class="push"></div>
+        <a href="https://intrade35.bar/311164" target="_blank" rel="noopener" class="btn btn--emerald btn--full">
+          <svg class="ic"><use href="#i-bolt"/></svg>Открыть биржу
+          <svg class="ic ic--arrow"><use href="#i-arrow"/></svg>
+          <span class="sr-only">(откроется в новой вкладке)</span>
+        </a>
+      </article>
     </div>
 
-    <!-- Суммарный потенциал -->
-    <div class="ultra-glass p-8 md:p-10 mt-12 text-center fade-in-up">
-      <div class="flex items-center justify-center gap-4 mb-4">
-        <span class="text-5xl">💎</span>
-        <h3 class="text-3xl md:text-4xl font-bold cinematic-title" style="font-size: clamp(1.75rem, 4vw, 2.5rem);">Суммарный потенциал</h3>
+    <div class="panel center" style="margin-top:var(--gap)" data-rv="up">
+      <div style="display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap">
+        <div class="ic-box"><svg class="ic"><use href="#i-diamond"/></svg></div>
+        <h3 class="h3" style="margin:0">Суммарный потенциал</h3>
       </div>
-      <p class="text-2xl md:text-3xl text-emerald-300 font-bold mb-2" style="text-shadow: 0 0 30px rgba(16, 185, 129, 0.6);">
-        До 18 000 ₽ в день
-      </p>
-      <p class="text-gray-400">при грамотном использовании всех трёх инструментов</p>
+      <p class="stat" style="margin-top:18px;color:var(--em-300);text-shadow:0 0 30px rgba(16,185,129,.5)" data-count>До 18 000 ₽ в день</p>
+      <p class="copy" style="margin-top:10px">при грамотном использовании всех трёх инструментов</p>
     </div>
   </div>
 </section>
 
-<!-- ============ МОТИВАЦИОННЫЙ БЛОК #2 — НЕЗАВИСИМОСТЬ ============ -->
-<section class="relative py-24 md:py-32 px-4">
-  <div class="max-w-6xl mx-auto">
-    <div class="motivation-block motivation-block-gold fade-in-up">
-      <div class="text-center mb-12">
-        <span class="eyebrow-chip bg-yellow-500/15 border-yellow-400/40 text-yellow-200 mb-5 inline-flex">
-          <span>✦</span>
-          <span>Независимость</span>
-        </span>
-        <h2 class="cinematic-title-gold text-5xl md:text-7xl mb-6">
-          Никаких начальников
-        </h2>
-        <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-          Больше никаких планёрок, отчётов и фразы «надо задержаться». Ты сам себе босс.<br>
+<!-- ============ МОТИВАЦИЯ 2 ============ -->
+<section class="sec" id="motivation-2" aria-labelledby="m2-t">
+  <div class="wrap wrap--narrow">
+    <div class="panel">
+      <div class="center" style="margin-bottom:clamp(28px,3.4vw,46px)">
+        <p data-rv="fade"><span class="eyebrow"><svg class="ic"><use href="#i-spark"/></svg>Независимость</span></p>
+        <h2 class="h-cine" id="m2-t" data-rv="words">Никаких начальников</h2>
+        <p class="lead copy--tight" data-rv="up">
+          Больше никаких планёрок, отчётов и фразы «надо задержаться». Ты сам себе босс.
           Сам ставишь цели, сам выбираешь темп, сам решаешь, когда взять выходной.
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="ultra-glass p-7 text-center">
-          <div class="text-6xl mb-4">📈</div>
-          <div class="text-6xl font-bold cinematic-title-gold mb-3">0</div>
-          <p class="text-gray-300">отчётов и планёрок</p>
+      <div class="grid g-3" data-rv="stagger">
+        <div class="card" style="text-align:center;align-items:center">
+          <div class="ic-box"><svg class="ic"><use href="#i-chart"/></svg></div>
+          <div class="stat" data-count data-from="40">0</div>
+          <p class="copy">отчётов и планёрок</p>
         </div>
-        <div class="ultra-glass p-7 text-center">
-          <div class="text-6xl mb-4">🎯</div>
-          <div class="text-6xl font-bold cinematic-title-gold mb-3">100%</div>
-          <p class="text-gray-300">контроль над временем</p>
+        <div class="card" style="text-align:center;align-items:center">
+          <div class="ic-box"><svg class="ic"><use href="#i-target"/></svg></div>
+          <div class="stat" data-count>100%</div>
+          <p class="copy">контроль над временем</p>
         </div>
-        <div class="ultra-glass p-7 text-center">
-          <div class="text-6xl mb-4">🌍</div>
-          <div class="text-6xl font-bold cinematic-title-gold mb-3">∞</div>
-          <p class="text-gray-300">возможностей для роста</p>
+        <div class="card" style="text-align:center;align-items:center">
+          <div class="ic-box"><svg class="ic"><use href="#i-globe"/></svg></div>
+          <div class="stat"><svg class="ic" style="width:1em;height:1em" aria-label="бесконечно"><use href="#i-infinity"/></svg></div>
+          <p class="copy">возможностей для роста</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ PROP TRADING ============ -->
-<section id="prop" class="relative py-24 md:py-32 px-4 overflow-hidden">
-  <!-- Тематический фон: монеты -->
-  <div class="section-bg-coins" id="coinsBg"></div>
-
-  <div class="relative z-10 max-w-7xl mx-auto">
-    <!-- 3D орбита с монетами -->
-    <div class="orbit-container mb-10 fade-in-up">
-      <div class="orbit-center" style="background: radial-gradient(circle, rgba(251, 191, 36, 0.95) 0%, rgba(245, 158, 11, 0.5) 100%); box-shadow: 0 0 60px rgba(251, 191, 36, 0.8), 0 0 120px rgba(251, 191, 36, 0.4), inset 0 0 25px rgba(255,255,255,0.4);"></div>
-      <div class="orbit-ring orbit-ring-1" style="border-color: rgba(251, 191, 36, 0.4);">
-        <div class="orbit-item coin-item">$</div>
-        <div class="orbit-item dollar-item">💰</div>
-      </div>
-      <div class="orbit-ring orbit-ring-2" style="border-color: rgba(251, 191, 36, 0.3);"></div>
-      <div class="orbit-ring orbit-ring-3" style="border-color: rgba(245, 158, 11, 0.2);"></div>
-    </div>
-
-    <div class="text-center mb-16 fade-in-up">
-      <span class="eyebrow-chip bg-yellow-500/15 border-yellow-400/40 text-yellow-200 mb-5 inline-flex">
-        <span>✦</span>
-        <span>Capital Access</span>
-      </span>
-      <h2 class="cinematic-title-gold text-5xl md:text-7xl mb-6">
-        Проп-трейдинг
-      </h2>
-      <p class="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-        Торгуй на <span class="text-yellow-300 font-semibold">капитале компании от $10 000 до $200 000</span>. Получи funded-счёт и забирай до 80% прибыли.
-        Масштабируй доход <span class="text-yellow-300 font-semibold">без риска своими деньгами</span>.
+<!-- ============ ПРОП-ТРЕЙДИНГ ============ -->
+<section class="sec" id="prop" aria-labelledby="p-t">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:clamp(30px,3.6vw,52px)">
+      <p data-rv="fade"><span class="eyebrow"><svg class="ic"><use href="#i-diamond"/></svg>Capital Access</span></p>
+      <h2 class="h-cine" id="p-t" data-rv="words">Проп-трейдинг</h2>
+      <p class="lead" data-rv="up">
+        Торгуй на <strong>капитале компании от $10 000 до $200 000</strong>. Получи funded-счёт и забирай до <strong>80%</strong> прибыли.
+        Масштабируй доход <strong>без риска своими деньгами</strong>.
       </p>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-5 gap-7">
-      <!-- Карточка 1: Терминал (60%) -->
-      <div class="lg:col-span-3 ultra-glass p-9 fade-in-up">
-        <div class="flex items-center justify-between mb-5">
-          <span class="eyebrow-chip bg-purple-500/20 border-purple-400/50 text-purple-200" style="padding: 6px 14px; font-size: 11px;">
-            🎯 Для челленджей
-          </span>
-          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center text-3xl" style="box-shadow: 0 0 30px rgba(139, 92, 246, 0.6), inset 0 2px 4px rgba(255,255,255,0.3);">💻</div>
+    <div class="grid g-prop" data-rv="stagger">
+      <article class="card card--term">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <span class="eyebrow"><svg class="ic"><use href="#i-target"/></svg>Для челленджей</span>
+          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-laptop"/></svg></div>
         </div>
-        <h3 class="text-3xl font-bold mb-4" style="font-family: 'Syne', sans-serif;">Утилита для прохождения проп-челленджей</h3>
-        <p class="text-gray-400 mb-6 leading-relaxed text-lg">
-          Специализированный терминал для прохождения evaluation-челленджей проп-фирм. <span class="text-purple-300 font-semibold">Встроенный риск-контроль</span> автоматически следит за дневным лимитом убытков и максимальной просадкой. Система предупреждает, когда нужно остановиться.
-        </p>
-        <p class="text-gray-400 mb-7 leading-relaxed text-lg">
-          Помогает пройти челлендж с первой попытки и сохранить funded-счёт после получения. Торгуй спокойно, не думая о нарушениях правил.
-        </p>
-        <div class="flex flex-wrap gap-2 mb-7">
-          <span class="tag-pill">Риск-контроль</span>
-          <span class="tag-pill">Аналитика</span>
-          <span class="tag-pill">Автостоп</span>
-          <span class="tag-pill">Статистика</span>
-          <span class="tag-pill">Советник</span>
+        <h3 class="h3">Утилита для прохождения проп-челленджей</h3>
+        <p class="copy">Специализированный терминал для прохождения evaluation-челленджей проп-фирм. <strong>Встроенный риск-контроль</strong> автоматически следит за дневным лимитом убытков и максимальной просадкой. Система предупреждает, когда нужно остановиться.</p>
+        <p class="copy">Помогает пройти челлендж с первой попытки и сохранить funded-счёт после получения. Торгуй спокойно, не думая о нарушениях правил.</p>
+        <div class="tags">
+          <span class="tag">Риск-контроль</span><span class="tag">Аналитика</span><span class="tag">Автостоп</span>
+          <span class="tag">Статистика</span><span class="tag">Советник</span>
         </div>
-        <div class="income-badge income-badge-gold mb-7 w-full justify-center">
-          <span>💵</span>
-          <span>Потенциальный доход: $500 – $2 000+ на funded-счёте</span>
-        </div>
-        <a href="https://jocehabuwa643-svg.github.io/upscale-prop-terminal_pro_max" target="_blank" rel="noopener" class="premium-button premium-button-gold w-full">
-          <span>⚡</span>
-          <span>Запустить терминал</span>
-          <span class="arrow">→</span>
+        <div class="badge"><svg class="ic"><use href="#i-wallet"/></svg><span data-count>Потенциальный доход: $500 – $2 000+ на funded-счёте</span></div>
+        <div class="push"></div>
+        <a href="https://jocehabuwa643-svg.github.io/upscale-prop-terminal_pro_max" target="_blank" rel="noopener" class="btn btn--gold btn--full">
+          <svg class="ic"><use href="#i-bolt"/></svg>Запустить терминал
+          <svg class="ic ic--arrow"><use href="#i-arrow"/></svg>
+          <span class="sr-only">(откроется в новой вкладке)</span>
         </a>
-      </div>
+      </article>
 
-      <!-- Карточка 2: Биржа (40%) -->
-      <div class="lg:col-span-2 ultra-glass p-9 fade-in-up" style="transition-delay: 0.1s; background: linear-gradient(135deg, rgba(251, 191, 36, 0.12) 0%, rgba(245, 158, 11, 0.05) 100%), rgba(20, 10, 40, 0.45); border-color: rgba(251, 191, 36, 0.4);">
-        <div class="flex items-center justify-between mb-5">
-          <span class="eyebrow-chip bg-yellow-500/25 border-yellow-400/60 text-yellow-200" style="padding: 6px 14px; font-size: 11px;">
-            💎 Премиум
-          </span>
-          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-yellow-400 to-amber-600 flex items-center justify-center text-3xl" style="box-shadow: 0 0 30px rgba(251, 191, 36, 0.7), inset 0 2px 4px rgba(255,255,255,0.3);">🏢</div>
+      <article class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <span class="eyebrow"><span class="emo">💎</span>Премиум</span>
+          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-building"/></svg></div>
         </div>
-        <h3 class="text-3xl font-bold mb-4" style="font-family: 'Syne', sans-serif;">Высококачественная проп-биржа</h3>
-        <p class="text-gray-300 mb-6 leading-relaxed text-lg">
-          Прозрачная проп-биржа с честными условиями. Быстрая регистрация, понятные правила evaluation, <span class="text-yellow-300 font-semibold">мгновенные выплаты</span>. Масштабирование счёта при успешной торговле — от $10K до $200K.
-        </p>
-        <div class="income-badge income-badge-gold mb-7 w-full justify-center">
-          <span>💵</span>
-          <span>До $10 000+ в месяц</span>
-        </div>
-        <div class="flex flex-col gap-4">
-          <a href="https://app.bookflow.sh?ref=3NCYI" target="_blank" rel="noopener" class="premium-button premium-button-gold">
-            <span>🔑</span>
-            <span>Получить доступ</span>
-            <span class="arrow">→</span>
+        <h3 class="h3">Высококачественная проп-биржа</h3>
+        <p class="copy">Прозрачная проп-биржа с честными условиями. Быстрая регистрация, понятные правила evaluation, <strong>мгновенные выплаты</strong>. Масштабирование счёта при успешной торговле — от $10K до $200K.</p>
+        <div class="badge"><svg class="ic"><use href="#i-wallet"/></svg><span data-count>До $10 000+ в месяц</span></div>
+        <div class="push"></div>
+        <div class="btn-row btn--full" style="flex-direction:column;gap:12px">
+          <a href="https://app.bookflow.sh?ref=3NCYI" target="_blank" rel="noopener" class="btn btn--gold btn--full">
+            <svg class="ic"><use href="#i-key"/></svg>Получить доступ
+            <svg class="ic ic--arrow"><use href="#i-arrow"/></svg>
+            <span class="sr-only">(откроется в новой вкладке)</span>
           </a>
-          <a href="#youtube" class="premium-button" style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(245, 158, 11, 0.2) 100%); border: 2px solid rgba(251, 191, 36, 0.5);">
-            <span>📺</span>
-            <span>Узнать подробнее</span>
+          <a href="#youtube" class="btn btn--ghost btn--full">
+            <svg class="ic"><use href="#i-tv"/></svg>Узнать подробнее
           </a>
         </div>
-      </div>
+      </article>
     </div>
 
-    <!-- Инфо-блок про Split profit -->
-    <div class="ultra-glass p-8 md:p-10 mt-12 text-center fade-in-up">
-      <div class="flex items-center justify-center gap-4 mb-4">
-        <span class="text-5xl">🤝</span>
-        <h3 class="text-3xl md:text-4xl font-bold cinematic-title-gold" style="font-size: clamp(1.75rem, 4vw, 2.5rem);">Split profit 80/20</h3>
+    <div class="panel center" style="margin-top:var(--gap)" data-rv="up">
+      <div style="display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap">
+        <div class="ic-box"><svg class="ic"><use href="#i-handshake"/></svg></div>
+        <h3 class="h3" style="margin:0" data-count>Split profit 80/20</h3>
       </div>
-      <p class="text-2xl md:text-3xl text-yellow-300 font-bold mb-2" style="text-shadow: 0 0 30px rgba(251, 191, 36, 0.6);">
-        Забирай 80% прибыли
-      </p>
-      <p class="text-gray-400">с каждого funded-счёта — честно и прозрачно</p>
+      <p class="stat" style="margin-top:18px;color:var(--go-300);text-shadow:0 0 30px rgba(251,191,36,.5)" data-count>Забирай 80% прибыли</p>
+      <p class="copy" style="margin-top:10px">с каждого funded-счёта — честно и прозрачно</p>
     </div>
   </div>
 </section>
 
-<!-- ============ МОТИВАЦИОННЫЙ БЛОК #3 — СПОКОЙНЫЙ ЗАРАБОТОК ============ -->
-<section class="relative py-24 md:py-32 px-4">
-  <div class="max-w-6xl mx-auto">
-    <div class="motivation-block motivation-block-cyan fade-in-up">
-      <div class="text-center mb-12">
-        <span class="eyebrow-chip bg-cyan-500/15 border-cyan-400/40 text-cyan-200 mb-5 inline-flex">
-          <span>✦</span>
-          <span>Peace of mind</span>
-        </span>
-        <h2 class="cinematic-title text-5xl md:text-7xl mb-6">
-          Заработок без стресса
-        </h2>
-        <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-          Никакой гонки. Никаких дедлайнов. Никаких нервотрёпок.<br>
-          <span class="text-cyan-300 font-semibold">Системный подход</span>, проверенные инструменты, понятные стратегии.
+<!-- ============ МОТИВАЦИЯ 3 ============ -->
+<section class="sec" id="motivation-3" aria-labelledby="m3-t">
+  <div class="wrap wrap--narrow">
+    <div class="panel">
+      <div class="center" style="margin-bottom:clamp(28px,3.4vw,46px)">
+        <p data-rv="fade"><span class="eyebrow"><svg class="ic"><use href="#i-zen"/></svg>Peace of mind</span></p>
+        <h2 class="h-cine" id="m3-t" data-rv="words">Заработок без стресса</h2>
+        <p class="lead copy--tight" data-rv="up">
+          Никакой гонки. Никаких дедлайнов. Никаких нервотрёпок.
+          <strong>Системный подход</strong>, проверенные инструменты, понятные стратегии.
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="ultra-glass p-7 text-center">
-          <div class="text-5xl mb-4">🧘</div>
-          <h3 class="text-xl font-bold mb-3">Спокойствие</h3>
-          <p class="text-gray-400">Без гонки, без давления, без выгорания. Ты работаешь в своём ритме.</p>
-        </div>
-        <div class="ultra-glass p-7 text-center">
-          <div class="text-5xl mb-4">📊</div>
-          <h3 class="text-xl font-bold mb-3">Система</h3>
-          <p class="text-gray-400">Проверенные стратегии и алгоритмы, которые работают стабильно день за днём.</p>
-        </div>
-        <div class="ultra-glass p-7 text-center">
-          <div class="text-5xl mb-4">🎯</div>
-          <h3 class="text-xl font-bold mb-3">Результат</h3>
-          <p class="text-gray-400">Стабильный доход, который можно планировать. Без сюрпризов и рисков.</p>
-        </div>
+      <div class="grid g-3" data-rv="stagger">
+        <article class="card" style="text-align:center;align-items:center">
+          <div class="ic-box"><svg class="ic"><use href="#i-zen"/></svg></div>
+          <h3 class="h3">Спокойствие</h3>
+          <p class="copy">Без гонки, без давления, без выгорания. Ты работаешь в своём ритме.</p>
+        </article>
+        <article class="card" style="text-align:center;align-items:center">
+          <div class="ic-box"><svg class="ic"><use href="#i-grid"/></svg></div>
+          <h3 class="h3">Система</h3>
+          <p class="copy">Проверенные стратегии и алгоритмы, которые работают стабильно день за днём.</p>
+        </article>
+        <article class="card" style="text-align:center;align-items:center">
+          <div class="ic-box"><svg class="ic"><use href="#i-target"/></svg></div>
+          <h3 class="h3">Результат</h3>
+          <p class="copy">Стабильный доход, который можно планировать. Без сюрпризов и рисков.</p>
+        </article>
       </div>
 
-      <div class="text-center mt-10">
-        <p class="text-lg text-cyan-200 italic" style="text-shadow: 0 0 20px rgba(34, 211, 238, 0.4);">
-          «Спокойствие — это новая роскошь»
-        </p>
-      </div>
+      <p class="quote center" data-rv="up">«Спокойствие — это новая роскошь»</p>
     </div>
   </div>
 </section>
 
-<!-- ============ NEURAL NETWORKS ============ -->
-<section id="neural" class="relative py-24 md:py-32 px-4 overflow-hidden">
-  <!-- Тематический фон: нейронные узлы -->
-  <div class="section-bg-neural" id="neuralBg"></div>
-
-  <div class="relative z-10 max-w-7xl mx-auto">
-    <!-- 3D нейронные связи -->
-    <div class="neural-container mb-10 fade-in-up">
-      <div class="neural-node neural-node-1"></div>
-      <div class="neural-node neural-node-2"></div>
-      <div class="neural-node neural-node-3"></div>
-      <div class="neural-node neural-node-4"></div>
-      <div class="neural-node neural-node-5"></div>
-      <svg class="absolute inset-0 w-full h-full" style="z-index: 0;">
-        <line x1="20%" y1="25%" x2="50%" y2="50%" stroke="url(#grad1)" stroke-width="2" opacity="0.7" style="filter: drop-shadow(0 0 8px rgba(232, 121, 249, 0.6));"/>
-        <line x1="80%" y1="25%" x2="50%" y2="50%" stroke="url(#grad1)" stroke-width="2" opacity="0.7" style="filter: drop-shadow(0 0 8px rgba(232, 121, 249, 0.6));"/>
-        <line x1="30%" y1="80%" x2="50%" y2="50%" stroke="url(#grad1)" stroke-width="2" opacity="0.7" style="filter: drop-shadow(0 0 8px rgba(232, 121, 249, 0.6));"/>
-        <line x1="70%" y1="80%" x2="50%" y2="50%" stroke="url(#grad1)" stroke-width="2" opacity="0.7" style="filter: drop-shadow(0 0 8px rgba(232, 121, 249, 0.6));"/>
-        <line x1="20%" y1="25%" x2="80%" y2="25%" stroke="url(#grad1)" stroke-width="1.5" opacity="0.5"/>
-        <line x1="30%" y1="80%" x2="70%" y2="80%" stroke="url(#grad1)" stroke-width="1.5" opacity="0.5"/>
-        <defs>
-          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#e879f9"/>
-            <stop offset="100%" stop-color="#a78bfa"/>
-          </linearGradient>
-        </defs>
-      </svg>
-    </div>
-
-    <div class="text-center mb-16 fade-in-up">
-      <span class="eyebrow-chip bg-pink-500/20 border-pink-400/50 text-pink-200 mb-5 inline-flex">
-        <span>✦</span>
-        <span>Artificial Intelligence</span>
-      </span>
-      <h2 class="cinematic-title-pink text-5xl md:text-7xl mb-6">
-        Нейросети для заработка
-      </h2>
-      <p class="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-        Одна подписка — <span class="text-pink-300 font-semibold">неограниченный доступ</span> ко всем топовым AI-моделям мира.
+<!-- ============ НЕЙРОСЕТИ ============ -->
+<section class="sec" id="neural" aria-labelledby="n-t">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:clamp(30px,3.6vw,52px)">
+      <p data-rv="fade"><span class="eyebrow"><svg class="ic"><use href="#i-brain"/></svg>Artificial Intelligence</span></p>
+      <h2 class="h-cine" id="n-t" data-rv="words">Нейросети для заработка</h2>
+      <p class="lead" data-rv="up">
+        Одна подписка — <strong>неограниченный доступ</strong> ко всем топовым AI-моделям мира.
         Создавай контент без цензуры, монетизируй творчество, зарабатывай на рефералах.
       </p>
     </div>
 
-    <!-- Главная карточка -->
-    <div class="ultra-glass p-8 md:p-12 fade-in-up" style="background: linear-gradient(135deg, rgba(232, 121, 249, 0.12) 0%, rgba(217, 70, 239, 0.05) 100%), rgba(20, 10, 40, 0.45); border-color: rgba(232, 121, 249, 0.45);">
-      <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-7 gap-4">
-        <span class="eyebrow-chip bg-pink-500/25 border-pink-400/60 text-pink-200">
-          🔥 Хит сезона
-        </span>
-        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-400 to-fuchsia-600 flex items-center justify-center text-4xl" style="box-shadow: 0 0 40px rgba(232, 121, 249, 0.7), inset 0 2px 4px rgba(255,255,255,0.3);">🧠</div>
+    <figure class="figure" data-rv="up" style="border:0;background:none">
+      <svg id="aigraph" viewBox="0 0 800 400" role="img" aria-labelledby="ai-cap"></svg>
+      <figcaption id="ai-cap" class="sr-only">
+        Схема: одна подписка в центре соединена с восемью группами AI-моделей —
+        видео, изображения, тексты, музыка, код, голос, агенты и контент 18+.
+        По связям идут импульсы, показывая единый доступ ко всем инструментам.
+      </figcaption>
+    </figure>
+
+    <div class="panel" data-rv="up">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:22px">
+        <span class="eyebrow"><span class="emo">🔥</span>Хит сезона</span>
+        <div class="ic-box"><svg class="ic"><use href="#i-brain"/></svg></div>
       </div>
 
-      <h3 class="text-3xl md:text-4xl font-bold mb-5" style="font-family: 'Syne', sans-serif;">Доступ ко всем нейросетям</h3>
+      <h3 class="h3">Доступ ко всем нейросетям</h3>
+      <p class="copy">Единая подписка открывает доступ ко всем передовым AI-инструментам без ограничений. Создавай любое видео, генерируй арт, пиши тексты, автоматизируй бизнес — всё в одном месте.</p>
 
-      <p class="text-gray-300 mb-5 leading-relaxed text-lg">
-        Единая подписка открывает доступ ко всем передовым AI-инструментам без ограничений. Создавай любое видео, генерируй арт, пиши тексты, автоматизируй бизнес — всё в одном месте.
+      <p class="note-18" style="margin-top:20px">
+        <span class="emo">🎬</span>
+        Создание и монетизация контента 18+ без цензуры — эксклюзивные видео, арт и сценарии,
+        которые можно продавать на OnlyFans, Patreon, Fansly и других платформах.
+        Полная свобода творчества и высокие доходы.
       </p>
 
-      <p class="text-pink-200 mb-8 leading-relaxed text-lg font-semibold" style="background: linear-gradient(135deg, rgba(232, 121, 249, 0.15) 0%, rgba(217, 70, 239, 0.08) 100%); padding: 18px 22px; border-radius: 16px; border-left: 3px solid #e879f9;">
-        🎬 <span class="text-pink-300">Создание и монетизация контента 18+ без цензуры</span> — эксклюзивные видео, арт и сценарии, которые можно продавать на OnlyFans, Patreon, Fansly и других платформах. Полная свобода творчества и высокие доходы.
-      </p>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-9">
-        <div class="feature-item">
-          <div class="flex items-start gap-3">
-            <span class="text-3xl">🎬</span>
-            <div>
-              <div class="font-bold mb-1 text-lg">Видео 18+</div>
-              <div class="text-sm text-gray-400">Без цензуры, любые сценарии и жанры</div>
-            </div>
-          </div>
+      <div class="grid g-feat" style="margin-top:26px" data-rv="stagger">
+        <div class="card" style="flex-direction:row;gap:14px;align-items:flex-start;padding:18px">
+          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-video"/></svg></div>
+          <div><b style="display:block;color:var(--g-50)">Видео 18+</b><span class="copy" style="font-size:var(--fs-sm)">Без цензуры, любые сценарии и жанры</span></div>
         </div>
-        <div class="feature-item">
-          <div class="flex items-start gap-3">
-            <span class="text-3xl">🎨</span>
-            <div>
-              <div class="font-bold mb-1 text-lg">Арт и изображения</div>
-              <div class="text-sm text-gray-400">Фотореализм, любые стили и концепты</div>
-            </div>
-          </div>
+        <div class="card" style="flex-direction:row;gap:14px;align-items:flex-start;padding:18px">
+          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-image"/></svg></div>
+          <div><b style="display:block;color:var(--g-50)">Арт и изображения</b><span class="copy" style="font-size:var(--fs-sm)">Фотореализм, любые стили и концепты</span></div>
         </div>
-        <div class="feature-item">
-          <div class="flex items-start gap-3">
-            <span class="text-3xl">✍️</span>
-            <div>
-              <div class="font-bold mb-1 text-lg">Тексты и сценарии</div>
-              <div class="text-sm text-gray-400">Любые форматы, объёмы, стили</div>
-            </div>
-          </div>
+        <div class="card" style="flex-direction:row;gap:14px;align-items:flex-start;padding:18px">
+          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-pen"/></svg></div>
+          <div><b style="display:block;color:var(--g-50)">Тексты и сценарии</b><span class="copy" style="font-size:var(--fs-sm)">Любые форматы, объёмы, стили</span></div>
         </div>
-        <div class="feature-item">
-          <div class="flex items-start gap-3">
-            <span class="text-3xl">🎵</span>
-            <div>
-              <div class="font-bold mb-1 text-lg">Музыка</div>
-              <div class="text-sm text-gray-400">Любые жанры и настроения</div>
-            </div>
-          </div>
+        <div class="card" style="flex-direction:row;gap:14px;align-items:flex-start;padding:18px">
+          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-music"/></svg></div>
+          <div><b style="display:block;color:var(--g-50)">Музыка</b><span class="copy" style="font-size:var(--fs-sm)">Любые жанры и настроения</span></div>
         </div>
-        <div class="feature-item">
-          <div class="flex items-start gap-3">
-            <span class="text-3xl">🤖</span>
-            <div>
-              <div class="font-bold mb-1 text-lg">Автоматизация</div>
-              <div class="text-sm text-gray-400">Бизнес-процессы и рутина</div>
-            </div>
-          </div>
+        <div class="card" style="flex-direction:row;gap:14px;align-items:flex-start;padding:18px">
+          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-bot"/></svg></div>
+          <div><b style="display:block;color:var(--g-50)">Автоматизация</b><span class="copy" style="font-size:var(--fs-sm)">Бизнес-процессы и рутина</span></div>
         </div>
-        <div class="feature-item">
-          <div class="flex items-start gap-3">
-            <span class="text-3xl">📱</span>
-            <div>
-              <div class="font-bold mb-1 text-lg">AI-блоги</div>
-              <div class="text-sm text-gray-400">Уникальный контент 24/7</div>
-            </div>
-          </div>
+        <div class="card" style="flex-direction:row;gap:14px;align-items:flex-start;padding:18px">
+          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-mobile"/></svg></div>
+          <div><b style="display:block;color:var(--g-50)">AI-блоги</b><span class="copy" style="font-size:var(--fs-sm)">Уникальный контент 24/7</span></div>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-9">
-        <div class="income-badge income-badge-pink w-full justify-center">
-          <span>💰</span>
-          <span>Возможный доход: 5 000 – 50 000 ₽ / месяц</span>
-        </div>
-        <div class="income-badge income-badge-pink w-full justify-center">
-          <span>🔗</span>
-          <span>Рефералы: до 30% с каждой подписки</span>
-        </div>
+      <div class="grid g-2" style="margin-top:26px">
+        <div class="badge"><svg class="ic"><use href="#i-wallet"/></svg><span data-count>Возможный доход: 5 000 – 50 000 ₽ / месяц</span></div>
+        <div class="badge"><svg class="ic"><use href="#i-link"/></svg><span data-count>Рефералы: до 30% с каждой подписки</span></div>
       </div>
 
-      <a href="https://syntx.ai/welcome/mr0UAykB" target="_blank" rel="noopener" class="premium-button premium-button-pink w-full text-lg">
-        <span>🧠</span>
-        <span>Получить доступ ко всем AI</span>
-        <span class="arrow">→</span>
-      </a>
+      <div class="btn-row" style="margin-top:26px">
+        <a href="https://syntx.ai/welcome/mr0UAykB" target="_blank" rel="noopener" class="btn btn--pink btn--full">
+          <svg class="ic"><use href="#i-brain"/></svg>Получить доступ ко всем AI
+          <svg class="ic ic--arrow"><use href="#i-arrow"/></svg>
+          <span class="sr-only">(откроется в новой вкладке)</span>
+        </a>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ============ МОТИВАЦИОННЫЙ БЛОК #4 — ГЕОГРАФИЧЕСКАЯ СВОБОДА ============ -->
-<section class="relative py-24 md:py-32 px-4">
-  <div class="max-w-6xl mx-auto">
-    <div class="motivation-block fade-in-up">
-      <div class="text-center mb-12">
-        <span class="eyebrow-chip bg-purple-500/15 border-purple-400/40 text-purple-200 mb-5 inline-flex">
-          <span>✦</span>
-          <span>Geographic Freedom</span>
-        </span>
-        <h2 class="cinematic-title text-5xl md:text-7xl mb-6">
-          Живи где хочешь
-        </h2>
-        <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-          Сегодня Москва, завтра Бали, послезавтра Дубай.<br>
-          Твой <span class="text-purple-300 font-semibold">доход не привязан к месту</span>. Ноутбук, стабильный интернет — и ты в бизнесе из любой точки мира.
+<!-- ============ МОТИВАЦИЯ 4 ============ -->
+<section class="sec" id="motivation-4" aria-labelledby="m4-t">
+  <div class="wrap wrap--narrow">
+    <div class="panel">
+      <div class="center" style="margin-bottom:clamp(28px,3.4vw,46px)">
+        <p data-rv="fade"><span class="eyebrow"><svg class="ic"><use href="#i-globe"/></svg>Geographic Freedom</span></p>
+        <h2 class="h-cine" id="m4-t" data-rv="words">Живи где хочешь</h2>
+        <p class="lead copy--tight" data-rv="up">
+          Сегодня Москва, завтра Бали, послезавтра Дубай.
+          Твой <strong>доход не привязан к месту</strong>. Ноутбук, стабильный интернет — и ты в бизнесе из любой точки мира.
         </p>
       </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
-        <div class="ultra-glass p-6 text-center">
-          <div class="text-5xl mb-3">🇷🇺</div>
-          <div class="font-bold">Москва</div>
-          <div class="text-xs text-gray-400 mt-1">Старт отсюда</div>
-        </div>
-        <div class="ultra-glass p-6 text-center">
-          <div class="text-5xl mb-3">🏝️</div>
-          <div class="font-bold">Бали</div>
-          <div class="text-xs text-gray-400 mt-1">Океан и закаты</div>
-        </div>
-        <div class="ultra-glass p-6 text-center">
-          <div class="text-5xl mb-3">🏙️</div>
-          <div class="font-bold">Дубай</div>
-          <div class="text-xs text-gray-400 mt-1">Роскошь и комфорт</div>
-        </div>
-        <div class="ultra-glass p-6 text-center">
-          <div class="text-5xl mb-3">🌍</div>
-          <div class="font-bold">Весь мир</div>
-          <div class="text-xs text-gray-400 mt-1">Твой офис</div>
-        </div>
+      <div class="grid g-4" data-rv="stagger">
+        <div class="card city"><span class="emo">🇷🇺</span><b>Москва</b><span>Старт отсюда</span></div>
+        <div class="card city"><span class="emo">🏝️</span><b>Бали</b><span>Океан и закаты</span></div>
+        <div class="card city"><span class="emo">🏙️</span><b>Дубай</b><span>Роскошь и комфорт</span></div>
+        <div class="card city"><span class="emo">🌍</span><b>Весь мир</b><span>Твой офис</span></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ============ VPN ============ -->
-<section id="vpn" class="relative py-24 md:py-32 px-4 overflow-hidden">
-  <!-- Тематический фон: сетевые пакеты -->
-  <div class="section-bg-network" id="networkBg"></div>
-
-  <div class="relative z-10 max-w-7xl mx-auto">
-    <!-- 3D глобус -->
-    <div class="globe-container mb-10 fade-in-up">
-      <div class="globe">
-        <div class="globe-ring globe-ring-1"></div>
-        <div class="globe-ring globe-ring-2"></div>
-      </div>
-      <div class="globe-signal" style="top: 25%; left: 35%;"></div>
-      <div class="globe-signal" style="top: 55%; right: 30%; animation-delay: 0.6s;"></div>
-      <div class="globe-signal" style="bottom: 25%; left: 45%; animation-delay: 1.2s;"></div>
-      <div class="globe-signal" style="top: 40%; left: 60%; animation-delay: 1.8s;"></div>
-    </div>
-
-    <div class="text-center mb-16 fade-in-up">
-      <span class="eyebrow-chip bg-cyan-500/15 border-cyan-400/40 text-cyan-200 mb-5 inline-flex">
-        <span>✦</span>
-        <span>Digital Privacy</span>
-      </span>
-      <h2 class="cinematic-title text-5xl md:text-7xl mb-4">
-        Virtual Private Network
-      </h2>
-      <p class="text-2xl md:text-3xl text-cyan-300 font-semibold mb-6" style="text-shadow: 0 0 30px rgba(34, 211, 238, 0.5);">
-        Заработок на раздаче VPN
-      </p>
-      <p class="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-        Защита данных + <span class="text-cyan-300 font-semibold">пассивный доход</span>. Рекомендуй сервис друзьям и получай процент с каждой их подписки — <span class="text-cyan-300 font-semibold">навсегда</span>.
+<section class="sec" id="vpn" aria-labelledby="v-t">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:clamp(30px,3.6vw,52px)">
+      <p data-rv="fade"><span class="eyebrow"><svg class="ic"><use href="#i-shield"/></svg>Digital Privacy</span></p>
+      <h2 class="h-cine" id="v-t" data-rv="words">Virtual Private Network</h2>
+      <p class="lead" style="color:var(--cy-300);font-weight:600" data-rv="up">Заработок на раздаче VPN</p>
+      <p class="lead" data-rv="up" style="margin-top:12px">
+        Защита данных + <strong>пассивный доход</strong>. Рекомендуй сервис друзьям и получай процент с каждой их подписки — <strong>навсегда</strong>.
       </p>
     </div>
 
-    <!-- Главная карточка VPN -->
-    <div class="ultra-glass p-8 md:p-12 fade-in-up" style="background: linear-gradient(135deg, rgba(34, 211, 238, 0.12) 0%, rgba(8, 145, 178, 0.05) 100%), rgba(20, 10, 40, 0.45); border-color: rgba(34, 211, 238, 0.45);">
-      <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-7 gap-4">
-        <span class="eyebrow-chip bg-cyan-500/25 border-cyan-400/60 text-cyan-200">
-          🛡️ Максимальная защита
-        </span>
-        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-4xl" style="box-shadow: 0 0 40px rgba(34, 211, 238, 0.7), inset 0 2px 4px rgba(255,255,255,0.3);">🔐</div>
+    <figure class="figure" data-rv="up" style="border:0;background:none">
+      <svg class="flow" id="flow" viewBox="0 0 1080 180" role="img" aria-labelledby="v-cap"></svg>
+      <div class="speed" id="speed" aria-hidden="true"></div>
+      <figcaption id="v-cap" class="sr-only">
+        Схема маршрута трафика: от пользователя данные идут в открытом виде до VPN-узла,
+        где шифруются, и дальше следуют к целевому серверу уже защищёнными.
+        Индикатор показывает скорость канала до 10 Гбит/с.
+      </figcaption>
+    </figure>
+
+    <div class="panel" data-rv="up">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:22px">
+        <span class="eyebrow"><svg class="ic"><use href="#i-shield"/></svg>Максимальная защита</span>
+        <div class="ic-box"><svg class="ic"><use href="#i-lock"/></svg></div>
       </div>
 
-      <h3 class="text-3xl md:text-4xl font-bold mb-5" style="font-family: 'Syne', sans-serif;">Премиум VPN-сервис</h3>
-
-      <p class="text-gray-300 mb-8 leading-relaxed text-lg">
-        Высококачественный VPN со скоростью до <span class="text-cyan-300 font-semibold">10 Gbps</span> — идеально для 8K стриминга, онлайн-игр без лагов и быстрой работы.
+      <h3 class="h3">Премиум VPN-сервис</h3>
+      <p class="copy">
+        Высококачественный VPN со скоростью до <strong>10 Gbps</strong> — идеально для 8K стриминга, онлайн-игр без лагов и быстрой работы.
         40+ локаций по всему миру, неограниченное количество подключений на одну подписку.
         Полная приватность, обход любых блокировок, поддержка от реальных специалистов 24/7.
       </p>
 
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-9">
-        <div class="feature-item text-center">
-          <div class="text-4xl mb-2">⚡</div>
-          <div class="font-bold text-xl text-cyan-300">10 Gbps</div>
-          <div class="text-xs text-gray-400">скорость</div>
+      <div class="grid g-4" style="margin-top:26px" data-rv="stagger">
+        <div class="card" style="text-align:center;align-items:center;padding:20px 14px">
+          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-bolt"/></svg></div>
+          <b class="num" style="font-size:1.25rem;color:var(--cy-300)" data-count>10 Gbps</b>
+          <span class="copy" style="font-size:.75rem">скорость</span>
         </div>
-        <div class="feature-item text-center">
-          <div class="text-4xl mb-2">🌍</div>
-          <div class="font-bold text-xl text-cyan-300">40+</div>
-          <div class="text-xs text-gray-400">локаций</div>
+        <div class="card" style="text-align:center;align-items:center;padding:20px 14px">
+          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-globe"/></svg></div>
+          <b class="num" style="font-size:1.25rem;color:var(--cy-300)" data-count>40+</b>
+          <span class="copy" style="font-size:.75rem">локаций</span>
         </div>
-        <div class="feature-item text-center">
-          <div class="text-4xl mb-2">📱</div>
-          <div class="font-bold text-xl text-cyan-300">∞</div>
-          <div class="text-xs text-gray-400">подключений</div>
+        <div class="card" style="text-align:center;align-items:center;padding:20px 14px">
+          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-mobile"/></svg></div>
+          <b style="font-size:1.25rem;color:var(--cy-300);display:grid;place-items:center">
+            <svg class="ic" style="width:1.4em;height:1.4em" aria-label="неограниченно"><use href="#i-infinity"/></svg>
+          </b>
+          <span class="copy" style="font-size:.75rem">подключений</span>
         </div>
-        <div class="feature-item text-center">
-          <div class="text-4xl mb-2">🔒</div>
-          <div class="font-bold text-xl text-cyan-300">No-log</div>
-          <div class="text-xs text-gray-400">политика</div>
+        <div class="card" style="text-align:center;align-items:center;padding:20px 14px">
+          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-lock"/></svg></div>
+          <b class="num" style="font-size:1.25rem;color:var(--cy-300)">No-log</b>
+          <span class="copy" style="font-size:.75rem">политика</span>
         </div>
-        <div class="feature-item text-center">
-          <div class="text-4xl mb-2">📺</div>
-          <div class="font-bold text-xl text-cyan-300">8K</div>
-          <div class="text-xs text-gray-400">стриминг</div>
+        <div class="card" style="text-align:center;align-items:center;padding:20px 14px">
+          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-tv"/></svg></div>
+          <b class="num" style="font-size:1.25rem;color:var(--cy-300)" data-count>8K</b>
+          <span class="copy" style="font-size:.75rem">стриминг</span>
         </div>
-        <div class="feature-item text-center">
-          <div class="text-4xl mb-2">👨‍💻</div>
-          <div class="font-bold text-xl text-cyan-300">24/7</div>
-          <div class="text-xs text-gray-400">поддержка</div>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-9">
-        <div class="income-badge w-full justify-center" style="background: linear-gradient(135deg, rgba(34, 211, 238, 0.22) 0%, rgba(8, 145, 178, 0.18) 100%); border-color: rgba(34, 211, 238, 0.5); color: #67e8f9;">
-          <span>💰</span>
-          <span>Пассивный доход: 3 000 – 30 000 ₽ / месяц</span>
-        </div>
-        <div class="income-badge w-full justify-center" style="background: linear-gradient(135deg, rgba(34, 211, 238, 0.22) 0%, rgba(8, 145, 178, 0.18) 100%); border-color: rgba(34, 211, 238, 0.5); color: #67e8f9;">
-          <span>🎁</span>
-          <span>+30 бесплатных дней для друзей</span>
+        <div class="card" style="text-align:center;align-items:center;padding:20px 14px">
+          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-support"/></svg></div>
+          <b class="num" style="font-size:1.25rem;color:var(--cy-300)" data-count>24/7</b>
+          <span class="copy" style="font-size:.75rem">поддержка</span>
         </div>
       </div>
 
-      <a href="https://blnc.to/friend/5f412c5c9e0f4541a562" target="_blank" rel="noopener" class="premium-button premium-button-cyan w-full text-lg">
-        <span>🔐</span>
-        <span>Подключить VPN</span>
-        <span class="arrow">→</span>
-      </a>
-    </div>
-  </div>
-</section>
+      <div class="grid g-2" style="margin-top:26px">
+        <div class="badge"><svg class="ic"><use href="#i-wallet"/></svg><span data-count>Пассивный доход: 3 000 – 30 000 ₽ / месяц</span></div>
+        <div class="badge"><svg class="ic"><use href="#i-gift"/></svg><span data-count>+30 бесплатных дней для друзей</span></div>
+      </div>
 
-<!-- ============ ФИНАЛЬНЫЙ БЛОК — YOUTUBE ============ -->
-<section id="youtube" class="relative py-24 md:py-32 px-4">
-  <div class="max-w-6xl mx-auto">
-    <div class="motivation-block fade-in-up" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.12) 0%, rgba(167, 139, 250, 0.12) 100%), rgba(20, 10, 40, 0.4); border-color: rgba(239, 68, 68, 0.35); box-shadow: 0 12px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.12), 0 0 120px -20px rgba(239, 68, 68, 0.3);">
-      <div class="text-center">
-        <span class="eyebrow-chip bg-red-500/15 border-red-400/40 text-red-200 mb-5 inline-flex">
-          <span>✦</span>
-          <span>Education & Community</span>
-        </span>
-
-        <h2 class="cinematic-title text-5xl md:text-7xl mb-6">
-          Инструкция по заработку
-        </h2>
-
-        <!-- YouTube Play -->
-        <div class="my-10 fade-in-up">
-          <div class="youtube-play">
-            <div class="youtube-play-triangle"></div>
-          </div>
-        </div>
-
-        <!-- Слоган -->
-        <h3 class="cinematic-title text-4xl md:text-6xl mb-6" style="font-size: clamp(2rem, 5vw, 3.75rem);">
-          Сделай свою жизнь лучше
-        </h3>
-
-        <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-10">
-          На нашем YouTube-канале — все инструкции: настройка утилит, прохождение проп-челленджей,
-          монетизация нейросетей, пассивный доход на VPN. <span class="text-red-300 font-semibold">Простые видео без воды</span> —
-          посмотрел, применил, получил результат.
-        </p>
-
-        <a href="https://www.youtube.com/@slava666gordeev" target="_blank" rel="noopener" class="premium-button text-lg mb-10 inline-flex" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 6px 30px rgba(239, 68, 68, 0.6), inset 0 1px 0 rgba(255,255,255,0.3);">
-          <span>▶</span>
-          <span>Смотреть инструкции</span>
-          <span class="arrow">→</span>
+      <div class="btn-row" style="margin-top:26px">
+        <a href="https://blnc.to/friend/5f412c5c9e0f4541a562" target="_blank" rel="noopener" class="btn btn--cyan btn--full">
+          <svg class="ic"><use href="#i-lock"/></svg>Подключить VPN
+          <svg class="ic ic--arrow"><use href="#i-arrow"/></svg>
+          <span class="sr-only">(откроется в новой вкладке)</span>
         </a>
-
-        <!-- Мотивационные плашки -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-12">
-          <div class="ultra-glass p-6 text-center">
-            <p class="text-lg font-semibold" style="font-family: 'Syne', sans-serif; background: linear-gradient(135deg, #ffffff, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-              Начни сегодня — получи результат завтра
-            </p>
-          </div>
-          <div class="ultra-glass p-6 text-center">
-            <p class="text-lg font-semibold" style="font-family: 'Syne', sans-serif; background: linear-gradient(135deg, #ffffff, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-              Твой доход = твои действия
-            </p>
-          </div>
-          <div class="ultra-glass p-6 text-center">
-            <p class="text-lg font-semibold" style="font-family: 'Syne', sans-serif; background: linear-gradient(135deg, #ffffff, #e879f9); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-              Свобода — это твой выбор
-            </p>
-          </div>
-        </div>
-
-        <!-- Финальный CTA -->
-        <div class="mt-14">
-          <a href="#contracts" class="premium-button premium-button-gold text-xl inline-flex">
-            <span>🚀</span>
-            <span>Стать свободным</span>
-            <span class="arrow">→</span>
-          </a>
-        </div>
       </div>
     </div>
   </div>
 </section>
 
-<div style="height: 80px;"></div>
+<!-- ============ YOUTUBE ============ -->
+<section class="sec" id="youtube" aria-labelledby="y-t">
+  <div class="wrap wrap--narrow">
+    <div class="panel center">
+      <p data-rv="fade"><span class="eyebrow"><svg class="ic"><use href="#i-play"/></svg>Education &amp; Community</span></p>
+      <h2 class="h-cine" id="y-t" data-rv="words">Инструкция по заработку</h2>
 
+      <div style="margin:clamp(26px,3.4vw,44px) 0" data-rv="fade">
+        <a href="https://www.youtube.com/@slava666gordeev" target="_blank" rel="noopener"
+           aria-label="Смотреть инструкции на YouTube (откроется в новой вкладке)">
+          <span class="play"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg></span>
+        </a>
+      </div>
+
+      <h3 class="h-cine" style="font-size:clamp(1.5rem,1.1rem + 1.8vw,2.75rem)" data-rv="words">Сделай свою жизнь лучше</h3>
+
+      <p class="lead" data-rv="up">
+        На нашем YouTube-канале — все инструкции: настройка утилит, прохождение проп-челленджей,
+        монетизация нейросетей, пассивный доход на VPN. <strong>Простые видео без воды</strong> —
+        посмотрел, применил, получил результат.
+      </p>
+
+      <div class="btn-row" style="margin-top:28px" data-rv="fade">
+        <a href="https://www.youtube.com/@slava666gordeev" target="_blank" rel="noopener" class="btn btn--red">
+          <svg class="ic"><use href="#i-play"/></svg>Смотреть инструкции
+          <svg class="ic ic--arrow"><use href="#i-arrow"/></svg>
+          <span class="sr-only">(откроется в новой вкладке)</span>
+        </a>
+      </div>
+
+      <div class="grid g-3 slogan-grid" style="margin-top:clamp(30px,4vw,50px)" data-rv="stagger">
+        <div class="card"><p>Начни сегодня — получи результат завтра</p></div>
+        <div class="card"><p>Твой доход = твои действия</p></div>
+        <div class="card"><p>Свобода — это твой выбор</p></div>
+      </div>
+
+      <div class="btn-row" style="margin-top:clamp(30px,4vw,50px)" data-rv="fade">
+        <a href="#contracts" class="btn btn--gold">
+          <svg class="ic"><use href="#i-rocket"/></svg>Стать свободным
+          <svg class="ic ic--arrow"><use href="#i-arrow"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ФУТЕР ============ -->
+<footer class="footer" id="footer" role="contentinfo">
+  <div class="footer-plate" aria-hidden="true"></div>
+  <div class="footer-inner">
+    <p class="footer-role">Автор и создатель Pro Max Hub</p>
+    <h2 class="author" data-rv="words">Слава Гордеев</h2>
+    <p class="author-latin" lang="en" aria-hidden="true">SLAVA&nbsp;GORDEEV</p>
+    <p class="footer-tag">Инструменты, которые делают свободу измеримой</p>
+
+    <nav class="footer-nav" aria-label="Разделы сайта">
+      <a href="#contracts">Контракты</a>
+      <a href="#prop">Проп-трейдинг</a>
+      <a href="#neural">Нейросети</a>
+      <a href="#vpn">VPN</a>
+      <a href="#youtube">Инструкции</a>
+      <a href="https://www.youtube.com/@slava666gordeev" target="_blank" rel="noopener">YouTube<span class="sr-only"> (откроется в новой вкладке)</span></a>
+    </nav>
+
+    <div class="footer-rule" aria-hidden="true"></div>
+    <p class="footer-meta">Pro&nbsp;Max&nbsp;Hub · Trading · Neural · VPN</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
 <script>
-// ===== Intersection Observer для анимаций появления =====
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
+/* ============================================================
+   JS. Никакого SplitText, Flip и MorphSVG — именно их сочетание
+   с background-clip:text давало невидимые заголовки, рваные
+   слова и залипшие rotateY. Здесь только GSAP core + ScrollTrigger.
+   ============================================================ */
+(function(){
+'use strict';
+
+var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+var COARSE = matchMedia('(pointer: coarse)').matches;
+var conn = navigator.connection || {};
+var LITE = !!conn.saveData || /2g/.test(conn.effectiveType||'') ||
+           (navigator.hardwareConcurrency||4) < 4;
+
+function ready(fn){
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn, {once:true});
+  else fn();
+}
+function waitGsap(cb){
+  var t0 = Date.now();
+  (function chk(){
+    if (window.gsap && window.ScrollTrigger) return cb(true);
+    if (Date.now() - t0 > 3500) return cb(false);
+    requestAnimationFrame(chk);
+  })();
+}
+
+/* ---------- ЕДИНЫЙ RAF ---------- */
+var jobs = [], rafId = 0, last = 0;
+function loop(now){
+  rafId = requestAnimationFrame(loop);
+  var dt = Math.min(60, now - last); last = now;
+  for (var i=0;i<jobs.length;i++){ if(!jobs[i].paused){ try{ jobs[i].tick(dt, now); }catch(e){} } }
+}
+function addJob(j){ jobs.push(j); if(!rafId){ last = performance.now(); rafId = requestAnimationFrame(loop);} }
+document.addEventListener('visibilitychange', function(){
+  if (document.hidden){ cancelAnimationFrame(rafId); rafId = 0; }
+  else if (jobs.length && !rafId){ last = performance.now(); rafId = requestAnimationFrame(loop); }
+});
+
+/* ============================================================
+   1. FLUID AMBIENT — один слой, тема морфит по scroll-progress
+   Trading (свечи) → Neural (узлы+связи) → VPN (пакеты)
+   ============================================================ */
+function ambient(){
+  var cv = document.getElementById('ambient');
+  if (!cv || RM) { if(cv) cv.style.display='none'; return; }
+  var ctx = cv.getContext('2d', {alpha:true});
+  var W=0,H=0,DPR=1;
+  var N = LITE ? 26 : (window.innerWidth < 768 ? 34 : 92);
+  var P = [];
+
+  var TH = {
+    trade:{ c1:[16,185,129], c2:[239,68,68] },
+    neur: { c1:[232,121,249], c2:[167,139,250] },
+    vpn:  { c1:[34,211,238],  c2:[96,165,250] }
+  };
+  var w = {t:1,n:0,v:0};
+
+  function resize(){
+    var r = cv.getBoundingClientRect();
+    DPR = Math.min(window.devicePixelRatio||1, window.innerWidth<768?1.5:2);
+    W = r.width; H = r.height;
+    cv.width = Math.round(W*DPR); cv.height = Math.round(H*DPR);
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+  }
+  function mk(){
+    return {
+      x:Math.random(), y:Math.random(),
+      vx:(Math.random()-.5)*0.010,
+      vy:-(0.006 + Math.random()*0.020),
+      s:0.4 + Math.random()*0.6,
+      up:Math.random()<0.52,
+      ph:Math.random()*Math.PI*2
+    };
+  }
+  for (var i=0;i<N;i++) P.push(mk());
+  resize();
+  addEventListener('resize', function(){ clearTimeout(resize._t); resize._t=setTimeout(resize,140); }, {passive:true});
+
+  function smooth(a,b,x){ var t=Math.min(1,Math.max(0,(x-a)/(b-a))); return t*t*(3-2*t); }
+  function mix(A,B,k){ return [A[0]+(B[0]-A[0])*k, A[1]+(B[1]-A[1])*k, A[2]+(B[2]-A[2])*k]; }
+
+  function themeFromScroll(){
+    var max = document.documentElement.scrollHeight - innerHeight;
+    var p = max > 0 ? scrollY / max : 0;
+    var n = smooth(0.26,0.46,p);
+    var v = smooth(0.58,0.76,p);
+    w.v = v; w.n = n*(1-v); w.t = (1-n)*(1-v);
+  }
+
+  addJob({ paused:false, tick:function(dt,now){
+    themeFromScroll();
+    ctx.clearRect(0,0,W,H);
+    if (!W||!H) return;
+
+    var linkOn = w.n > 0.18;
+    var pts = [];
+
+    for (var i=0;i<P.length;i++){
+      var p = P[i];
+      p.x += p.vx*dt/W; p.y += p.vy*dt/H;
+      if (p.y < -0.08){ p.y = 1.08; p.x = Math.random(); }
+      if (p.x < -0.06) p.x = 1.06; else if (p.x > 1.06) p.x = -0.06;
+
+      var x = p.x*W + Math.sin(now/2600 + p.ph)*6;
+      var y = p.y*H;
+      if (linkOn) pts.push([x,y,p]);
+
+      var base = mix(
+        mix(p.up?TH.trade.c1:TH.trade.c2, TH.neur.c1, w.n/(w.t+w.n||1)),
+        TH.vpn.c1, w.v);
+      var col = 'rgba('+(base[0]|0)+','+(base[1]|0)+','+(base[2]|0)+',';
+
+      /* Trading: вертикальная свеча */
+      if (w.t > 0.02){
+        var h = (26 + p.s*70) * w.t;
+        ctx.fillStyle = col + (0.12*w.t).toFixed(3) + ')';
+        ctx.fillRect(x - 3*p.s, y - h/2, 6*p.s, h);
+      }
+      /* Neural: узел */
+      if (w.n > 0.02){
+        ctx.beginPath();
+        ctx.arc(x, y, (1.4 + p.s*2.0)*w.n, 0, 6.2832);
+        ctx.fillStyle = col + (0.5*w.n).toFixed(3) + ')';
+        ctx.fill();
+      }
+      /* VPN: горизонтальный пакет-штрих */
+      if (w.v > 0.02){
+        var L = (10 + p.s*26) * w.v;
+        ctx.fillStyle = col + (0.34*w.v).toFixed(3) + ')';
+        ctx.fillRect(x - L/2, y - 1.4*p.s, L, 2.8*p.s);
+      }
     }
+
+    /* связи только в нейро-фазе */
+    if (linkOn){
+      var R = 150, a;
+      ctx.lineWidth = 1;
+      for (var i2=0;i2<pts.length;i2++){
+        for (var j=i2+1;j<pts.length;j++){
+          var dx = pts[i2][0]-pts[j][0], dy = pts[i2][1]-pts[j][1];
+          var d2 = dx*dx+dy*dy;
+          if (d2 > R*R) continue;
+          a = (1 - Math.sqrt(d2)/R) * 0.16 * w.n;
+          ctx.strokeStyle = 'rgba(200,150,250,'+a.toFixed(3)+')';
+          ctx.beginPath(); ctx.moveTo(pts[i2][0],pts[i2][1]); ctx.lineTo(pts[j][0],pts[j][1]); ctx.stroke();
+        }
+      }
+    }
+  }});
+}
+
+/* ============================================================
+   2. ПОЯВЛЕНИЯ — mask-reveal, никаких bounce/elastic
+   ============================================================ */
+function splitWords(el){
+  if (el.dataset.split) return;
+  el.dataset.split = '1';
+  var out = [];
+  var parts = el.innerHTML.split(/(<[^>]+>)/g);
+  var html = '';
+  parts.forEach(function(chunk){
+    if (/^</.test(chunk)) { html += chunk; return; }
+    chunk.split(/(\s+)/).forEach(function(tk){
+      if (!tk) return;
+      if (/^\s+$/.test(tk)) { html += tk; return; }
+      html += '<span class="rv-word"><span>' + tk + '</span></span>';
+    });
   });
-}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
-
-document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
-
-// ===== Генерация японских свечей для секции контрактов =====
-function createCandles() {
-  const container = document.getElementById('candlesBg');
-  if (!container) return;
-  const count = 25;
-  for (let i = 0; i < count; i++) {
-    const group = document.createElement('div');
-    group.className = 'candle-group';
-    const isUp = Math.random() > 0.5;
-    group.classList.add(isUp ? 'candle-up' : 'candle-down');
-    group.style.left = (Math.random() * 100) + '%';
-    group.style.animationDelay = (Math.random() * 25) + 's';
-    group.style.animationDuration = (18 + Math.random() * 14) + 's';
-
-    const wick1 = document.createElement('div');
-    wick1.className = 'candle-wick';
-    const body = document.createElement('div');
-    body.className = 'candle-body';
-    body.style.height = (30 + Math.random() * 70) + 'px';
-    const wick2 = document.createElement('div');
-    wick2.className = 'candle-wick';
-
-    group.appendChild(wick1);
-    group.appendChild(body);
-    group.appendChild(wick2);
-    container.appendChild(group);
-  }
+  el.innerHTML = html;
+  return el.querySelectorAll('.rv-word > span');
 }
 
-// ===== Генерация монет для секции проп-трейдинга =====
-function createCoins() {
-  const container = document.getElementById('coinsBg');
-  if (!container) return;
-  const symbols = ['💰', '$', '🪙', '💵', '€'];
-  const count = 15;
-  for (let i = 0; i < count; i++) {
-    const coin = document.createElement('div');
-    coin.className = 'floating-coin';
-    coin.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-    coin.style.left = (Math.random() * 100) + '%';
-    coin.style.animationDelay = (Math.random() * 20) + 's';
-    coin.style.animationDuration = (16 + Math.random() * 10) + 's';
-    coin.style.fontSize = (20 + Math.random() * 20) + 'px';
-    container.appendChild(coin);
-  }
+function reveals(gs){
+  var ST = { start:'top 84%', once:true };
+
+  document.querySelectorAll('[data-rv="words"]').forEach(function(el){
+    var inner = splitWords(el);
+    gs.set(el, {opacity:1});
+    gs.from(inner, {
+      yPercent:105, duration:1.0, ease:'power3.out', stagger:0.055,
+      scrollTrigger:{trigger:el, start:ST.start, once:true}
+    });
+  });
+
+  document.querySelectorAll('[data-rv="up"]').forEach(function(el){
+    gs.fromTo(el, {opacity:0, y:26, clipPath:'inset(0 0 22% 0)'},
+      {opacity:1, y:0, clipPath:'inset(0 0 0% 0)', duration:.95, ease:'power3.out',
+       scrollTrigger:{trigger:el, start:ST.start, once:true}});
+  });
+
+  document.querySelectorAll('[data-rv="fade"]').forEach(function(el){
+    gs.fromTo(el, {opacity:0, y:14}, {opacity:1, y:0, duration:.8, ease:'power2.out',
+      scrollTrigger:{trigger:el, start:'top 88%', once:true}});
+  });
+
+  document.querySelectorAll('[data-rv="stagger"]').forEach(function(el){
+    var kids = el.children;
+    gs.set(el, {opacity:1});
+    gs.fromTo(kids, {opacity:0, y:34, clipPath:'inset(0 0 26% 0)'},
+      {opacity:1, y:0, clipPath:'inset(0 0 0% 0)', duration:.9, ease:'power3.out',
+       stagger:0.075, scrollTrigger:{trigger:el, start:ST.start, once:true}});
+  });
+
+  /* секционный шов */
+  document.querySelectorAll('.sec').forEach(function(s){
+    ScrollTrigger.create({trigger:s, start:'top 92%',
+      onEnter:function(){ s.classList.add('in'); }});
+  });
 }
 
-// ===== Генерация нейронных узлов =====
-function createNeuralNodes() {
-  const container = document.getElementById('neuralBg');
-  if (!container) return;
-  const count = 20;
-  for (let i = 0; i < count; i++) {
-    const node = document.createElement('div');
-    node.className = 'floating-node';
-    node.style.left = (Math.random() * 100) + '%';
-    node.style.top = (Math.random() * 100) + '%';
-    node.style.animationDelay = (Math.random() * 18) + 's';
-    node.style.animationDuration = (14 + Math.random() * 10) + 's';
-    container.appendChild(node);
-  }
+/* ============================================================
+   3. СЧЁТЧИКИ
+   ============================================================ */
+function fmt(n){ return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,' '); }
+function counters(gs){
+  var RE = /\d[\d  ]*\d|\d/g;
+  document.querySelectorAll('[data-count]').forEach(function(host){
+    var walker = document.createTreeWalker(host, NodeFilter.SHOW_TEXT, null);
+    var nodes = [], n;
+    while ((n = walker.nextNode())) if (/\d/.test(n.nodeValue)) nodes.push(n);
+    var spans = [];
+    nodes.forEach(function(node){
+      var src = node.nodeValue, frag = document.createDocumentFragment(), last = 0, m;
+      RE.lastIndex = 0;
+      while ((m = RE.exec(src))){
+        if (m.index > last) frag.appendChild(document.createTextNode(src.slice(last, m.index)));
+        var s = document.createElement('span');
+        s.className = 'num';
+        s.dataset.to = parseInt(m[0].replace(/[  ]/g,''),10);
+        s.textContent = m[0];
+        frag.appendChild(s); spans.push(s);
+        last = m.index + m[0].length;
+      }
+      if (last < src.length) frag.appendChild(document.createTextNode(src.slice(last)));
+      node.parentNode.replaceChild(frag, node);
+    });
+    if (!spans.length || RM || !gs) return;
+    var from = host.dataset.from ? +host.dataset.from : 0;
+    spans.forEach(function(s){
+      var to = +s.dataset.to;
+      var o = {v:from};
+      s.textContent = fmt(from);
+      gs.to(o, {v:to, duration: to>=10000?1.9:(to>=1000?1.6:1.2), ease:'power2.out',
+        onUpdate:function(){ s.textContent = fmt(o.v); },
+        onComplete:function(){ s.textContent = fmt(to); },
+        scrollTrigger:{trigger:host, start:'top 88%', once:true}});
+    });
+  });
+}
+function countersFinal(){
+  document.querySelectorAll('.num[data-to]').forEach(function(s){ s.textContent = fmt(+s.dataset.to); });
 }
 
-// ===== Генерация сетевых пакетов для VPN =====
-function createNetworkPackets() {
-  const container = document.getElementById('networkBg');
-  if (!container) return;
-  const count = 18;
-  for (let i = 0; i < count; i++) {
-    const packet = document.createElement('div');
-    packet.className = 'network-packet';
-    packet.style.top = (Math.random() * 100) + '%';
-    packet.style.animationDelay = (Math.random() * 10) + 's';
-    packet.style.animationDuration = (6 + Math.random() * 8) + 's';
-    container.appendChild(packet);
+/* ============================================================
+   4. ЖИВОЙ МИНИ-ТЕРМИНАЛ
+   ============================================================ */
+function chart(){
+  var cv = document.getElementById('chart'), hud = document.getElementById('px');
+  if (!cv) return;
+  var ctx = cv.getContext('2d');
+  var W=0,H=0,DPR=1, price=68400, pts=[], candles=[], cur=null, tick=0, acc=0, bands=null, bacc=0;
+
+  function resize(){
+    var r = cv.parentElement.getBoundingClientRect();
+    DPR = Math.min(devicePixelRatio||1, 2);
+    W = r.width; H = innerWidth<768 ? 190 : 240;
+    cv.style.height = H+'px';
+    cv.width = Math.round(W*DPR); cv.height = Math.round(H*DPR);
+    ctx.setTransform(DPR,0,0,DPR,0,0);
   }
+  resize();
+  addEventListener('resize', function(){ clearTimeout(resize._t); resize._t=setTimeout(resize,150); }, {passive:true});
+
+  function step(){
+    var sh = (Math.random()+Math.random()+Math.random()-1.5)/1.5;
+    price *= 1 + 0.00002 + 0.0016*sh;
+    pts.push(price); if (pts.length > 180) pts.shift();
+    if (!cur) cur = {o:price,h:price,l:price,c:price};
+    cur.h = Math.max(cur.h, price); cur.l = Math.min(cur.l, price); cur.c = price;
+    if (++tick % 5 === 0){ candles.push(cur); if (candles.length>40) candles.shift(); cur = null; }
+  }
+  for (var i=0;i<180;i++) step();
+
+  function recalc(){
+    if (candles.length < 8) return;
+    var hi=-1e9, lo=1e9;
+    candles.forEach(function(k){ hi=Math.max(hi,k.h); lo=Math.min(lo,k.l); });
+    bands = {d: lo*0.9975, s: hi*1.0025};
+  }
+  recalc();
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    if (!W) return;
+    var hi=-1e9, lo=1e9;
+    pts.forEach(function(p){ hi=Math.max(hi,p); lo=Math.min(lo,p); });
+    candles.forEach(function(k){ hi=Math.max(hi,k.h); lo=Math.min(lo,k.l); });
+    if (bands){ hi=Math.max(hi,bands.s); lo=Math.min(lo,bands.d); }
+    var pad = (hi-lo)*0.2 || 1; hi+=pad; lo-=pad;
+    var Y = function(p){ return H - ((p-lo)/(hi-lo))*H; };
+
+    if (bands){
+      ctx.fillStyle='rgba(16,185,129,.10)'; ctx.fillRect(0, Y(bands.d)-8, W, 16);
+      ctx.fillStyle='rgba(239,68,68,.10)';  ctx.fillRect(0, Y(bands.s)-8, W, 16);
+    }
+    var bw = innerWidth<768?8:13, gap = innerWidth<768?4:6;
+    var x = W - 14 - candles.length*(bw+gap);
+    candles.forEach(function(k){
+      var up = k.c >= k.o;
+      ctx.strokeStyle = up ? 'rgba(16,185,129,.7)' : 'rgba(239,68,68,.7)';
+      ctx.fillStyle   = up ? 'rgba(16,185,129,.5)' : 'rgba(239,68,68,.5)';
+      var cx = x + bw/2;
+      ctx.beginPath(); ctx.moveTo(cx, Y(k.h)); ctx.lineTo(cx, Y(k.l)); ctx.stroke();
+      var yo=Y(k.o), yc=Y(k.c);
+      ctx.fillRect(x, Math.min(yo,yc), bw, Math.max(1.5, Math.abs(yc-yo)));
+      x += bw+gap;
+    });
+
+    ctx.beginPath();
+    for (var i=0;i<pts.length;i++){
+      var px = 14 + (i/(pts.length-1))*(W-28), py = Y(pts[i]);
+      i ? ctx.lineTo(px,py) : ctx.moveTo(px,py);
+    }
+    ctx.strokeStyle = '#a78bfa'; ctx.lineWidth = 2; ctx.lineJoin='round'; ctx.stroke();
+    ctx.beginPath(); ctx.arc(W-14, Y(price), 3.2, 0, 6.2832);
+    ctx.fillStyle = '#c4b5fd'; ctx.fill();
+  }
+  draw();
+  if (RM) return;
+
+  var job = { paused:true, tick:function(dt){
+    acc += dt; bacc += dt;
+    while (acc >= 320){
+      acc -= 320; var prev = price; step();
+      if (hud){
+        hud.textContent = price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
+        hud.className = price >= prev ? 'up' : 'down';
+      }
+    }
+    if (bacc > 6400){ bacc = 0; recalc(); }
+    draw();
+  }};
+  addJob(job);
+  new IntersectionObserver(function(e){ job.paused = !e[0].isIntersecting; },
+    {rootMargin:'200px'}).observe(cv);
 }
 
-// Инициализация фонов
-createCandles();
-createCoins();
-createNeuralNodes();
-createNetworkPackets();
+/* ============================================================
+   5. AI-ГРАФ
+   ============================================================ */
+function aigraph(){
+  var svg = document.getElementById('aigraph');
+  if (!svg) return;
+  var NS='http://www.w3.org/2000/svg';
+  var M = ['Видео','Арт','Тексты','Музыка','Код','Голос','Агенты','18+'];
+  var cx=400, cy=200, R = innerWidth<768 ? 130 : 165;
+  var defs = document.createElementNS(NS,'defs');
+  defs.innerHTML = '<linearGradient id="eg" x1="0" x2="1"><stop offset="0" stop-color="#e879f9"/><stop offset="1" stop-color="#a78bfa"/></linearGradient>';
+  svg.appendChild(defs);
 
-// ===== Плавный параллакс для парящих объектов =====
-document.addEventListener('mousemove', (e) => {
-  const x = (e.clientX / window.innerWidth - 0.5) * 20;
-  const y = (e.clientY / window.innerHeight - 0.5) * 20;
-  document.querySelectorAll('.floating-object').forEach((obj, i) => {
-    const factor = (i + 1) * 0.3;
-    obj.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+  var paths = [];
+  M.forEach(function(name,i){
+    var a = (i/M.length)*Math.PI*2 - Math.PI/2;
+    var x = cx + Math.cos(a)*R, y = cy + Math.sin(a)*R*0.8;
+    var mx = (cx+x)/2 + Math.cos(a+Math.PI/2)*24, my = (cy+y)/2 + Math.sin(a+Math.PI/2)*24;
+    var p = document.createElementNS(NS,'path');
+    p.setAttribute('d','M '+cx+' '+cy+' Q '+mx+' '+my+', '+x+' '+y);
+    p.setAttribute('stroke','url(#eg)'); p.setAttribute('stroke-width','1.4');
+    p.setAttribute('fill','none'); p.setAttribute('opacity','.5');
+    svg.appendChild(p); paths.push(p);
+
+    var g = document.createElementNS(NS,'g');
+    var c = document.createElementNS(NS,'circle');
+    c.setAttribute('cx',x); c.setAttribute('cy',y); c.setAttribute('r','32');
+    c.setAttribute('fill','rgba(232,121,249,.10)');
+    c.setAttribute('stroke','rgba(232,121,249,.42)');
+    var t = document.createElementNS(NS,'text');
+    t.setAttribute('x',x); t.setAttribute('y',y+4);
+    t.setAttribute('text-anchor','middle'); t.setAttribute('fill','#f0abfc');
+    t.setAttribute('font-size','12'); t.setAttribute('font-family','JetBrains Mono, monospace');
+    t.textContent = name;
+    g.appendChild(c); g.appendChild(t); svg.appendChild(g);
+  });
+
+  var core = document.createElementNS(NS,'circle');
+  core.setAttribute('cx',cx); core.setAttribute('cy',cy); core.setAttribute('r','52');
+  core.setAttribute('fill','rgba(167,139,250,.16)');
+  core.setAttribute('stroke','rgba(167,139,250,.6)');
+  svg.appendChild(core);
+  var ct = document.createElementNS(NS,'text');
+  ct.setAttribute('x',cx); ct.setAttribute('y',cy+5);
+  ct.setAttribute('text-anchor','middle'); ct.setAttribute('fill','#ddd6fe');
+  ct.setAttribute('font-size','13'); ct.setAttribute('font-weight','600');
+  ct.setAttribute('font-family','JetBrains Mono, monospace');
+  ct.textContent = '1 подписка';
+  svg.appendChild(ct);
+
+  if (RM) return;
+  var dots = paths.map(function(p,i){
+    var d = document.createElementNS(NS,'circle');
+    d.setAttribute('r','3'); d.setAttribute('fill','#22d3ee');
+    svg.appendChild(d);
+    return {el:d, p:p, t:i/paths.length, len:0};
+  });
+  var job = { paused:true, tick:function(dt){
+    dots.forEach(function(d){
+      if (!d.len) d.len = d.p.getTotalLength();
+      d.t += dt/1400; if (d.t > 1) d.t -= 1;
+      var pt = d.p.getPointAtLength(d.t*d.len);
+      d.el.setAttribute('cx', pt.x.toFixed(1));
+      d.el.setAttribute('cy', pt.y.toFixed(1));
+    });
+  }};
+  addJob(job);
+  new IntersectionObserver(function(e){ job.paused = !e[0].isIntersecting; },
+    {rootMargin:'150px'}).observe(svg);
+}
+
+/* ============================================================
+   6. VPN-СХЕМА
+   ============================================================ */
+function vpnflow(){
+  var svg = document.getElementById('flow'), sp = document.getElementById('speed');
+  if (!svg) return;
+  var NS='http://www.w3.org/2000/svg';
+  var N = [{x:110,t:'Вы'},{x:540,t:'VPN'},{x:970,t:'Сервер'}];
+  var paths = [];
+  for (var i=0;i<2;i++){
+    var a=N[i], b=N[i+1];
+    var p = document.createElementNS(NS,'path');
+    p.setAttribute('d','M '+(a.x+34)+' 90 C '+(a.x+150)+' 46, '+(b.x-150)+' 134, '+(b.x-34)+' 90');
+    p.setAttribute('stroke','#22d3ee'); p.setAttribute('stroke-width','2');
+    p.setAttribute('fill','none'); p.setAttribute('stroke-dasharray','6 10');
+    p.setAttribute('opacity','.55');
+    svg.appendChild(p); paths.push(p);
+  }
+  N.forEach(function(n){
+    var c=document.createElementNS(NS,'circle');
+    c.setAttribute('cx',n.x); c.setAttribute('cy',90); c.setAttribute('r','30');
+    c.setAttribute('fill','rgba(34,211,238,.10)'); c.setAttribute('stroke','rgba(34,211,238,.5)');
+    svg.appendChild(c);
+    var t=document.createElementNS(NS,'text');
+    t.setAttribute('x',n.x); t.setAttribute('y',148); t.setAttribute('text-anchor','middle');
+    t.textContent=n.t; svg.appendChild(t);
+  });
+
+  if (sp){ for (var k=0;k<10;k++) sp.appendChild(document.createElement('i')); }
+  var segs = sp ? sp.querySelectorAll('i') : [];
+  new IntersectionObserver(function(e){
+    if (!e[0].isIntersecting) return;
+    segs.forEach(function(s,i){ setTimeout(function(){ s.classList.add('on'); }, i*85); });
+  },{threshold:.2}).observe(svg);
+
+  if (RM) return;
+  var pk = [];
+  for (var j=0;j<5;j++){
+    var g=document.createElementNS(NS,'g');
+    var r=document.createElementNS(NS,'rect');
+    r.setAttribute('width','11'); r.setAttribute('height','4'); r.setAttribute('rx','2');
+    r.setAttribute('fill','#f87171');
+    var tg=document.createElementNS(NS,'text');
+    tg.setAttribute('x','5'); tg.setAttribute('y','-7'); tg.setAttribute('text-anchor','middle');
+    tg.setAttribute('font-size','9'); tg.setAttribute('fill','#fca5a5');
+    tg.textContent='RAW';
+    g.appendChild(r); g.appendChild(tg); svg.appendChild(g);
+    pk.push({g:g,r:r,t:tg,p:j/5});
+  }
+  var L = [0,0];
+  var job={paused:true, tick:function(dt){
+    if(!L[0]){ L[0]=paths[0].getTotalLength(); L[1]=paths[1].getTotalLength(); }
+    pk.forEach(function(o){
+      o.p += dt/3800; if (o.p>1) o.p-=1;
+      var seg = o.p<0.5?0:1, loc = seg===0 ? o.p*2 : (o.p-0.5)*2;
+      var pt = paths[seg].getPointAtLength(L[seg]*loc);
+      o.g.setAttribute('transform','translate('+(pt.x-5).toFixed(1)+','+(pt.y-2).toFixed(1)+')');
+      var enc = seg===1;
+      o.r.setAttribute('fill', enc ? '#22d3ee' : '#f87171');
+      if (o.t.textContent !== (enc?'AES':'RAW')) o.t.textContent = enc?'AES':'RAW';
+      o.t.setAttribute('fill', enc ? '#67e8f9' : '#fca5a5');
+    });
+  }};
+  addJob(job);
+  new IntersectionObserver(function(e){ job.paused=!e[0].isIntersecting; },{rootMargin:'150px'}).observe(svg);
+}
+
+/* ============================================================
+   7. ЯКОРЯ
+   ============================================================ */
+function anchors(){
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    var id = a.getAttribute('href');
+    if (id.length < 2) return;
+    var t = document.querySelector(id);
+    if (!t) return;
+    e.preventDefault();
+    t.scrollIntoView({behavior: RM ? 'auto' : 'smooth', block:'start'});
+    history.replaceState(null,'',id);
+  });
+}
+
+/* ============================================================
+   СТАРТ
+   ============================================================ */
+ready(function(){
+  anchors();
+  ambient();
+  chart();
+  aigraph();
+  vpnflow();
+
+  waitGsap(function(ok){
+    if (!ok || RM){
+      document.documentElement.classList.add('rv-done');
+      counters(null); countersFinal();
+      return;
+    }
+    gsap.registerPlugin(ScrollTrigger);
+    reveals(gsap);
+    counters(gsap);
+
+    /* страховка: если через 4 c что-то осталось скрытым — показать */
+    setTimeout(function(){
+      document.querySelectorAll('[data-rv]').forEach(function(el){
+        if (parseFloat(getComputedStyle(el).opacity) < 0.05){
+          document.documentElement.classList.add('rv-done');
+          gsap.set('[data-rv]', {opacity:1, y:0, clipPath:'none'});
+          gsap.set('.rv-word > span', {yPercent:0});
+          countersFinal();
+        }
+      });
+    }, 4000);
   });
 });
+})();
 </script>
-
 </body>
 </html>
