@@ -1881,4 +1881,315 @@ function counters(gs){
       var o = {v:from};
       s.textContent = fmt(from);
       gs.to(o, {v:to, duration: to>=10000?1.9:(to>=1000?1.6:1.2), ease:'power2.out',
-        on
+        onUpdate:function(){ s.textContent = fmt(o.v); },
+        onComplete:function(){ s.textContent = fmt(to); },
+        scrollTrigger:{trigger:host, start:'top 88%', once:true}});
+    });
+  });
+}
+function countersFinal(){
+  document.querySelectorAll('.num[data-to]').forEach(function(s){ s.textContent = fmt(+s.dataset.to); });
+}
+
+/* ============================================================
+   4. ЖИВОЙ МИНИ-ТЕРМИНАЛ
+   ============================================================ */
+function chart(){
+  var cv = document.getElementById('chart'), hud = document.getElementById('px');
+  if (!cv) return;
+  var ctx = cv.getContext('2d');
+  var W=0,H=0,DPR=1, price=68400, pts=[], candles=[], cur=null, tick=0, acc=0, bands=null, bacc=0;
+
+  function resize(){
+    var r = cv.parentElement.getBoundingClientRect();
+    DPR = Math.min(devicePixelRatio||1, 2);
+    W = r.width; H = innerWidth<768 ? 190 : 240;
+    cv.style.height = H+'px';
+    cv.width = Math.round(W*DPR); cv.height = Math.round(H*DPR);
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+  }
+  resize();
+  addEventListener('resize', function(){ clearTimeout(resize._t); resize._t=setTimeout(resize,150); }, {passive:true});
+
+  function step(){
+    var sh = (Math.random()+Math.random()+Math.random()-1.5)/1.5;
+    price *= 1 + 0.00002 + 0.0016*sh;
+    pts.push(price); if (pts.length > 180) pts.shift();
+    if (!cur) cur = {o:price,h:price,l:price,c:price};
+    cur.h = Math.max(cur.h, price); cur.l = Math.min(cur.l, price); cur.c = price;
+    if (++tick % 5 === 0){ candles.push(cur); if (candles.length>40) candles.shift(); cur = null; }
+  }
+  for (var i=0;i<180;i++) step();
+
+  function recalc(){
+    if (candles.length < 8) return;
+    var hi=-1e9, lo=1e9;
+    candles.forEach(function(k){ hi=Math.max(hi,k.h); lo=Math.min(lo,k.l); });
+    bands = {d: lo*0.9975, s: hi*1.0025};
+  }
+  recalc();
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    if (!W) return;
+    var hi=-1e9, lo=1e9;
+    pts.forEach(function(p){ hi=Math.max(hi,p); lo=Math.min(lo,p); });
+    candles.forEach(function(k){ hi=Math.max(hi,k.h); lo=Math.min(lo,k.l); });
+    if (bands){ hi=Math.max(hi,bands.s); lo=Math.min(lo,bands.d); }
+    var pad = (hi-lo)*0.2 || 1; hi+=pad; lo-=pad;
+    var Y = function(p){ return H - ((p-lo)/(hi-lo))*H; };
+
+    if (bands){
+      ctx.fillStyle='rgba(16,185,129,.10)'; ctx.fillRect(0, Y(bands.d)-8, W, 16);
+      ctx.fillStyle='rgba(239,68,68,.10)';  ctx.fillRect(0, Y(bands.s)-8, W, 16);
+    }
+    var bw = innerWidth<768?8:13, gap = innerWidth<768?4:6;
+    var x = W - 14 - candles.length*(bw+gap);
+    candles.forEach(function(k){
+      var up = k.c >= k.o;
+      ctx.strokeStyle = up ? 'rgba(16,185,129,.7)' : 'rgba(239,68,68,.7)';
+      ctx.fillStyle   = up ? 'rgba(16,185,129,.5)' : 'rgba(239,68,68,.5)';
+      var cx = x + bw/2;
+      ctx.beginPath(); ctx.moveTo(cx, Y(k.h)); ctx.lineTo(cx, Y(k.l)); ctx.stroke();
+      var yo=Y(k.o), yc=Y(k.c);
+      ctx.fillRect(x, Math.min(yo,yc), bw, Math.max(1.5, Math.abs(yc-yo)));
+      x += bw+gap;
+    });
+
+    ctx.beginPath();
+    for (var i=0;i<pts.length;i++){
+      var px = 14 + (i/(pts.length-1))*(W-28), py = Y(pts[i]);
+      i ? ctx.lineTo(px,py) : ctx.moveTo(px,py);
+    }
+    ctx.strokeStyle = '#a78bfa'; ctx.lineWidth = 2; ctx.lineJoin='round'; ctx.stroke();
+    ctx.beginPath(); ctx.arc(W-14, Y(price), 3.2, 0, 6.2832);
+    ctx.fillStyle = '#c4b5fd'; ctx.fill();
+  }
+  draw();
+  if (RM) return;
+
+  var job = { paused:true, tick:function(dt){
+    acc += dt; bacc += dt;
+    while (acc >= 320){
+      acc -= 320; var prev = price; step();
+      if (hud){
+        hud.textContent = price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
+        hud.className = price >= prev ? 'up' : 'down';
+      }
+    }
+    if (bacc > 6400){ bacc = 0; recalc(); }
+    draw();
+  }};
+  addJob(job);
+  new IntersectionObserver(function(e){ job.paused = !e[0].isIntersecting; },
+    {rootMargin:'200px'}).observe(cv);
+}
+
+/* ============================================================
+   5. AI-ГРАФ
+   ============================================================ */
+function aigraph(){
+  var svg = document.getElementById('aigraph');
+  if (!svg) return;
+  var NS='http://www.w3.org/2000/svg';
+  var M = ['Видео','Арт','Тексты','Музыка','Код','Голос','Агенты','18+'];
+  var cx=400, cy=200, R = innerWidth<768 ? 130 : 165;
+  var defs = document.createElementNS(NS,'defs');
+  defs.innerHTML = '<linearGradient id="eg" x1="0" x2="1"><stop offset="0" stop-color="#e879f9"/><stop offset="1" stop-color="#a78bfa"/></linearGradient>';
+  svg.appendChild(defs);
+
+  var paths = [];
+  M.forEach(function(name,i){
+    var a = (i/M.length)*Math.PI*2 - Math.PI/2;
+    var x = cx + Math.cos(a)*R, y = cy + Math.sin(a)*R*0.8;
+    var mx = (cx+x)/2 + Math.cos(a+Math.PI/2)*24, my = (cy+y)/2 + Math.sin(a+Math.PI/2)*24;
+    var p = document.createElementNS(NS,'path');
+    p.setAttribute('d','M '+cx+' '+cy+' Q '+mx+' '+my+', '+x+' '+y);
+    p.setAttribute('stroke','url(#eg)'); p.setAttribute('stroke-width','1.4');
+    p.setAttribute('fill','none'); p.setAttribute('opacity','.5');
+    svg.appendChild(p); paths.push(p);
+
+    var g = document.createElementNS(NS,'g');
+    var c = document.createElementNS(NS,'circle');
+    c.setAttribute('cx',x); c.setAttribute('cy',y); c.setAttribute('r','32');
+    c.setAttribute('fill','rgba(232,121,249,.10)');
+    c.setAttribute('stroke','rgba(232,121,249,.42)');
+    var t = document.createElementNS(NS,'text');
+    t.setAttribute('x',x); t.setAttribute('y',y+4);
+    t.setAttribute('text-anchor','middle'); t.setAttribute('fill','#f0abfc');
+    t.setAttribute('font-size','12'); t.setAttribute('font-family','JetBrains Mono, monospace');
+    t.textContent = name;
+    g.appendChild(c); g.appendChild(t); svg.appendChild(g);
+  });
+
+  var core = document.createElementNS(NS,'circle');
+  core.setAttribute('cx',cx); core.setAttribute('cy',cy); core.setAttribute('r','52');
+  core.setAttribute('fill','rgba(167,139,250,.16)');
+  core.setAttribute('stroke','rgba(167,139,250,.6)');
+  svg.appendChild(core);
+  var ct = document.createElementNS(NS,'text');
+  ct.setAttribute('x',cx); ct.setAttribute('y',cy+5);
+  ct.setAttribute('text-anchor','middle'); ct.setAttribute('fill','#ddd6fe');
+  ct.setAttribute('font-size','13'); ct.setAttribute('font-weight','600');
+  ct.setAttribute('font-family','JetBrains Mono, monospace');
+  ct.textContent = '1 подписка';
+  svg.appendChild(ct);
+
+  if (RM) return;
+  var dots = paths.map(function(p,i){
+    var d = document.createElementNS(NS,'circle');
+    d.setAttribute('r','3'); d.setAttribute('fill','#22d3ee');
+    svg.appendChild(d);
+    return {el:d, p:p, t:i/paths.length, len:0};
+  });
+  var job = { paused:true, tick:function(dt){
+    dots.forEach(function(d){
+      if (!d.len) d.len = d.p.getTotalLength();
+      d.t += dt/1400; if (d.t > 1) d.t -= 1;
+      var pt = d.p.getPointAtLength(d.t*d.len);
+      d.el.setAttribute('cx', pt.x.toFixed(1));
+      d.el.setAttribute('cy', pt.y.toFixed(1));
+    });
+  }};
+  addJob(job);
+  new IntersectionObserver(function(e){ job.paused = !e[0].isIntersecting; },
+    {rootMargin:'150px'}).observe(svg);
+}
+
+/* ============================================================
+   6. VPN-СХЕМА
+   ============================================================ */
+function vpnflow(){
+  var svg = document.getElementById('flow'), sp = document.getElementById('speed');
+  if (!svg) return;
+  var NS='http://www.w3.org/2000/svg';
+  var N = [{x:110,t:'Вы'},{x:540,t:'VPN'},{x:970,t:'Сервер'}];
+  var paths = [];
+  for (var i=0;i<2;i++){
+    var a=N[i], b=N[i+1];
+    var p = document.createElementNS(NS,'path');
+    p.setAttribute('d','M '+(a.x+34)+' 90 C '+(a.x+150)+' 46, '+(b.x-150)+' 134, '+(b.x-34)+' 90');
+    p.setAttribute('stroke','#22d3ee'); p.setAttribute('stroke-width','2');
+    p.setAttribute('fill','none'); p.setAttribute('stroke-dasharray','6 10');
+    p.setAttribute('opacity','.55');
+    svg.appendChild(p); paths.push(p);
+  }
+  N.forEach(function(n){
+    var c=document.createElementNS(NS,'circle');
+    c.setAttribute('cx',n.x); c.setAttribute('cy',90); c.setAttribute('r','30');
+    c.setAttribute('fill','rgba(34,211,238,.10)'); c.setAttribute('stroke','rgba(34,211,238,.5)');
+    svg.appendChild(c);
+    var t=document.createElementNS(NS,'text');
+    t.setAttribute('x',n.x); t.setAttribute('y',148); t.setAttribute('text-anchor','middle');
+    t.textContent=n.t; svg.appendChild(t);
+  });
+
+  if (sp){ for (var k=0;k<10;k++) sp.appendChild(document.createElement('i')); }
+  var segs = sp ? sp.querySelectorAll('i') : [];
+  new IntersectionObserver(function(e){
+    if (!e[0].isIntersecting) return;
+    segs.forEach(function(s,i){ setTimeout(function(){ s.classList.add('on'); }, i*85); });
+  },{threshold:.2}).observe(svg);
+
+  if (RM) return;
+  var pk = [];
+  for (var j=0;j<5;j++){
+    var g=document.createElementNS(NS,'g');
+    var r=document.createElementNS(NS,'rect');
+    r.setAttribute('width','11'); r.setAttribute('height','4'); r.setAttribute('rx','2');
+    r.setAttribute('fill','#f87171');
+    var tg=document.createElementNS(NS,'text');
+    tg.setAttribute('x','5'); tg.setAttribute('y','-7'); tg.setAttribute('text-anchor','middle');
+    tg.setAttribute('font-size','9'); tg.setAttribute('fill','#fca5a5');
+    tg.textContent='RAW';
+    g.appendChild(r); g.appendChild(tg); svg.appendChild(g);
+    pk.push({g:g,r:r,t:tg,p:j/5});
+  }
+  var L = [0,0];
+  var job={paused:true, tick:function(dt){
+    if(!L[0]){ L[0]=paths[0].getTotalLength(); L[1]=paths[1].getTotalLength(); }
+    pk.forEach(function(o){
+      o.p += dt/3800; if (o.p>1) o.p-=1;
+      var seg = o.p<0.5?0:1, loc = seg===0 ? o.p*2 : (o.p-0.5)*2;
+      var pt = paths[seg].getPointAtLength(L[seg]*loc);
+      o.g.setAttribute('transform','translate('+(pt.x-5).toFixed(1)+','+(pt.y-2).toFixed(1)+')');
+      var enc = seg===1;
+      o.r.setAttribute('fill', enc ? '#22d3ee' : '#f87171');
+      if (o.t.textContent !== (enc?'AES':'RAW')) o.t.textContent = enc?'AES':'RAW';
+      o.t.setAttribute('fill', enc ? '#67e8f9' : '#fca5a5');
+    });
+  }};
+  addJob(job);
+  new IntersectionObserver(function(e){ job.paused=!e[0].isIntersecting; },{rootMargin:'150px'}).observe(svg);
+}
+
+/* ============================================================
+   7. ЯКОРЯ
+   ============================================================ */
+function anchors(){
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    var id = a.getAttribute('href');
+    if (id.length < 2) return;
+    var t = document.querySelector(id);
+    if (!t) return;
+    e.preventDefault();
+    t.scrollIntoView({behavior: RM ? 'auto' : 'smooth', block:'start'});
+    history.replaceState(null,'',id);
+  });
+}
+
+/* ============================================================
+   СТАРТ
+   ============================================================ */
+ready(function(){
+  anchors();
+  /* Все секции со слотом. Файла нет → error → слой снимается молча,
+     вёрстка не меняется. Появился файл → работает без правок кода. */
+  document.querySelectorAll('section:has([data-video])').forEach(sectionVideo);
+  chart();
+  aigraph();
+  vpnflow();
+  dim3d();
+  dressCTA();
+
+  waitGsap(function(ok){
+    if (!ok || RM){
+      document.documentElement.classList.add('rv-done');
+      counters(null); countersFinal(); topbar(null);
+      return;
+    }
+    gsap.registerPlugin(ScrollTrigger);
+    reveals(gsap);
+    counters(gsap);
+    topbar(gsap);
+
+    /* Страховка: показать блок, который УЖЕ должен был проявиться,
+       но остался скрытым. Раньше проверялась только opacity — а у
+       всего, что ниже сгиба, она законно равна нулю, поэтому через
+       4 c страховка гасила reveal на всей странице разом и morph
+       ниже первого экрана не показывался никогда.
+       Теперь спасаем поэлементно и только то, что доехало до вьюпорта. */
+    function rescue(){
+      document.querySelectorAll('[data-rv]').forEach(function(el){
+        var r = el.getBoundingClientRect();
+        if (r.top > window.innerHeight * 0.92) return;      // ещё не его очередь
+        if (parseFloat(getComputedStyle(el).opacity) >= 0.05) return;
+        var kids = [el].concat(Array.prototype.slice.call(el.children));
+        var inner = el.querySelectorAll('.mk__i');
+        gsap.set(kids.concat(Array.prototype.slice.call(inner)),
+          {opacity:1, x:0, y:0, z:0, yPercent:0, scale:1,
+           rotateX:0, rotateY:0, clipPath:'none'});
+      });
+    }
+    setTimeout(rescue, 4000);
+    addEventListener('scroll', function(){
+      clearTimeout(rescue._t); rescue._t = setTimeout(rescue, 1200);
+    }, {passive:true});
+  });
+});
+})();
+</script>
+</body>
+</html>
