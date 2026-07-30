@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pro Max Hub — Ультра-премиальный центр доступа</title>
+<meta name="description" content="Pro Max Hub — трейдинг-утилиты, проп-трейдинг, доступ ко всем нейросетям и премиум VPN. Спокойный заработок без стресса, начальников и офисов.">
+<meta name="theme-color" content="#050214">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Pro Max Hub — Ультра-премиальный центр доступа">
+<meta property="og:description" content="Твой путь к финансовой свободе: трейдинг, нейросети, VPN. Работай из дома, живи на своих условиях.">
+<meta property="og:image" content="assets/img/og.jpg">
+<meta property="og:locale" content="ru_RU">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="assets/img/og.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Unbounded:wght@500;700;800&family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/css/tailwind.built.css">
+<link rel="stylesheet" href="assets/css/00-tokens.css">
+<link rel="stylesheet" href="assets/css/01-fonts.css">
+<link rel="stylesheet" href="assets/css/02-base.css">
+<link rel="stylesheet" href="assets/css/03-glass.css">
+<link rel="stylesheet" href="assets/css/04-typography.css">
+<link rel="stylesheet" href="assets/css/05-buttons.css">
+<link rel="stylesheet" href="assets/css/06-sections.css">
+<link rel="stylesheet" href="assets/css/07-footer.css">
+<link rel="stylesheet" href="assets/css/08-a11y-motion.css">
+</head>
+<body>
+
+<a class="skip-link" href="#contracts">Перейти к инструментам заработка</a>
+
+<!-- ============ ГЛОБАЛЬНЫЕ ФОНОВЫЕ СЛОИ ============ -->
+<video id="bg-video" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"
+       poster="assets/img/hero-poster.png">
+  <source src="assets/video/hero-loop.webm" type="video/webm">
+  <source src="assets/video/hero-loop.mp4" type="video/mp4">
+</video>
+<div id="bg-aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="stars" aria-hidden="true"></div>
+<canvas id="bg-stars" aria-hidden="true"></canvas>
+<div id="bg-vignette" aria-hidden="true"></div>
+<div id="bg-grain" aria-hidden="true"></div>
+
+<!-- ============ HERO SECTION ============ -->
+<section id="hero" class="relative min-h-screen flex items-center justify-center px-4 py-20 overflow-hidden" aria-labelledby="hero-title">
+  <!-- Фоновые орбы -->
+  <div class="absolute top-20 left-10 w-[500px] h-[500px] bg-purple-500 rounded-full filter blur-[140px] opacity-25 animate-pulse" aria-hidden="true"></div>
+  <div class="absolute bottom-20 right-10 w-[500px] h-[500px] bg-blue-500 rounded-full filter blur-[140px] opacity-25 animate-pulse" style="animation-delay: 1.2s;" aria-hidden="true"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pink-500 rounded-full filter blur-[160px] opacity-15 animate-pulse" style="animation-delay: 2.4s;" aria-hidden="true"></div>
+
+  <!-- Парящие 3D объекты -->
+  <div class="floating-object top-32 left-[8%] text-6xl" style="animation-delay: 0s;" aria-hidden="true">💰</div>
+  <div class="floating-object top-40 right-[10%] text-5xl" style="animation-delay: 1.2s;" aria-hidden="true">🪐</div>
+  <div class="floating-object bottom-40 left-[10%] text-5xl" style="animation-delay: 2.4s;" aria-hidden="true">⏰</div>
+  <div class="floating-object bottom-32 right-[8%] text-6xl" style="animation-delay: 3.6s;" aria-hidden="true">🛡️</div>
+  <div class="floating-object top-[60%] left-[5%] text-4xl" style="animation-delay: 1.8s;" aria-hidden="true">💎</div>
+  <div class="floating-object top-[40%] right-[5%] text-4xl" style="animation-delay: 2.8s;" aria-hidden="true">🧠</div>
+
+  <div class="relative z-10 max-w-6xl mx-auto text-center">
+    <!-- Hero Logo Sphere -->
+    <div class="mb-10 fade-in-up" data-reveal="hero-sphere">
+      <div class="hero-logo-sphere" aria-hidden="true">
+        <span class="text-7xl" style="filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));">⚡</span>
+      </div>
+    </div>
+
+    <!-- Eyebrow -->
+    <div class="mb-6 fade-in-up">
+      <span class="eyebrow-chip bg-purple-500/15 border-purple-400/40 text-purple-200">
+        <span aria-hidden="true">✦</span>
+        <span data-scramble>Ультра-премиальный доступ</span>
+      </span>
+    </div>
+
+    <!-- Заголовок -->
+    <h1 id="hero-title" class="cinematic-title text-6xl md:text-8xl lg:text-9xl mb-6 fade-in-up" data-cine="h1">
+      Pro Max Hub
+    </h1>
+
+    <!-- Divider -->
+    <div class="premium-divider fade-in-up" aria-hidden="true">
+      <div class="line"></div>
+      <span class="text-3xl text-purple-300" style="filter: drop-shadow(0 0 20px rgba(167, 139, 250, 0.8));">✦</span>
+      <div class="line"></div>
+    </div>
+
+    <!-- Подзаголовок -->
+    <p class="text-xl md:text-2xl lg:text-3xl text-gray-200 mb-4 max-w-4xl mx-auto leading-relaxed font-light fade-in-up" style="text-shadow: 0 2px 20px rgba(0,0,0,0.5);" data-split="words">
+      Твой путь к <span class="text-purple-300 font-semibold">финансовой свободе</span>.
+    </p>
+    <p class="text-lg md:text-xl text-gray-400 mb-14 max-w-3xl mx-auto leading-relaxed fade-in-up" data-split="lines">
+      Спокойный заработок без стресса, начальников и офисов.<br class="hidden md:block">
+      Работай из дома. Живи на своих условиях. Зарабатывай столько, сколько хочешь.
+    </p>
+
+    <!-- Статистика -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-14 max-w-4xl mx-auto fade-in-up" data-reveal="stack" data-stagger="0.11">
+      <div class="ultra-glass p-6 text-center">
+        <div class="text-5xl font-bold cinematic-title mb-2" data-nums data-cine="stat">7+</div>
+        <div class="text-sm text-gray-400 uppercase tracking-wider">Инструментов заработка</div>
+      </div>
+      <div class="ultra-glass p-6 text-center">
+        <div class="text-5xl font-bold cinematic-title mb-2" data-nums data-cine="stat">24/7</div>
+        <div class="text-sm text-gray-400 uppercase tracking-wider">Доступ из любой точки</div>
+      </div>
+      <div class="ultra-glass p-6 text-center">
+        <div class="text-5xl font-bold cinematic-title mb-2" data-scramble data-scramble-set="₽$€¥£+" data-cine="stat">₽ + $</div>
+        <div class="text-sm text-gray-400 uppercase tracking-wider">Доход в любой валюте</div>
+      </div>
+    </div>
+
+    <!-- CTA кнопки -->
+    <div class="flex flex-col sm:flex-row gap-5 justify-center items-center fade-in-up" data-reveal="stack" data-stagger="0.13">
+      <a href="#contracts" class="premium-button premium-button-gold text-lg" data-mag="A" data-fx="finale">
+        <span aria-hidden="true">🚀</span>
+        <span>Начать зарабатывать</span>
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="#motivation-1" class="premium-button premium-button-ghost text-lg" data-mag="B">
+        <span aria-hidden="true">✦</span>
+        <span>Узнать больше</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <button type="button" class="scroll-indicator" data-scroll-to="#motivation-1" aria-label="Перейти к следующему разделу">
+    <div class="w-7 h-12 border-2 border-purple-400/60 rounded-full flex items-start justify-center p-2 backdrop-blur-sm">
+      <div class="w-1.5 h-3 bg-purple-300 rounded-full animate-bounce" style="box-shadow: 0 0 10px rgba(167, 139, 250, 0.8);"></div>
+    </div>
+  </button>
+</section>
+
+<div class="seam" data-seam="hero-motivation1" style="--seam-color:167,139,250"><div class="seam__bar"></div></div>
+
+<!-- ============ МОТИВАЦИОННЫЙ БЛОК #1 — СВОБОДА ============ -->
+<section id="motivation-1" class="relative py-24 md:py-32 px-4" aria-labelledby="m1-title">
+  <div class="amb-aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="max-w-6xl mx-auto">
+    <div class="motivation-block fade-in-up">
+      <div class="text-center mb-12">
+        <span class="eyebrow-chip bg-purple-500/15 border-purple-400/40 text-purple-200 mb-5 inline-flex">
+          <span aria-hidden="true">✦</span>
+          <span data-scramble>Свобода и независимость</span>
+        </span>
+        <h2 id="m1-title" class="cinematic-title text-5xl md:text-7xl mb-6" data-cine="h2">
+          Работа из дома
+        </h2>
+        <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          Забудь о пробках, офисах и ранних подъёмах. Твоё рабочее место — там, где тебе комфортно.
+          Чашка кофе, удобный диван, свой график — и <span class="text-purple-300 font-semibold">стабильный доход каждый день</span>.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6" data-reveal="diagonal" data-stagger="0.09">
+        <div class="ultra-glass p-7">
+          <div class="text-5xl mb-4" aria-hidden="true">🏠</div>
+          <h3 class="text-2xl font-bold mb-3 cinematic-title" style="font-size: 1.75rem;">Свобода места</h3>
+          <p class="text-gray-400 leading-relaxed">Работай из любой точки мира — Москва, Бали, Дубай, Лиссабон. Главное — ноутбук и интернет.</p>
+        </div>
+        <div class="ultra-glass p-7">
+          <div class="text-5xl mb-4" aria-hidden="true">⏰</div>
+          <h3 class="text-2xl font-bold mb-3 cinematic-title" style="font-size: 1.75rem;">Свобода времени</h3>
+          <p class="text-gray-400 leading-relaxed">Сам выбираешь, когда и сколько работать. Утром, днём или ночью — решаешь только ты.</p>
+        </div>
+        <div class="ultra-glass p-7">
+          <div class="text-5xl mb-4" aria-hidden="true">💼</div>
+          <h3 class="text-2xl font-bold mb-3 cinematic-title" style="font-size: 1.75rem;">Без начальников</h3>
+          <p class="text-gray-400 leading-relaxed">Никаких отчётов, планёрок, "надо задержаться". Ты сам себе босс и сам строишь свой день.</p>
+        </div>
+        <div class="ultra-glass p-7">
+          <div class="text-5xl mb-4" aria-hidden="true">💰</div>
+          <h3 class="text-2xl font-bold mb-3 cinematic-title" style="font-size: 1.75rem;">Без лишних затрат</h3>
+          <p class="text-gray-400 leading-relaxed">Экономия на дороге, обедах в кафе, офисной одежде. Все деньги остаются у тебя.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="seam" data-seam="motivation1-contracts" style="--seam-color:16,185,129"><div class="seam__bar"></div></div>
+
+<!-- ============ ЗАРАБОТОК НА КОНТРАКТАХ ============ -->
+<section id="contracts" class="relative py-24 md:py-32 px-4 overflow-hidden" aria-labelledby="contracts-title">
+  <!-- Тематический фон: японские свечи + сетка терминала -->
+  <video class="section-video" muted loop playsinline preload="none" aria-hidden="true" data-src="assets/video/trading-loop.webm"></video>
+  <div class="terminal-grid" aria-hidden="true"></div>
+  <div class="terminal-scan" aria-hidden="true"></div>
+  <div class="terminal-ticker" aria-hidden="true" data-ticker="1"></div>
+  <div class="terminal-ticker" aria-hidden="true" data-ticker="2"></div>
+  <div class="terminal-ticker" aria-hidden="true" data-ticker="3"></div>
+  <div class="section-bg-candles" id="candlesBg" aria-hidden="true"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto">
+    <!-- 3D орбита со стрелками -->
+    <div class="orbit-container mb-10 fade-in-up" data-reveal="orbit" aria-hidden="true">
+      <div class="orbit-center"></div>
+      <div class="orbit-ring orbit-ring-1">
+        <div class="orbit-item arrow-call">↗</div>
+        <div class="orbit-item arrow-put">↘</div>
+      </div>
+      <div class="orbit-ring orbit-ring-2"></div>
+      <div class="orbit-ring orbit-ring-3"></div>
+    </div>
+
+    <div class="text-center mb-16 fade-in-up">
+      <span class="eyebrow-chip bg-emerald-500/15 border-emerald-400/40 text-emerald-200 mb-5 inline-flex">
+        <span aria-hidden="true">✦</span>
+        <span data-scramble>Trading Utilities</span>
+      </span>
+      <h2 id="contracts-title" class="cinematic-title text-5xl md:text-7xl mb-6" data-cine="h2" data-morph="Сигналы. Вход. Профит.">
+        Заработок на контрактах — легко
+      </h2>
+      <p class="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
+        Профессиональные утилиты для системного заработка на криптовалюте и валюте.<br>
+        <span class="text-emerald-300 font-semibold">Автоматические сигналы</span> — минимум усилий, максимум результата.
+      </p>
+    </div>
+
+    <!-- Живой мини-терминал -->
+    <figure class="pmh-infographic fade-in-up" id="tradeTerminal">
+      <div class="trade-hud" aria-hidden="true">
+        <span class="trade-hud__pair">BTC / USDT · 5M</span>
+        <span class="trade-hud__price" id="tradePrice">68 400.00</span>
+      </div>
+      <canvas id="tradeChart" aria-hidden="true"></canvas>
+      <figcaption class="sr-only">
+        Демонстрационный график микроструктуры рынка Bitcoin: японские свечи на пятиминутном
+        таймфрейме, подсвеченные зоны спроса и предложения и бегущая линия цены.
+        Данные смоделированы и приведены только для иллюстрации работы утилиты.
+      </figcaption>
+    </figure>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-7" data-reveal="from-right" data-stagger="0.13">
+      <!-- Карточка 1: Утилита для заработка (BTC) -->
+      <div class="ultra-glass cut-corner p-8 fade-in-up" data-chart-hover>
+        <div class="flex items-center justify-between mb-5">
+          <span class="eyebrow-chip bg-yellow-500/20 border-yellow-400/50 text-yellow-200" style="padding: 6px 14px; font-size: 11px;">
+            🔥 Хит
+          </span>
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-400 to-amber-600 flex items-center justify-center text-3xl font-bold text-white" style="box-shadow: 0 0 30px rgba(251, 191, 36, 0.6), inset 0 2px 4px rgba(255,255,255,0.3);" aria-hidden="true">₿</div>
+        </div>
+        <h3 class="text-2xl font-bold mb-4" style="font-family: var(--font-display);">Утилита для заработка</h3>
+        <p class="text-gray-400 mb-6 leading-relaxed">
+          Профессиональный анализ микроструктуры рынка Bitcoin. Автоматический поиск точных сигналов для скальпинга на 5-минутном таймфрейме. Система сама определяет лучшие точки входа.
+        </p>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="tag-pill">5-мин таймфрейм</span>
+          <span class="tag-pill">Авто-сигналы</span>
+          <span class="tag-pill">Для новичков</span>
+        </div>
+        <div class="income-badge mb-7 w-full justify-center">
+          <span aria-hidden="true">💰</span>
+          <span data-nums>Возможный доход: 1 500 – 5 000 ₽ / день</span>
+        </div>
+        <a href="https://jocehabuwa643-svg.github.io/gordeev_btc_radar" target="_blank" rel="noopener" class="premium-button btn-term w-full" data-mag="A" data-fx="term">
+          <span aria-hidden="true">🚀</span>
+          <span>Запустить утилиту</span>
+          <span class="arrow" aria-hidden="true">→</span>
+          <span class="sr-only">(откроется в новой вкладке)</span>
+        </a>
+      </div>
+
+      <!-- Карточка 2: Утилита для EUR/USD -->
+      <div class="ultra-glass cut-corner p-8 fade-in-up" data-chart-hover>
+        <div class="flex items-center justify-between mb-5">
+          <span class="eyebrow-chip bg-blue-500/20 border-blue-400/50 text-blue-200" style="padding: 6px 14px; font-size: 11px;">
+            📊 Ликвидность
+          </span>
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center text-2xl font-bold text-white" style="box-shadow: 0 0 30px rgba(96, 165, 250, 0.6), inset 0 2px 4px rgba(255,255,255,0.3);" aria-hidden="true">€/$</div>
+        </div>
+        <h3 class="text-2xl font-bold mb-4" style="font-family: var(--font-display);">Утилита для заработка на евро-доллар</h3>
+        <p class="text-gray-400 mb-6 leading-relaxed">
+          Мощный скальпинг на самой ликвидной валютной паре мира. Анализ паттернов ликвидности, зон спроса и предложения, объёмов. Точные сигналы на развороты тренда.
+        </p>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="tag-pill">24/5 работа</span>
+          <span class="tag-pill">Паттерны</span>
+          <span class="tag-pill">Универсальная</span>
+        </div>
+        <div class="income-badge mb-7 w-full justify-center">
+          <span aria-hidden="true">💰</span>
+          <span data-nums>Возможный доход: 1 500 – 6 000 ₽ / день</span>
+        </div>
+        <a href="https://jocehabuwa643-svg.github.io/eur-usdt_pro_max_terminal" target="_blank" rel="noopener" class="premium-button btn-term w-full" data-mag="A" data-fx="term">
+          <span aria-hidden="true">🚀</span>
+          <span>Запустить утилиту</span>
+          <span class="arrow" aria-hidden="true">→</span>
+          <span class="sr-only">(откроется в новой вкладке)</span>
+        </a>
+      </div>
+
+      <!-- Карточка 3: Биржа для заработка -->
+      <div class="ultra-glass cut-corner p-8 fade-in-up" data-chart-hover>
+        <div class="flex items-center justify-between mb-5">
+          <span class="eyebrow-chip bg-emerald-500/20 border-emerald-400/50 text-emerald-200" style="padding: 6px 14px; font-size: 11px;">
+            ⚡ Быстрый старт
+          </span>
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center text-3xl" style="box-shadow: 0 0 30px rgba(16, 185, 129, 0.6), inset 0 2px 4px rgba(255,255,255,0.3);" aria-hidden="true">📈</div>
+        </div>
+        <h3 class="text-2xl font-bold mb-4" style="font-family: var(--font-display);">Биржа для заработка</h3>
+        <p class="text-gray-400 mb-6 leading-relaxed">
+          Прозрачная торговая площадка с мгновенным исполнением ордеров. Честные котировки, низкие спреды, быстрые выплаты. Идеально для применения сигналов наших утилит.
+        </p>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="tag-pill">Мгновенно</span>
+          <span class="tag-pill">Низкие спреды</span>
+          <span class="tag-pill">Поддержка 24/7</span>
+        </div>
+        <div class="income-badge mb-7 w-full justify-center">
+          <span aria-hidden="true">💰</span>
+          <span data-nums>Возможный доход: 2 000 – 7 000 ₽ / день</span>
+        </div>
+        <a href="https://intrade35.bar/311164" target="_blank" rel="noopener" class="premium-button premium-button-emerald w-full" data-mag="A" data-fx="spark">
+          <span aria-hidden="true">⚡</span>
+          <span>Открыть биржу</span>
+          <span class="arrow" aria-hidden="true">→</span>
+          <span class="sr-only">(откроется в новой вкладке)</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Суммарный потенциал -->
+    <div class="ultra-glass p-8 md:p-10 mt-12 text-center fade-in-up">
+      <div class="flex items-center justify-center gap-4 mb-4">
+        <span class="text-5xl" aria-hidden="true">💎</span>
+        <h3 class="text-3xl md:text-4xl font-bold cinematic-title" style="font-size: clamp(1.75rem, 4vw, 2.5rem);">Суммарный потенциал</h3>
+      </div>
+      <p class="text-2xl md:text-3xl text-emerald-300 font-bold mb-2" style="text-shadow: 0 0 30px rgba(16, 185, 129, 0.6);" data-nums data-dur="2.2">
+        До 18 000 ₽ в день
+      </p>
+      <p class="text-gray-400">при грамотном использовании всех трёх инструментов</p>
+    </div>
+  </div>
+</section>
+
+<div class="seam" data-seam="contracts-motivation2" style="--seam-color:251,191,36"><div class="seam__bar"></div></div>
+
+<!-- ============ МОТИВАЦИОННЫЙ БЛОК #2 — НЕЗАВИСИМОСТЬ ============ -->
+<section id="motivation-2" class="relative py-24 md:py-32 px-4" aria-labelledby="m2-title">
+  <div class="section-fx" id="goldDustBg" aria-hidden="true"></div>
+  <div class="max-w-6xl mx-auto">
+    <div class="motivation-block motivation-block-gold fade-in-up">
+      <div class="text-center mb-12">
+        <span class="eyebrow-chip bg-yellow-500/15 border-yellow-400/40 text-yellow-200 mb-5 inline-flex">
+          <span aria-hidden="true">✦</span>
+          <span data-scramble>Независимость</span>
+        </span>
+        <h2 id="m2-title" class="cinematic-title-gold text-5xl md:text-7xl mb-6" data-cine="h2">
+          Никаких начальников
+        </h2>
+        <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          Больше никаких планёрок, отчётов и фразы «надо задержаться». Ты сам себе босс.<br>
+          Сам ставишь цели, сам выбираешь темп, сам решаешь, когда взять выходной.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8" data-reveal="coin-flip" data-stagger="0.14">
+        <div class="ultra-glass p-7 text-center">
+          <div class="text-6xl mb-4" aria-hidden="true">📈</div>
+          <div class="text-6xl font-bold cinematic-title-gold mb-3" data-nums data-from="40" data-to="0">0</div>
+          <p class="text-gray-300">отчётов и планёрок</p>
+        </div>
+        <div class="ultra-glass p-7 text-center">
+          <div class="text-6xl mb-4" aria-hidden="true">🎯</div>
+          <div class="text-6xl font-bold cinematic-title-gold mb-3" data-nums>100%</div>
+          <p class="text-gray-300">контроль над временем</p>
+        </div>
+        <div class="ultra-glass p-7 text-center">
+          <div class="text-6xl mb-4" aria-hidden="true">🌍</div>
+          <div class="text-6xl font-bold cinematic-title-gold mb-3" data-scramble data-scramble-set="∞8○◎">∞</div>
+          <p class="text-gray-300">возможностей для роста</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="seam" data-seam="motivation2-prop" style="--seam-color:251,191,36"><div class="seam__bar"></div></div>
+
+<!-- ============ PROP TRADING ============ -->
+<section id="prop" class="relative py-24 md:py-32 px-4 overflow-hidden" aria-labelledby="prop-title">
+  <!-- Тематический фон: монеты -->
+  <div class="section-bg-coins" id="coinsBg" aria-hidden="true"></div>
+
+  <div class="prop-stage relative z-10 max-w-7xl mx-auto">
+    <!-- L1 / L3 — слои пролёта камеры -->
+    <div class="fly-L1" aria-hidden="true"></div>
+    <div class="fly-L3" aria-hidden="true">
+      <svg class="capital-ladder" viewBox="0 0 1200 700" preserveAspectRatio="none" focusable="false"></svg>
+    </div>
+
+    <div class="fly-L2">
+      <!-- 3D орбита с монетами -->
+      <div class="orbit-container mb-10 fade-in-up" data-reveal="orbit" aria-hidden="true">
+        <div class="orbit-center" style="background: radial-gradient(circle, rgba(251, 191, 36, 0.95) 0%, rgba(245, 158, 11, 0.5) 100%); box-shadow: 0 0 60px rgba(251, 191, 36, 0.8), 0 0 120px rgba(251, 191, 36, 0.4), inset 0 0 25px rgba(255,255,255,0.4);"></div>
+        <div class="orbit-ring orbit-ring-1" style="border-color: rgba(251, 191, 36, 0.4);">
+          <div class="orbit-item coin-item">$</div>
+          <div class="orbit-item dollar-item">💰</div>
+        </div>
+        <div class="orbit-ring orbit-ring-2" style="border-color: rgba(251, 191, 36, 0.3);"></div>
+        <div class="orbit-ring orbit-ring-3" style="border-color: rgba(245, 158, 11, 0.2);"></div>
+      </div>
+
+      <div class="text-center mb-16 fade-in-up">
+        <span class="eyebrow-chip bg-yellow-500/15 border-yellow-400/40 text-yellow-200 mb-5 inline-flex">
+          <span aria-hidden="true">✦</span>
+          <span data-scramble>Capital Access</span>
+        </span>
+        <h2 id="prop-title" class="cinematic-title-gold text-5xl md:text-7xl mb-6" data-cine="h2" data-morph="Капитал компании">
+          Проп-трейдинг
+        </h2>
+        <p class="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
+          Торгуй на <span class="text-yellow-300 font-semibold" data-nums data-loc="en-US">капитале компании от $10 000 до $200 000</span>. Получи funded-счёт и забирай до <span data-nums>80%</span> прибыли.
+          Масштабируй доход <span class="text-yellow-300 font-semibold">без риска своими деньгами</span>.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-7">
+        <!-- Карточка 1: Терминал (60%) -->
+        <div class="lg:col-span-3 ultra-glass cut-corner p-9 fade-in-up" data-reveal="from-left">
+          <div class="flex items-center justify-between mb-5">
+            <span class="eyebrow-chip bg-purple-500/20 border-purple-400/50 text-purple-200" style="padding: 6px 14px; font-size: 11px;">
+              🎯 Для челленджей
+            </span>
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center text-3xl" style="box-shadow: 0 0 30px rgba(139, 92, 246, 0.6), inset 0 2px 4px rgba(255,255,255,0.3);" aria-hidden="true">💻</div>
+          </div>
+          <h3 class="text-3xl font-bold mb-4" style="font-family: var(--font-display);">Утилита для прохождения проп-челленджей</h3>
+          <p class="text-gray-400 mb-6 leading-relaxed text-lg">
+            Специализированный терминал для прохождения evaluation-челленджей проп-фирм. <span class="text-purple-300 font-semibold">Встроенный риск-контроль</span> автоматически следит за дневным лимитом убытков и максимальной просадкой. Система предупреждает, когда нужно остановиться.
+          </p>
+          <p class="text-gray-400 mb-7 leading-relaxed text-lg">
+            Помогает пройти челлендж с первой попытки и сохранить funded-счёт после получения. Торгуй спокойно, не думая о нарушениях правил.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-7">
+            <span class="tag-pill">Риск-контроль</span>
+            <span class="tag-pill">Аналитика</span>
+            <span class="tag-pill">Автостоп</span>
+            <span class="tag-pill">Статистика</span>
+            <span class="tag-pill">Советник</span>
+          </div>
+          <div class="income-badge income-badge-gold mb-7 w-full justify-center">
+            <span aria-hidden="true">💵</span>
+            <span data-nums data-loc="en-US">Потенциальный доход: $500 – $2 000+ на funded-счёте</span>
+          </div>
+          <a href="https://jocehabuwa643-svg.github.io/upscale-prop-terminal_pro_max" target="_blank" rel="noopener" class="premium-button premium-button-gold btn-term w-full" data-mag="A" data-fx="term">
+            <span aria-hidden="true">⚡</span>
+            <span>Запустить терминал</span>
+            <span class="arrow" aria-hidden="true">→</span>
+            <span class="sr-only">(откроется в новой вкладке)</span>
+          </a>
+        </div>
+
+        <!-- Карточка 2: Биржа (40%) -->
+        <div class="lg:col-span-2 ultra-glass p-9 fade-in-up" data-reveal="from-right" style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.12) 0%, rgba(245, 158, 11, 0.05) 100%), rgba(20, 10, 40, 0.45);">
+          <div class="flex items-center justify-between mb-5">
+            <span class="eyebrow-chip bg-yellow-500/25 border-yellow-400/60 text-yellow-200" style="padding: 6px 14px; font-size: 11px;">
+              💎 Премиум
+            </span>
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-yellow-400 to-amber-600 flex items-center justify-center text-3xl" style="box-shadow: 0 0 30px rgba(251, 191, 36, 0.7), inset 0 2px 4px rgba(255,255,255,0.3);" aria-hidden="true">🏢</div>
+          </div>
+          <h3 class="text-3xl font-bold mb-4" style="font-family: var(--font-display);">Высококачественная проп-биржа</h3>
+          <p class="text-gray-300 mb-6 leading-relaxed text-lg">
+            Прозрачная проп-биржа с честными условиями. Быстрая регистрация, понятные правила evaluation, <span class="text-yellow-300 font-semibold">мгновенные выплаты</span>. Масштабирование счёта при успешной торговле — от $10K до $200K.
+          </p>
+          <div class="income-badge income-badge-gold mb-7 w-full justify-center">
+            <span aria-hidden="true">💵</span>
+            <span data-nums data-loc="en-US">До $10 000+ в месяц</span>
+          </div>
+          <div class="flex flex-col gap-4">
+            <a href="https://app.bookflow.sh?ref=3NCYI" target="_blank" rel="noopener" class="premium-button premium-button-gold" data-mag="A" data-fx="key">
+              <span aria-hidden="true">🔑</span>
+              <span>Получить доступ</span>
+              <span class="arrow" aria-hidden="true">→</span>
+              <span class="sr-only">(откроется в новой вкладке)</span>
+            </a>
+            <a href="#youtube" class="premium-button premium-button-ghost premium-button-ghost-gold" data-mag="B">
+              <span aria-hidden="true">📺</span>
+              <span>Узнать подробнее</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Инфо-блок про Split profit -->
+      <div class="ultra-glass p-8 md:p-10 mt-12 text-center fade-in-up">
+        <div class="flex items-center justify-center gap-4 mb-4">
+          <span class="text-5xl" aria-hidden="true">🤝</span>
+          <h3 class="text-3xl md:text-4xl font-bold cinematic-title-gold" style="font-size: clamp(1.75rem, 4vw, 2.5rem);" data-nums>Split profit 80/20</h3>
+        </div>
+        <p class="text-2xl md:text-3xl text-yellow-300 font-bold mb-2" style="text-shadow: 0 0 30px rgba(251, 191, 36, 0.6);" data-nums>
+          Забирай 80% прибыли
+        </p>
+        <p class="text-gray-400">с каждого funded-счёта — честно и прозрачно</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="seam" data-seam="prop-motivation3" style="--seam-color:34,211,238"><div class="seam__bar"></div></div>
+
+<!-- ============ МОТИВАЦИОННЫЙ БЛОК #3 — СПОКОЙНЫЙ ЗАРАБОТОК ============ -->
+<section id="motivation-3" class="relative py-24 md:py-32 px-4" aria-labelledby="m3-title">
+  <div class="amb-waves" aria-hidden="true"></div>
+  <div class="max-w-6xl mx-auto">
+    <div class="motivation-block motivation-block-cyan fade-in-up">
+      <div class="text-center mb-12">
+        <span class="eyebrow-chip bg-cyan-500/15 border-cyan-400/40 text-cyan-200 mb-5 inline-flex">
+          <span aria-hidden="true">✦</span>
+          <span data-scramble>Peace of mind</span>
+        </span>
+        <h2 id="m3-title" class="cinematic-title text-5xl md:text-7xl mb-6" data-cine="h2">
+          Заработок без стресса
+        </h2>
+        <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          Никакой гонки. Никаких дедлайнов. Никаких нервотрёпок.<br>
+          <span class="text-cyan-300 font-semibold">Системный подход</span>, проверенные инструменты, понятные стратегии.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6" data-reveal="stack" data-stagger="0.10">
+        <div class="ultra-glass p-7 text-center">
+          <div class="text-5xl mb-4" aria-hidden="true">🧘</div>
+          <h3 class="text-xl font-bold mb-3">Спокойствие</h3>
+          <p class="text-gray-400">Без гонки, без давления, без выгорания. Ты работаешь в своём ритме.</p>
+        </div>
+        <div class="ultra-glass p-7 text-center">
+          <div class="text-5xl mb-4" aria-hidden="true">📊</div>
+          <h3 class="text-xl font-bold mb-3">Система</h3>
+          <p class="text-gray-400">Проверенные стратегии и алгоритмы, которые работают стабильно день за днём.</p>
+        </div>
+        <div class="ultra-glass p-7 text-center">
+          <div class="text-5xl mb-4" aria-hidden="true">🎯</div>
+          <h3 class="text-xl font-bold mb-3">Результат</h3>
+          <p class="text-gray-400">Стабильный доход, который можно планировать. Без сюрпризов и рисков.</p>
+        </div>
+      </div>
+
+      <div class="text-center mt-10">
+        <p class="text-lg text-cyan-200 italic" style="text-shadow: 0 0 20px rgba(34, 211, 238, 0.4);">
+          «Спокойствие — это новая роскошь»
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="seam" data-seam="motivation3-neural" style="--seam-color:232,121,249"><div class="seam__bar"></div></div>
+
+<!-- ============ NEURAL NETWORKS ============ -->
+<section id="neural" class="relative py-24 md:py-32 px-4 overflow-hidden" aria-labelledby="neural-title">
+  <!-- Тематический фон: нейронные узлы -->
+  <video class="section-video" muted loop playsinline preload="none" aria-hidden="true" data-src="assets/video/neural-loop.webm"></video>
+  <div class="section-bg-neural" id="neuralBg" aria-hidden="true"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto">
+    <!-- 3D нейронные связи -->
+    <div class="neural-container mb-10 fade-in-up" data-reveal="orbit" aria-hidden="true">
+      <div class="neural-node neural-node-1"></div>
+      <div class="neural-node neural-node-2"></div>
+      <div class="neural-node neural-node-3"></div>
+      <div class="neural-node neural-node-4"></div>
+      <div class="neural-node neural-node-5"></div>
+      <svg class="absolute inset-0 w-full h-full" style="z-index: 0;" focusable="false">
+        <line x1="20%" y1="25%" x2="50%" y2="50%" stroke="url(#grad1)" stroke-width="2" opacity="0.7" style="filter: drop-shadow(0 0 8px rgba(232, 121, 249, 0.6));"/>
+        <line x1="80%" y1="25%" x2="50%" y2="50%" stroke="url(#grad1)" stroke-width="2" opacity="0.7" style="filter: drop-shadow(0 0 8px rgba(232, 121, 249, 0.6));"/>
+        <line x1="30%" y1="80%" x2="50%" y2="50%" stroke="url(#grad1)" stroke-width="2" opacity="0.7" style="filter: drop-shadow(0 0 8px rgba(232, 121, 249, 0.6));"/>
+        <line x1="70%" y1="80%" x2="50%" y2="50%" stroke="url(#grad1)" stroke-width="2" opacity="0.7" style="filter: drop-shadow(0 0 8px rgba(232, 121, 249, 0.6));"/>
+        <line x1="20%" y1="25%" x2="80%" y2="25%" stroke="url(#grad1)" stroke-width="1.5" opacity="0.5"/>
+        <line x1="30%" y1="80%" x2="70%" y2="80%" stroke="url(#grad1)" stroke-width="1.5" opacity="0.5"/>
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#e879f9"/>
+            <stop offset="100%" stop-color="#a78bfa"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <div class="text-center mb-16 fade-in-up">
+      <span class="eyebrow-chip bg-pink-500/20 border-pink-400/50 text-pink-200 mb-5 inline-flex">
+        <span aria-hidden="true">✦</span>
+        <span data-scramble>Artificial Intelligence</span>
+      </span>
+      <h2 id="neural-title" class="cinematic-title-pink text-5xl md:text-7xl mb-6" data-cine="h2" data-morph="Одна подписка — все модели">
+        Нейросети для заработка
+      </h2>
+      <p class="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
+        Одна подписка — <span class="text-pink-300 font-semibold">неограниченный доступ</span> ко всем топовым AI-моделям мира.
+        Создавай контент без цензуры, монетизируй творчество, зарабатывай на рефералах.
+      </p>
+    </div>
+
+    <!-- Инфографика: одна подписка → N моделей -->
+    <figure class="ai-graph fade-in-up" id="aiGraph">
+      <figcaption class="sr-only">
+        Схема: одна подписка в центре соединена с восемью группами AI-моделей —
+        видео, изображения, тексты, музыка, код, голос, агенты и контент 18+.
+        По связям непрерывно идут импульсы, показывая единый доступ ко всем инструментам.
+      </figcaption>
+    </figure>
+
+    <!-- Главная карточка -->
+    <div class="ultra-glass p-8 md:p-12 fade-in-up" data-neuron-host style="background: linear-gradient(135deg, rgba(232, 121, 249, 0.12) 0%, rgba(217, 70, 239, 0.05) 100%), rgba(20, 10, 40, 0.45);">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-7 gap-4">
+        <span class="eyebrow-chip bg-pink-500/25 border-pink-400/60 text-pink-200">
+          🔥 Хит сезона
+        </span>
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-400 to-fuchsia-600 flex items-center justify-center text-4xl" style="box-shadow: 0 0 40px rgba(232, 121, 249, 0.7), inset 0 2px 4px rgba(255,255,255,0.3);" aria-hidden="true">🧠</div>
+      </div>
+
+      <h3 class="text-3xl md:text-4xl font-bold mb-5" style="font-family: var(--font-display);">Доступ ко всем нейросетям</h3>
+
+      <p class="text-gray-300 mb-5 leading-relaxed text-lg">
+        Единая подписка открывает доступ ко всем передовым AI-инструментам без ограничений. Создавай любое видео, генерируй арт, пиши тексты, автоматизируй бизнес — всё в одном месте.
+      </p>
+
+      <p class="text-pink-200 mb-8 leading-relaxed text-lg font-semibold" style="background: linear-gradient(135deg, rgba(232, 121, 249, 0.15) 0%, rgba(217, 70, 239, 0.08) 100%); padding: 18px 22px; border-radius: 16px; border-left: 3px solid #e879f9;">
+        🎬 <span class="text-pink-300">Создание и монетизация контента 18+ без цензуры</span> — эксклюзивные видео, арт и сценарии, которые можно продавать на OnlyFans, Patreon, Fansly и других платформах. Полная свобода творчества и высокие доходы.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-9" data-reveal="burst" data-stagger="0.055">
+        <div class="feature-item">
+          <div class="flex items-start gap-3">
+            <span class="text-3xl" aria-hidden="true">🎬</span>
+            <div>
+              <div class="font-bold mb-1 text-lg">Видео 18+</div>
+              <div class="text-sm text-gray-400">Без цензуры, любые сценарии и жанры</div>
+            </div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="flex items-start gap-3">
+            <span class="text-3xl" aria-hidden="true">🎨</span>
+            <div>
+              <div class="font-bold mb-1 text-lg">Арт и изображения</div>
+              <div class="text-sm text-gray-400">Фотореализм, любые стили и концепты</div>
+            </div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="flex items-start gap-3">
+            <span class="text-3xl" aria-hidden="true">✍️</span>
+            <div>
+              <div class="font-bold mb-1 text-lg">Тексты и сценарии</div>
+              <div class="text-sm text-gray-400">Любые форматы, объёмы, стили</div>
+            </div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="flex items-start gap-3">
+            <span class="text-3xl" aria-hidden="true">🎵</span>
+            <div>
+              <div class="font-bold mb-1 text-lg">Музыка</div>
+              <div class="text-sm text-gray-400">Любые жанры и настроения</div>
+            </div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="flex items-start gap-3">
+            <span class="text-3xl" aria-hidden="true">🤖</span>
+            <div>
+              <div class="font-bold mb-1 text-lg">Автоматизация</div>
+              <div class="text-sm text-gray-400">Бизнес-процессы и рутина</div>
+            </div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="flex items-start gap-3">
+            <span class="text-3xl" aria-hidden="true">📱</span>
+            <div>
+              <div class="font-bold mb-1 text-lg">AI-блоги</div>
+              <div class="text-sm text-gray-400">Уникальный контент 24/7</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-9" data-reveal="stack" data-stagger="0.12">
+        <div class="income-badge income-badge-pink w-full justify-center">
+          <span aria-hidden="true">💰</span>
+          <span data-nums>Возможный доход: 5 000 – 50 000 ₽ / месяц</span>
+        </div>
+        <div class="income-badge income-badge-pink w-full justify-center">
+          <span aria-hidden="true">🔗</span>
+          <span data-nums>Рефералы: до 30% с каждой подписки</span>
+        </div>
+      </div>
+
+      <a href="https://syntx.ai/welcome/mr0UAykB" target="_blank" rel="noopener" class="premium-button premium-button-pink btn-neuron w-full text-lg" data-mag="A" data-fx="neuron">
+        <span aria-hidden="true">🧠</span>
+        <span>Получить доступ ко всем AI</span>
+        <span class="arrow" aria-hidden="true">→</span>
+        <span class="sr-only">(откроется в новой вкладке)</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="seam" data-seam="neural-motivation4" style="--seam-color:167,139,250"><div class="seam__bar"></div></div>
+
+<!-- ============ МОТИВАЦИОННЫЙ БЛОК #4 — ГЕОГРАФИЧЕСКАЯ СВОБОДА ============ -->
+<section id="motivation-4" class="relative py-24 md:py-32 px-4" aria-labelledby="m4-title">
+  <div class="amb-meridians" aria-hidden="true"></div>
+  <div class="max-w-6xl mx-auto">
+    <div class="motivation-block fade-in-up">
+      <div class="text-center mb-12">
+        <span class="eyebrow-chip bg-purple-500/15 border-purple-400/40 text-purple-200 mb-5 inline-flex">
+          <span aria-hidden="true">✦</span>
+          <span data-scramble>Geographic Freedom</span>
+        </span>
+        <h2 id="m4-title" class="cinematic-title text-5xl md:text-7xl mb-6" data-cine="h2">
+          Живи где хочешь
+        </h2>
+        <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          Сегодня Москва, завтра Бали, послезавтра Дубай.<br>
+          Твой <span class="text-purple-300 font-semibold">доход не привязан к месту</span>. Ноутбук, стабильный интернет — и ты в бизнесе из любой точки мира.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-5" data-reveal="map" data-stagger="0.08">
+        <div class="ultra-glass p-6 text-center" data-city>
+          <div class="text-5xl mb-3" aria-hidden="true">🇷🇺</div>
+          <div class="font-bold">Москва</div>
+          <div class="text-xs text-gray-400 mt-1">Старт отсюда</div>
+        </div>
+        <div class="ultra-glass p-6 text-center" data-city>
+          <div class="text-5xl mb-3" aria-hidden="true">🏝️</div>
+          <div class="font-bold">Бали</div>
+          <div class="text-xs text-gray-400 mt-1">Океан и закаты</div>
+        </div>
+        <div class="ultra-glass p-6 text-center" data-city>
+          <div class="text-5xl mb-3" aria-hidden="true">🏙️</div>
+          <div class="font-bold">Дубай</div>
+          <div class="text-xs text-gray-400 mt-1">Роскошь и комфорт</div>
+        </div>
+        <div class="ultra-glass p-6 text-center" data-city>
+          <div class="text-5xl mb-3" aria-hidden="true">🌍</div>
+          <div class="font-bold">Весь мир</div>
+          <div class="text-xs text-gray-400 mt-1">Твой офис</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="seam" data-seam="motivation4-vpn" style="--seam-color:34,211,238"><div class="seam__bar"></div></div>
+
+<!-- ============ VPN ============ -->
+<section id="vpn" class="relative py-24 md:py-32 px-4 overflow-hidden" aria-labelledby="vpn-title">
+  <!-- Тематический фон: сетевые пакеты -->
+  <video class="section-video" muted loop playsinline preload="none" aria-hidden="true" data-src="assets/video/vpn-loop.webm"></video>
+  <div class="section-bg-network" id="networkBg" aria-hidden="true"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto">
+    <!-- 3D глобус -->
+    <div class="globe-container mb-10 fade-in-up" data-reveal="orbit">
+      <div id="globe3d" tabindex="0" role="img"
+           aria-label="Интерактивный глобус: сеть VPN-серверов, соединяющая Москву, Бали, Дубай и Лиссабон. Стрелками можно вращать."></div>
+      <div class="globe" aria-hidden="true">
+        <div class="globe-ring globe-ring-1"></div>
+        <div class="globe-ring globe-ring-2"></div>
+      </div>
+      <div class="globe-signal" style="top: 25%; left: 35%;" aria-hidden="true"></div>
+      <div class="globe-signal" style="top: 55%; right: 30%; animation-delay: 0.6s;" aria-hidden="true"></div>
+      <div class="globe-signal" style="bottom: 25%; left: 45%; animation-delay: 1.2s;" aria-hidden="true"></div>
+      <div class="globe-signal" style="top: 40%; left: 60%; animation-delay: 1.8s;" aria-hidden="true"></div>
+    </div>
+
+    <div class="text-center mb-16 fade-in-up">
+      <span class="eyebrow-chip bg-cyan-500/15 border-cyan-400/40 text-cyan-200 mb-5 inline-flex">
+        <span aria-hidden="true">✦</span>
+        <span data-scramble>Digital Privacy</span>
+      </span>
+      <h2 id="vpn-title" class="cinematic-title text-5xl md:text-7xl mb-4" data-cine="h2" data-morph="Приватность = доход">
+        Virtual Private Network
+      </h2>
+      <p class="text-2xl md:text-3xl text-cyan-300 font-semibold mb-6" style="text-shadow: 0 0 30px rgba(34, 211, 238, 0.5);">
+        Заработок на раздаче VPN
+      </p>
+      <p class="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
+        Защита данных + <span class="text-cyan-300 font-semibold">пассивный доход</span>. Рекомендуй сервис друзьям и получай процент с каждой их подписки — <span class="text-cyan-300 font-semibold">навсегда</span>.
+      </p>
+    </div>
+
+    <!-- Инфографика: вы → VPN → сервер -->
+    <figure class="vpn-flow fade-in-up" id="vpnFlow">
+      <figcaption class="sr-only">
+        Схема маршрута трафика: от пользователя данные идут в открытом виде до VPN-узла,
+        где шифруются, и дальше следуют к целевому серверу уже защищёнными.
+        Индикатор показывает скорость канала до 10 Гбит/с.
+      </figcaption>
+    </figure>
+
+    <!-- Главная карточка VPN -->
+    <div class="ultra-glass p-8 md:p-12 fade-in-up" data-shield-host style="background: linear-gradient(135deg, rgba(34, 211, 238, 0.12) 0%, rgba(8, 145, 178, 0.05) 100%), rgba(20, 10, 40, 0.45);">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-7 gap-4">
+        <span class="eyebrow-chip bg-cyan-500/25 border-cyan-400/60 text-cyan-200">
+          🛡️ Максимальная защита
+        </span>
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-4xl" style="box-shadow: 0 0 40px rgba(34, 211, 238, 0.7), inset 0 2px 4px rgba(255,255,255,0.3);" aria-hidden="true">🔐</div>
+      </div>
+
+      <h3 class="text-3xl md:text-4xl font-bold mb-5" style="font-family: var(--font-display);">Премиум VPN-сервис</h3>
+
+      <p class="text-gray-300 mb-8 leading-relaxed text-lg">
+        Высококачественный VPN со скоростью до <span class="text-cyan-300 font-semibold">10 Gbps</span> — идеально для 8K стриминга, онлайн-игр без лагов и быстрой работы.
+        40+ локаций по всему миру, неограниченное количество подключений на одну подписку.
+        Полная приватность, обход любых блокировок, поддержка от реальных специалистов 24/7.
+      </p>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-9" data-reveal="radial" data-stagger="0.045">
+        <div class="feature-item text-center">
+          <div class="text-4xl mb-2" aria-hidden="true">⚡</div>
+          <div class="font-bold text-xl text-cyan-300" data-nums>10 Gbps</div>
+          <div class="text-xs text-gray-400">скорость</div>
+        </div>
+        <div class="feature-item text-center">
+          <div class="text-4xl mb-2" aria-hidden="true">🌍</div>
+          <div class="font-bold text-xl text-cyan-300" data-nums>40+</div>
+          <div class="text-xs text-gray-400">локаций</div>
+        </div>
+        <div class="feature-item text-center">
+          <div class="text-4xl mb-2" aria-hidden="true">📱</div>
+          <div class="font-bold text-xl text-cyan-300" data-scramble data-scramble-set="∞8○◎">∞</div>
+          <div class="text-xs text-gray-400">подключений</div>
+        </div>
+        <div class="feature-item text-center">
+          <div class="text-4xl mb-2" aria-hidden="true">🔒</div>
+          <div class="font-bold text-xl text-cyan-300" data-scramble data-scramble-set="ABCDEFGHIJKLMNOPQRSTUVWXYZ-">No-log</div>
+          <div class="text-xs text-gray-400">политика</div>
+        </div>
+        <div class="feature-item text-center">
+          <div class="text-4xl mb-2" aria-hidden="true">📺</div>
+          <div class="font-bold text-xl text-cyan-300" data-nums>8K</div>
+          <div class="text-xs text-gray-400">стриминг</div>
+        </div>
+        <div class="feature-item text-center">
+          <div class="text-4xl mb-2" aria-hidden="true">👨‍💻</div>
+          <div class="font-bold text-xl text-cyan-300" data-nums>24/7</div>
+          <div class="text-xs text-gray-400">поддержка</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-9" data-reveal="stack" data-stagger="0.12">
+        <div class="income-badge income-badge-cyan w-full justify-center">
+          <span aria-hidden="true">💰</span>
+          <span data-nums>Пассивный доход: 3 000 – 30 000 ₽ / месяц</span>
+        </div>
+        <div class="income-badge income-badge-cyan w-full justify-center">
+          <span aria-hidden="true">🎁</span>
+          <span data-nums>+30 бесплатных дней для друзей</span>
+        </div>
+      </div>
+
+      <a href="https://blnc.to/friend/5f412c5c9e0f4541a562" target="_blank" rel="noopener" class="premium-button premium-button-cyan w-full text-lg" data-mag="A" data-fx="shield">
+        <span aria-hidden="true">🔐</span>
+        <span>Подключить VPN</span>
+        <span class="arrow" aria-hidden="true">→</span>
+        <span class="sr-only">(откроется в новой вкладке)</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="seam" data-seam="vpn-youtube" style="--seam-color:239,68,68"><div class="seam__bar"></div></div>
+
+<!-- ============ ФИНАЛЬНЫЙ БЛОК — YOUTUBE ============ -->
+<section id="youtube" class="relative py-24 md:py-32 px-4" aria-labelledby="yt-title">
+  <div class="amb-red" aria-hidden="true"><i></i><i></i></div>
+  <div class="section-fx" id="ytSparksBg" aria-hidden="true"></div>
+  <div class="max-w-6xl mx-auto">
+    <div class="motivation-block fade-in-up" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.12) 0%, rgba(167, 139, 250, 0.12) 100%), rgba(20, 10, 40, 0.4); --glass-tint:239,68,68;">
+      <div class="text-center">
+        <span class="eyebrow-chip bg-red-500/15 border-red-400/40 text-red-200 mb-5 inline-flex">
+          <span aria-hidden="true">✦</span>
+          <span data-scramble>Education &amp; Community</span>
+        </span>
+
+        <h2 id="yt-title" class="cinematic-title text-5xl md:text-7xl mb-6" data-cine="h2">
+          Инструкция по заработку
+        </h2>
+
+        <!-- YouTube Play -->
+        <div class="my-10 fade-in-up" data-reveal="depth">
+          <a href="https://www.youtube.com/@slava666gordeev" target="_blank" rel="noopener"
+             class="youtube-play-link" aria-label="Смотреть инструкции на YouTube (откроется в новой вкладке)">
+            <div class="youtube-play">
+              <div class="youtube-play-triangle"></div>
+            </div>
+          </a>
+        </div>
+
+        <!-- Слоган -->
+        <h3 class="cinematic-title text-4xl md:text-6xl mb-6" style="font-size: clamp(2rem, 5vw, 3.75rem);" data-cine="h2" data-morph="Начни прямо сейчас">
+          Сделай свою жизнь лучше
+        </h3>
+
+        <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-10">
+          На нашем YouTube-канале — все инструкции: настройка утилит, прохождение проп-челленджей,
+          монетизация нейросетей, пассивный доход на VPN. <span class="text-red-300 font-semibold">Простые видео без воды</span> —
+          посмотрел, применил, получил результат.
+        </p>
+
+        <a href="https://www.youtube.com/@slava666gordeev" target="_blank" rel="noopener" class="premium-button premium-button-red text-lg mb-10 inline-flex" data-mag="A" data-fx="play">
+          <span aria-hidden="true">▶</span>
+          <span>Смотреть инструкции</span>
+          <span class="arrow" aria-hidden="true">→</span>
+          <span class="sr-only">(откроется в новой вкладке)</span>
+        </a>
+
+        <!-- Мотивационные плашки -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-12" data-reveal="stack" data-stagger="0.10">
+          <div class="ultra-glass p-6 text-center">
+            <p class="text-lg font-semibold pmh-gradient-text" style="background-image: linear-gradient(135deg, #ffffff, #a78bfa);">
+              Начни сегодня — получи результат завтра
+            </p>
+          </div>
+          <div class="ultra-glass p-6 text-center">
+            <p class="text-lg font-semibold pmh-gradient-text" style="background-image: linear-gradient(135deg, #ffffff, #fbbf24);">
+              Твой доход = твои действия
+            </p>
+          </div>
+          <div class="ultra-glass p-6 text-center">
+            <p class="text-lg font-semibold pmh-gradient-text" style="background-image: linear-gradient(135deg, #ffffff, #e879f9);">
+              Свобода — это твой выбор
+            </p>
+          </div>
+        </div>
+
+        <!-- Финальный CTA -->
+        <div class="mt-14">
+          <a href="#contracts" class="premium-button premium-button-gold text-xl inline-flex" data-mag="A" data-fx="finale">
+            <span aria-hidden="true">🚀</span>
+            <span>Стать свободным</span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="height: 80px;"></div>
+
+<!-- ============ ФУТЕР — АВТОР ============ -->
+<footer id="footer" class="pmh-footer" role="contentinfo">
+  <div class="pmh-footer__plate" aria-hidden="true"></div>
+  <canvas class="pmh-footer__stars" aria-hidden="true"></canvas>
+
+  <div class="pmh-footer__inner">
+    <div class="premium-divider" aria-hidden="true">
+      <div class="line"></div>
+      <span class="pmh-footer__star">✦</span>
+      <div class="line"></div>
+    </div>
+
+    <p class="pmh-footer__role">Автор и создатель Pro Max Hub</p>
+
+    <h2 class="pmh-footer__name" data-cine-name>
+      <span class="fn__layer fn__layer--back" aria-hidden="true">Слава Гордеев</span>
+      <span class="fn__layer fn__layer--mid" aria-hidden="true">Слава Гордеев</span>
+      <span class="fn__layer fn__layer--front">Слава Гордеев</span>
+    </h2>
+
+    <p class="pmh-footer__latin" lang="en" aria-hidden="true">SLAVA&nbsp;GORDEEV</p>
+
+    <p class="pmh-footer__tagline">Инструменты, которые делают свободу измеримой</p>
+
+    <div class="pmh-footer__rule" aria-hidden="true"></div>
+    <p class="pmh-footer__meta">Pro&nbsp;Max&nbsp;Hub · Trading · Neural · VPN</p>
+  </div>
+</footer>
+
+<!-- ============ СКРИПТЫ ============ -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/MotionPathPlugin.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.1/dist/lenis.min.js" defer></script>
+<script type="module" src="assets/js/main.js"></script>
+
+</body>
+</html>
