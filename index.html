@@ -108,11 +108,8 @@ h1,h2,h3,h4{
   -webkit-hyphens:manual;
   text-wrap:balance;
 }
-.lead,.copy{max-width:68ch;margin-inline:auto}
-.copy--tight{max-width:56ch}
 
 /* ---------------- ФОН ---------------- */
-#ambient{position:fixed;inset:0;z-index:-3;width:100%;height:100%;pointer-events:none}
 .bg-base{
   position:fixed;inset:0;z-index:-4;pointer-events:none;
   background:
@@ -129,12 +126,59 @@ h1,h2,h3,h4{
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
+/* ---------------- ВИДЕО-ФОН СЕКЦИИ ----------------
+   Два <video> одного файла со сдвигом на половину длительности.
+   Пока первый подходит к «шву», второй играет середину — кроссфейд
+   по прозрачности. Момент перезапуска всегда происходит на
+   полностью прозрачном слое, поэтому петля бесшовна без ffmpeg.  */
+/* Два независимых слоя прозрачности вместо одного:
+   внешний .sec-video — базовая видимость, ей управляет CSS-класс
+   .ready; внутренний .sec-video__fade — затухание при скролле, им
+   управляет GSAP. Если крутить обе величины на одном узле,
+   inline-стиль GSAP перебивает класс и слой не появляется вовсе. */
+.sec-video{
+  position:absolute; inset:0; z-index:0; overflow:hidden;
+  pointer-events:none; opacity:0;
+  transition:opacity 1.4s var(--e-out);
+}
+/* .48 подобрано замером: при .20 скрим съедал клип почти в ноль
+   (композит выходил чёрным), при .48 лучи и пыль читаются, а
+   худший контраст текста над видео остаётся 6.6:1 при норме 4.5 */
+.sec-video.ready{opacity:.48}
+.sec-video__fade{position:absolute;inset:0;opacity:1}
+.sec-video video{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; object-position:34% 42%;
+  opacity:0; transition:opacity 1.2s linear;
+  /* приводим тёплую лампу к холодной космической гамме */
+  filter:saturate(.62) hue-rotate(-14deg) brightness(.82) contrast(1.05) blur(1px);
+  will-change:opacity;
+}
+.sec-video video.on{opacity:1}
+/* Скрим направленный, а не равномерный: гасим ровно те две зоны,
+   где у клипа пересветы — окно сверху-слева и лампа снизу-по центру */
+.sec-video__scrim{
+  position:absolute; inset:0;
+  background:
+    radial-gradient(60% 55% at 12% 8%,  rgba(5,2,20,.78) 0%, rgba(5,2,20,0) 70%),
+    radial-gradient(45% 40% at 52% 100%,rgba(5,2,20,.78) 0%, rgba(5,2,20,0) 72%),
+    radial-gradient(120% 85% at 50% 45%,rgba(5,2,20,.26) 0%, rgba(5,2,20,.62) 74%),
+    linear-gradient(180deg, rgba(3,1,16,.66), rgba(3,1,16,.10) 34%, rgba(3,1,16,.78));
+}
+.sec-video--soft.ready{opacity:.34}
+/* Прозрачность на секцию — по фактической яркости клипа.
+   Замеры средней яркости кадра: hero 26 · boss 33 · learn 35 ·
+   geo 42 · calm 54 · vpn 69. Чем светлее клип, тем ниже слой. */
+#motivation-2 .sec-video.ready{opacity:.44}
+#youtube      .sec-video.ready{opacity:.36}
+#motivation-4 .sec-video.ready{opacity:.36}
+#motivation-3 .sec-video.ready{opacity:.34}
+#vpn          .sec-video.ready{opacity:.30}
+@media (max-width:900px){ .sec-video.ready,.sec-video--soft.ready{opacity:.20} }
+
 /* ---------------- РАСКЛАДКА ---------------- */
 .sec{position:relative;padding:var(--pad-sec) clamp(16px,4vw,40px);overflow:hidden}
 .wrap{position:relative;z-index:2;max-width:var(--wrap);margin-inline:auto}
-.wrap--narrow{max-width:1000px}
-.center{text-align:center}
-.stack{display:flex;flex-direction:column}
 
 /* морфинг-шов между секциями (БАГ-2.2) */
 .sec::before{
@@ -146,324 +190,484 @@ h1,h2,h3,h4{
   opacity:0;
 }
 .sec.in::before{opacity:1;transition:opacity 1.2s var(--e-out)}
-
-/* ---------------- ТИПОГРАФИКА ---------------- */
-.eyebrow{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:7px 16px;border-radius:var(--r-pill);
-  font-family:var(--f-num);font-size:var(--fs-eyebrow);font-weight:500;
-  letter-spacing:.18em;text-transform:uppercase;
-  color:var(--acc-soft);
-  background:rgba(var(--rgb-acc),.09);
-  border:1px solid rgba(var(--rgb-acc),.30);
-  white-space:nowrap;
-}
 .eyebrow .ic{width:13px;height:13px;flex:none;opacity:.85}
-
-/* Кинематографический заголовок.
-   ВАЖНО: сплошной светлый цвет + многослойное свечение.
-   Никакого background-clip:text на анимируемом тексте —
-   при обёртывании слов он перестаёт красить глифы и текст
-   становится невидимым (это и был баг со скриншотов). */
-.h-cine{
-  font-family:var(--f-display);
-  font-weight:800;
-  font-size:var(--fs-h2);
-  line-height:1.08;
-  letter-spacing:-.02em;
-  color:var(--li-50);
-  text-shadow:
-    0 1px 0 rgba(0,0,0,.5),
-    0 0 24px rgba(var(--rgb-acc),.42),
-    0 0 68px rgba(var(--rgb-acc),.22);
-  margin-bottom:.5em;
-}
-h1.h-cine{font-size:var(--fs-h1);letter-spacing:-.035em;line-height:1.02}
-.h-cine .accent{color:var(--acc-soft)}
 
 /* маска для построчно-пословного reveal */
 .rv-word{display:inline-block;overflow:hidden;vertical-align:bottom}
 .rv-word > span{display:inline-block;will-change:transform}
-
-.lead{
-  font-size:var(--fs-lead);font-weight:300;line-height:1.6;color:var(--g-300);
-}
-.lead strong,.copy strong{color:var(--acc-soft);font-weight:600}
-.copy{color:var(--g-400);line-height:1.7}
-.muted{color:var(--g-400)}
-.num{font-family:var(--f-num);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-
-.h3{
-  font-family:var(--f-display);font-weight:700;font-size:var(--fs-h3);
-  line-height:1.22;letter-spacing:-.015em;color:var(--g-50);
-  margin-bottom:.5em;
-}
+.num{font-variant-numeric:tabular-nums}
 
 /* ---------------- ИКОНКИ (БАГ-4) ---------------- */
 .ic{width:1em;height:1em;stroke:currentColor;fill:none;
     stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.ic-box{
-  width:52px;height:52px;flex:none;border-radius:var(--r-md);
-  display:grid;place-items:center;
-  color:var(--acc-soft);
-  background:linear-gradient(150deg,rgba(var(--rgb-acc),.20),rgba(var(--rgb-acc),.05));
-  border:1px solid rgba(var(--rgb-acc),.28);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.10);
-  transition:transform .45s var(--e-out),box-shadow .45s var(--e-out);
-}
 .ic-box .ic{width:24px;height:24px}
-.ic-box--sm{width:40px;height:40px;border-radius:var(--r-sm)}
 .ic-box--sm .ic{width:19px;height:19px}
-/* emoji остаются только как контент-акцент, в единой оправе */
-.emo{
-  display:inline-grid;place-items:center;width:1.35em;height:1.35em;
-  font-size:1em;line-height:1;flex:none;
-  font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;
-}
-
-/* ---------------- ПОВЕРХНОСТИ ---------------- */
-.card{
-  position:relative;display:flex;flex-direction:column;
-  padding:clamp(22px,2.4vw,32px);
-  border-radius:var(--r-lg);
-  background:linear-gradient(168deg,rgba(255,255,255,.055),rgba(255,255,255,.015) 55%),
-             linear-gradient(180deg,rgba(36,17,66,.55),rgba(10,4,26,.62));
-  border:1px solid rgba(var(--rgb-acc),.18);
-  box-shadow:0 1px 0 rgba(255,255,255,.06) inset,
-             0 18px 44px -26px rgba(0,0,0,.9);
-  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  transition:transform .5s var(--e-out),border-color .5s var(--e-out),box-shadow .5s var(--e-out);
-  height:100%;
-}
-.card:hover,.card:focus-within{
-  transform:translateY(-6px);
-  border-color:rgba(var(--rgb-acc),.42);
-  box-shadow:0 1px 0 rgba(255,255,255,.10) inset,
-             0 34px 70px -30px rgba(0,0,0,.95),
-             0 0 60px -32px rgba(var(--rgb-acc),.6);
-}
-.card:hover .ic-box{transform:translateY(-2px);box-shadow:0 10px 26px -14px rgba(var(--rgb-acc),.8)}
-/* тонкая световая кромка сверху */
-.card::after{
-  content:'';position:absolute;left:14%;right:14%;top:0;height:1px;border-radius:1px;
-  background:linear-gradient(90deg,transparent,rgba(var(--rgb-acc),.7),transparent);
-  opacity:.55;transition:opacity .5s var(--e-out);
-}
-.card:hover::after{opacity:1}
-/* «терминальные» карточки — срезанный угол вместо общего скругления */
-.card--term{
-  border-radius:0;
-  clip-path:polygon(20px 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%,0 20px);
-}
-.card--term::after{left:20px;right:8%}
-
-.panel{
-  position:relative;border-radius:var(--r-xl);
-  padding:clamp(30px,4.4vw,68px) clamp(20px,3.4vw,56px);
-  background:linear-gradient(165deg,rgba(var(--rgb-acc),.10),rgba(255,255,255,.012) 60%),
-             linear-gradient(180deg,rgba(26,11,46,.5),rgba(8,3,22,.6));
-  border:1px solid rgba(var(--rgb-acc),.20);
-  box-shadow:0 1px 0 rgba(255,255,255,.07) inset,0 40px 90px -60px #000;
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  overflow:hidden;
-}
-.panel::before{
-  content:'';position:absolute;left:0;right:0;top:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(var(--rgb-acc),.8),transparent);
-}
-
-/* ---------------- СЕТКИ (БАГ-3.3) ---------------- */
-.grid{display:grid;gap:var(--gap);align-items:stretch}
-/* min-width:auto у grid-элементов даёт «распирание» трека длинным
-   неразрывным содержимым и вылет за вьюпорт на узких экранах */
-.grid > *{min-width:0}
-.g-2{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
-.g-3{grid-template-columns:repeat(auto-fit,minmax(min(100%,286px),1fr))}
-.g-4{grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr))}
-.g-feat{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
-@media (min-width:1024px){
-  .g-prop{grid-template-columns:1.45fr 1fr}
-}
-.g-prop{grid-template-columns:1fr}
-
-/* CTA всегда прижата к низу карточки */
-.card .push{margin-top:auto}
-.card > * + *{margin-top:14px}
-
-/* ---------------- КНОПКИ (БАГ-3.1 / 3.2) ---------------- */
-.btn-row{
-  display:flex;flex-wrap:wrap;gap:14px;
-  align-items:stretch;justify-content:center;
-}
-.btn-row--start{justify-content:flex-start}
-.btn{
-  position:relative;display:inline-flex;align-items:center;justify-content:center;
-  gap:10px;
-  min-height:54px;padding:15px 28px;
-  border-radius:var(--r-md);
-  font-family:var(--f-body);font-weight:700;font-size:clamp(.9375rem,.9rem + .2vw,1.0625rem);
-  letter-spacing:.005em;line-height:1.2;text-align:center;
-  border:1px solid transparent;
-  isolation:isolate;overflow:hidden;
-  transition:transform .35s var(--e-out),box-shadow .35s var(--e-out),
-             background-color .35s var(--e-out),border-color .35s var(--e-out);
-  -webkit-tap-highlight-color:transparent;
-}
 .btn .ic{width:19px;height:19px;flex:none}
-.btn .ic--arrow{transition:transform .35s var(--e-out)}
-.btn:hover .ic--arrow{transform:translateX(5px)}
-.btn:active{transform:translateY(1px) scale(.99);transition-duration:.09s}
-.btn--full{width:100%}
-/* сдержанный световой проход вместо «дешёвого» блика */
-.btn::before{
-  content:'';position:absolute;inset:0;z-index:-1;opacity:0;
-  background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.20),transparent 70%);
-  transform:translateX(-60%);
-  transition:opacity .3s linear,transform .8s var(--e-out);
-}
-.btn:hover::before{opacity:1;transform:translateX(60%)}
-
-.btn--primary{
-  background:linear-gradient(135deg,#7c3aed,#6366f1 52%,#2563eb);
-  color:#fff;border-color:rgba(255,255,255,.18);
-  box-shadow:0 10px 30px -14px rgba(124,58,237,.9),inset 0 1px 0 rgba(255,255,255,.28);
-}
-.btn--primary:hover{transform:translateY(-3px);
-  box-shadow:0 20px 44px -16px rgba(124,58,237,1),inset 0 1px 0 rgba(255,255,255,.4)}
-
-.btn--gold{
-  background:linear-gradient(135deg,#fcd34d,#fbbf24 52%,#f59e0b);
-  color:#3b1d00;border-color:rgba(255,255,255,.4);
-  box-shadow:0 10px 30px -14px rgba(251,191,36,.9),inset 0 1px 0 rgba(255,255,255,.5);
-}
-.btn--gold:hover{transform:translateY(-3px);box-shadow:0 20px 44px -16px rgba(251,191,36,1)}
-
-.btn--emerald{
-  background:linear-gradient(135deg,#6ee7b7,#34d399 52%,#10b981);
-  color:#022c22;border-color:rgba(255,255,255,.38);
-  box-shadow:0 10px 30px -14px rgba(16,185,129,.9),inset 0 1px 0 rgba(255,255,255,.45);
-}
-.btn--emerald:hover{transform:translateY(-3px);box-shadow:0 20px 44px -16px rgba(16,185,129,1)}
-
-.btn--pink{
-  background:linear-gradient(135deg,#f0abfc,#e879f9 52%,#d946ef);
-  color:#2b0733;border-color:rgba(255,255,255,.42);
-  box-shadow:0 10px 30px -14px rgba(232,121,249,.9),inset 0 1px 0 rgba(255,255,255,.5);
-}
-.btn--pink:hover{transform:translateY(-3px);box-shadow:0 20px 44px -16px rgba(232,121,249,1)}
-
-.btn--cyan{
-  background:linear-gradient(135deg,#67e8f9,#22d3ee 52%,#06b6d4);
-  color:#04232c;border-color:rgba(255,255,255,.42);
-  box-shadow:0 10px 30px -14px rgba(34,211,238,.9),inset 0 1px 0 rgba(255,255,255,.5);
-}
-.btn--cyan:hover{transform:translateY(-3px);box-shadow:0 20px 44px -16px rgba(34,211,238,1)}
-
-.btn--red{
-  background:linear-gradient(135deg,#dc2626,#c81e1e 52%,#b91c1c);
-  color:#fff;border-color:rgba(255,255,255,.22);
-  box-shadow:0 10px 30px -14px rgba(220,38,38,.9),inset 0 1px 0 rgba(255,255,255,.26);
-}
-.btn--red:hover{transform:translateY(-3px);box-shadow:0 20px 44px -16px rgba(220,38,38,1)}
-
-.btn--ghost{
-  background:rgba(255,255,255,.045);
-  color:var(--g-50);
-  border-color:rgba(var(--rgb-acc),.45);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-}
-.btn--ghost:hover{transform:translateY(-3px);
-  background:rgba(var(--rgb-acc),.14);border-color:rgba(var(--rgb-acc),.85)}
-
-/* ---------------- БЕЙДЖ ДОХОДА ---------------- */
-.badge{
-  display:flex;align-items:center;gap:10px;
-  padding:12px 16px;
-  border-radius:var(--r-sm);
-  border:1px solid rgba(var(--rgb-acc),.32);
-  border-left:3px solid var(--acc);
-  background:rgba(var(--rgb-acc),.10);
-  color:var(--acc-soft);
-  font-weight:600;font-size:var(--fs-sm);line-height:1.4;
-}
 .badge .ic{width:18px;height:18px;flex:none}
 
-/* ---------------- ТЕГИ ---------------- */
-.tags{display:flex;flex-wrap:wrap;gap:8px}
-.tag{
-  padding:5px 12px;border-radius:var(--r-pill);
-  font-family:var(--f-num);font-size:.75rem;font-weight:500;letter-spacing:.02em;
-  color:var(--g-300);
-  background:rgba(var(--rgb-acc),.10);
-  border:1px solid rgba(var(--rgb-acc),.22);
+/* ============================================================
+   ТОНКАЯ ВЕРХНЯЯ ПОЛОСА
+   ============================================================ */
+.topbar{
+  position:fixed; inset:0 0 auto 0; z-index:60;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:20px; height:62px;
+  padding:0 clamp(16px,4vw,40px);
+  font-family:var(--f-num); font-size:.75rem;
+  letter-spacing:.14em; text-transform:uppercase;
+  color:var(--g-400);
+  background:linear-gradient(180deg, rgba(5,2,20,.72), rgba(5,2,20,0));
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  transition:background .5s var(--e-out), border-color .5s var(--e-out);
+  border-bottom:1px solid transparent;
 }
-
-/* ---------------- СТАТИСТИКА ---------------- */
-.stat{
-  font-family:var(--f-display);font-weight:800;font-size:var(--fs-stat);
-  line-height:1;letter-spacing:-.03em;color:var(--li-50);
-  text-shadow:0 0 26px rgba(var(--rgb-acc),.45);
+.topbar.stuck{
+  background:rgba(5,2,20,.86);
+  border-bottom-color:rgba(255,255,255,.07);
 }
-.stat-label{
-  margin-top:10px;font-family:var(--f-num);font-size:var(--fs-eyebrow);
-  letter-spacing:.13em;text-transform:uppercase;color:var(--g-400);
+.topbar__brand{color:var(--g-50); font-weight:700; letter-spacing:.2em; white-space:nowrap}
+.topbar__nav{display:flex; gap:clamp(14px,2.2vw,30px); overflow:hidden}
+.topbar__nav a{
+  position:relative; padding:4px 0; white-space:nowrap;
+  transition:color .3s var(--e-out);
 }
+.topbar__nav a::after{
+  content:''; position:absolute; left:0; right:0; bottom:0; height:1px;
+  background:currentColor; transform:scaleX(0); transform-origin:left;
+  transition:transform .4s var(--e-out);
+}
+.topbar__nav a:hover,.topbar__nav a[aria-current]{color:var(--li-200)}
+.topbar__nav a:hover::after,.topbar__nav a[aria-current]::after{transform:scaleX(1)}
+@media (max-width:860px){ .topbar__nav{display:none} }
 
 /* ---------------- HERO ---------------- */
-/* justify-items:stretch обязателен: place-items:center заставлял
-   .wrap брать max-content и вылезать за 320px-вьюпорт */
-.hero{
-  min-height:100svh;display:grid;
-  align-items:center;justify-items:stretch;
-  padding-top:clamp(90px,12vh,150px);
+/* Trionn-подход: текст слева, не по центру; сплошной цвет, не
+   градиент; одна текстовая CTA вместо залитой кнопки. */
+.hero--wide{
+  min-height:100svh; display:grid; align-items:center;
+  padding:clamp(110px,16vh,180px) clamp(16px,4vw,40px) clamp(70px,10vh,120px);
 }
-.hero > .wrap{width:100%}
-.hero-orb{
-  position:relative;width:clamp(96px,12vw,140px);aspect-ratio:1;margin:0 auto 34px;
-  border-radius:50%;
-  background:
-    radial-gradient(circle at 32% 30%,rgba(255,255,255,.5),transparent 46%),
-    radial-gradient(circle at 68% 72%,rgba(139,92,246,.6),transparent 62%),
-    linear-gradient(150deg,#8b5cf6,#6366f1 52%,#3b82f6);
-  box-shadow:0 0 70px rgba(139,92,246,.55),0 0 140px rgba(139,92,246,.25),
-             inset -12px -12px 34px rgba(0,0,0,.35),inset 12px 12px 34px rgba(255,255,255,.18);
-  display:grid;place-items:center;color:#fff;
+.hero--wide .wrap{width:100%; text-align:left}
+.hero-title{
+  font-family:var(--f-display); font-weight:800;
+  /* 2.25rem — предел, при котором «Спокойный» (9 знаков Unbounded 800)
+     ещё влезает в 288px контента на 320px-экране */
+  font-size:clamp(2.25rem,8vw,9rem);
+  line-height:.92; letter-spacing:-.04em;
+  color:#F5F3FF; margin:0 0 clamp(22px,2.6vw,34px);
+  max-width:16ch;
 }
-.hero-orb .ic{width:44%;height:44%;stroke-width:1.6}
-.hero-orb::after{
-  content:'';position:absolute;inset:-16px;border-radius:50%;
-  border:1px solid rgba(var(--rgb-li),.28);
+.hero-title .ln{display:block; overflow:hidden}
+.hero-title .ln > span{display:block; will-change:transform}
+.hero-sub{
+  font-size:clamp(1.0625rem,.98rem + .6vw,1.4375rem);
+  font-weight:300; line-height:1.5; color:var(--g-300);
+  max-width:34ch; margin:0 0 clamp(28px,3.4vw,44px);
 }
-.hero-stats{margin:clamp(30px,4vw,52px) auto clamp(28px,3.6vw,44px);max-width:860px}
-.hero-stats .card{padding:22px 18px;text-align:center;align-items:center}
+.hero-sub b{color:#F5F3FF; font-weight:700}
+.topbar__now{white-space:nowrap; color:var(--g-400)}
+@media (max-width:520px){ .topbar__now{display:none} }
 
-.scroll-hint{
-  display:inline-flex;flex-direction:column;align-items:center;gap:8px;
-  margin-top:clamp(26px,3.4vw,44px);
-  font-family:var(--f-num);font-size:.6875rem;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--g-400);
-  padding:10px 14px;border-radius:var(--r-pill);
-  transition:color .3s var(--e-out),transform .3s var(--e-out);
+/* строка фактов вместо карточной сетки */
+.hero-facts{
+  display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px;
+  font-family:var(--f-num); font-size:.8125rem;
+  letter-spacing:.08em; text-transform:uppercase;
+  color:var(--g-400); margin:0 0 clamp(26px,3.2vw,40px);
 }
-.scroll-hint:hover{color:var(--acc-soft);transform:translateY(2px)}
+.hero-facts span{color:#F5F3FF; font-weight:700}
+.hero-facts i{opacity:.4; font-style:normal}
+
+/* скрим, смещённый к тексту: слева плотнее, справа клип открыт */
+.sec-video[data-scrim="left"] .sec-video__scrim{
+  background:
+    linear-gradient(90deg, rgba(5,2,20,.90) 0%, rgba(5,2,20,.62) 34%, rgba(5,2,20,.12) 70%, rgba(5,2,20,.30) 100%),
+    linear-gradient(180deg, rgba(5,2,20,.72) 0%, rgba(5,2,20,.10) 38%, rgba(5,2,20,.62) 100%);
+}
+
+.hero-count{
+  position:absolute; right:clamp(16px,4vw,40px); bottom:clamp(26px,4vh,44px);
+  display:flex; align-items:center; gap:10px;
+  font-family:var(--f-num); font-size:.75rem; letter-spacing:.16em;
+  color:var(--g-400);
+}
+.hero-count .ic{width:15px;height:15px;animation:hintY 2.6s var(--e-io) infinite}
+@media (max-width:600px){ .hero-count{display:none} }
+.hero > .wrap{width:100%}
+.hero-orb .ic{width:44%;height:44%;stroke-width:1.6}
 .scroll-hint .ic{width:16px;height:16px;animation:hintY 2.6s var(--e-io) infinite}
 @keyframes hintY{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
 
-/* ---------------- ИНФОГРАФИКИ ---------------- */
-.figure{
-  position:relative;margin:0 0 clamp(30px,3.6vw,52px);
-  border-radius:var(--r-lg);overflow:hidden;
-  border:1px solid rgba(var(--rgb-acc),.18);
-  background:linear-gradient(180deg,rgba(15,5,29,.55),rgba(5,2,20,.7));
+/* ============================================================
+   РЕДАКЦИОННЫЕ СТРОКИ вместо карточных сеток
+   ============================================================ */
+.sec-head{margin:0 0 clamp(46px,6vw,90px)}
+
+/* ---- Маска для reveal заголовков ----
+   Дёрганье было от того, что у .sec-head одновременно ехал y
+   и анимировался clip-path: clip-path на большом боксе с крупным
+   текстом перерисовывает поддерево каждый кадр, а без промоушена
+   слоя глифы ресемплятся — отсюда вибрация.
+   Здесь движется только translate внутри overflow:hidden. */
+.mk{display:block; overflow:hidden; padding-bottom:.14em; margin-bottom:-.14em}
+.mk__i{display:block; will-change:transform}
+.mk__i.done{will-change:auto}
+.sec-head .kicker{
+  display:block; font-family:var(--f-num); font-size:.75rem;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--acc-soft);
+  margin-bottom:clamp(16px,2vw,26px);
 }
-.figure canvas,.figure svg{display:block;width:100%}
-.hud{
-  position:absolute;top:12px;left:16px;right:16px;z-index:2;
-  display:flex;justify-content:space-between;gap:12px;
-  font-family:var(--f-num);font-size:.75rem;letter-spacing:.08em;color:var(--g-400);
-  pointer-events:none;
+.sec-title{
+  font-family:var(--f-display); font-weight:800;
+  /* Кегль и ширина подобраны вместе: при 80px и 15ch самый длинный
+     заголовок («Заработок на контрактах», 23 знака) уходил в три
+     строки. 68px + 18ch держат его в двух на всех ширинах ≥1024. */
+  font-size:clamp(2.25rem,4.6vw,4.25rem);
+  line-height:.98; letter-spacing:-.035em; color:#F5F3FF;
+  margin:0 0 clamp(18px,2.2vw,28px);
+  /* Бокс совпадает с текстом, а не растягивается на всю ширину:
+     справа на этом уровне живёт 3D-декор. */
+  max-width:min(18ch, 52%);
 }
-.hud b{font-size:1.05rem;font-weight:700;letter-spacing:-.01em;transition:color .2s linear}
+@media (max-width:1023px){ .sec-title{max-width:none} }
+.sec-lead{
+  font-size:clamp(1rem,.95rem + .5vw,1.3125rem); font-weight:300;
+  line-height:1.55; color:var(--g-300); max-width:46ch; margin:0;
+}
+.sec-lead b{color:#F5F3FF; font-weight:700}
+
+.rows{border-top:1px solid rgba(255,255,255,.10)}
+.row{
+  display:grid; gap:clamp(14px,2vw,34px);
+  grid-template-columns:1fr;
+  padding:clamp(28px,3.6vw,52px) 0;
+  border-bottom:1px solid rgba(255,255,255,.10);
+  position:relative;
+  transition:background .5s var(--e-out);
+}
+@media (min-width:900px){
+  .row{grid-template-columns:64px minmax(0,1fr) minmax(200px,270px); align-items:start}
+}
+.row::before{
+  content:''; position:absolute; left:0; right:0; bottom:-1px; height:1px;
+  background:var(--acc); transform:scaleX(0); transform-origin:left;
+  transition:transform .6s var(--e-out);
+}
+.row:hover::before{transform:scaleX(1)}
+.row:hover{background:linear-gradient(90deg, rgba(var(--rgb-acc),.05), transparent 60%)}
+.row__idx{
+  font-family:var(--f-num); font-size:.8125rem; letter-spacing:.14em;
+  color:var(--g-400); padding-top:.5em;
+}
+.row__title{
+  font-family:var(--f-display); font-weight:700;
+  font-size:clamp(1.375rem,2.2vw,2rem); line-height:1.12;
+  letter-spacing:-.02em; color:#F5F3FF; margin:0 0 .5em;
+}
+.row__desc{color:var(--g-400); line-height:1.7; max-width:56ch; margin:0 0 1em}
+.row__tags{
+  font-family:var(--f-num); font-size:.75rem; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--g-400); margin:0 0 1.4em;
+}
+.row__tags i{opacity:.4; font-style:normal; margin:0 .5em}
+.row__money{text-align:left}
+@media (min-width:900px){ .row__money{text-align:right} }
+.row__cap{
+  display:block; font-family:var(--f-num); font-size:.6875rem;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--g-400);
+  margin-bottom:.6em;
+}
+.row__num{
+  display:block; font-family:var(--f-display); font-weight:800;
+  font-size:clamp(1.5rem,2.4vw,2.125rem); line-height:1.05;
+  letter-spacing:-.03em; color:var(--acc-soft);
+  text-shadow:0 0 30px rgba(var(--rgb-acc),.35);
+}
+.row__per{
+  display:block; font-family:var(--f-num); font-size:.75rem;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--g-400);
+  margin-top:.5em;
+}
+/* ---- CTA: пилюля с обводкой, дышащим свечением и стрелкой ----
+   Пульс идёт по opacity/transform псевдоэлемента — композитор,
+   ноль работы для CPU и никакого влияния на раскладку. */
+.row__cta,.hero-cta{
+  position:relative; display:inline-flex; align-items:center; gap:16px;
+  padding:17px 26px 17px 32px; min-height:58px;
+  border:1px solid rgba(var(--rgb-acc),.42);
+  border-radius:var(--r-pill);
+  background:rgba(var(--rgb-acc),.07);
+  font-family:var(--f-num); font-size:.9375rem; font-weight:500;
+  letter-spacing:.1em; text-transform:uppercase; color:#F5F3FF;
+  isolation:isolate; overflow:hidden;
+  transition:transform .45s var(--e-out), border-color .45s var(--e-out),
+             background-color .45s var(--e-out), box-shadow .45s var(--e-out);
+}
+.hero-cta{padding:20px 30px 20px 36px; min-height:66px; font-size:1.0625rem; gap:18px}
+
+/* дышащее свечение */
+.row__cta::before,.hero-cta::before{
+  content:''; position:absolute; inset:-45%; z-index:-1; border-radius:inherit;
+  background:radial-gradient(closest-side, rgba(var(--rgb-acc),.6), transparent 72%);
+  opacity:.2; animation:ctaBreath 3.4s var(--e-io) infinite;
+}
+@keyframes ctaBreath{
+  0%,100%{opacity:.16; transform:scale(.9)}
+  50%    {opacity:.44; transform:scale(1.08)}
+}
+/* световой проход при наведении */
+.row__cta::after,.hero-cta::after{
+  content:''; position:absolute; inset:0; z-index:-1;
+  background:linear-gradient(100deg, transparent 30%, rgba(255,255,255,.18), transparent 70%);
+  transform:translateX(-75%); opacity:0;
+  transition:opacity .25s linear, transform .9s var(--e-out);
+}
+/* стрелка в круге — читаемый «нажимаемый» акцент */
+.cta__go{
+  display:grid; place-items:center; flex:none;
+  width:30px; aspect-ratio:1; border-radius:50%;
+  border:1px solid rgba(var(--rgb-acc),.55);
+  background:rgba(var(--rgb-acc),.10);
+  transition:transform .45s var(--e-out), background-color .45s var(--e-out),
+             border-color .45s var(--e-out);
+}
+.hero-cta .cta__go{width:34px}
+.cta__go .ic{width:15px; height:15px}
+
+.row__cta:hover,.hero-cta:hover,
+.row__cta:focus-visible,.hero-cta:focus-visible{
+  transform:translateY(-3px);
+  border-color:rgba(var(--rgb-acc),.95);
+  background:rgba(var(--rgb-acc),.15);
+  box-shadow:0 16px 40px -20px rgba(var(--rgb-acc),.85);
+}
+.row__cta:hover::after,.hero-cta:hover::after{opacity:1; transform:translateX(75%)}
+.row__cta:hover::before,.hero-cta:hover::before{animation-duration:1.7s}
+.row__cta:hover .cta__go,.hero-cta:hover .cta__go{
+  transform:translateX(5px); background:rgba(var(--rgb-acc),.26);
+  border-color:rgba(var(--rgb-acc),.9);
+}
+.row__cta:active,.hero-cta:active{transform:translateY(0) scale(.985); transition-duration:.09s}
+
+@media (prefers-reduced-motion:reduce){
+  .row__cta::before,.hero-cta::before{animation:none; opacity:.28}
+}
+/* Кнопка не должна раздувать колонку: в узкой сетке flex-элемент
+   с min-width:auto держал ширину по своему max-content и вылезал
+   за вьюпорт на 375px. */
+.row > *{min-width:0}
+.row__cta,.hero-cta{max-width:100%}
+.cta-pair{display:flex; flex-wrap:wrap; gap:18px 26px; align-items:center}
+
+@media (max-width:520px){
+  .row__cta,.hero-cta{width:100%; justify-content:space-between; padding-left:26px}
+  .cta-pair{gap:14px}
+}
+
+/* крупное типографическое утверждение вместо панели-итога */
+.claim{
+  margin-top:clamp(56px,7vw,110px);
+  display:grid; gap:clamp(16px,2vw,28px);
+}
+@media (min-width:900px){ .claim{grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:end} }
+.claim__big{
+  font-family:var(--f-display); font-weight:800;
+  font-size:clamp(2.25rem,6vw,5.5rem); line-height:.94;
+  letter-spacing:-.04em; color:var(--acc-soft);
+  text-shadow:0 0 60px rgba(var(--rgb-acc),.28); margin:0;
+}
+.claim__note{color:var(--g-400); line-height:1.6; max-width:40ch; margin:0}
+.claim__note b{display:block; color:#F5F3FF; font-family:var(--f-display);
+  font-weight:700; font-size:1.125rem; margin-bottom:.4em}
+
+/* ---- факты без коробок: только волосяная линия сверху ---- */
+.facts{display:grid; gap:0; border-top:1px solid rgba(255,255,255,.10)}
+@media (min-width:760px){ .facts{grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:clamp(28px,4vw,72px)} }
+.fact{
+  padding:clamp(22px,2.6vw,36px) 0;
+  border-bottom:1px solid rgba(255,255,255,.10);
+  position:relative;
+}
+.fact h3{
+  font-family:var(--f-display); font-weight:700;
+  font-size:clamp(1.125rem,1.4vw,1.375rem); line-height:1.2;
+  letter-spacing:-.015em; color:#F5F3FF; margin:0 0 .55em;
+}
+.fact p{color:var(--g-400); line-height:1.65; margin:0; max-width:44ch}
+.fact__i{
+  display:block; font-family:var(--f-num); font-size:.6875rem;
+  letter-spacing:.16em; color:var(--g-400); margin-bottom:1em;
+}
+
+/* ---- крупные цифры в строку ---- */
+.numrow{
+  display:grid; gap:0; border-top:1px solid rgba(255,255,255,.10);
+  margin-top:clamp(40px,5vw,72px);
+}
+@media (min-width:760px){ .numrow{grid-template-columns:repeat(3,minmax(0,1fr)); column-gap:clamp(28px,4vw,72px)} }
+.numrow > div{padding:clamp(24px,3vw,40px) 0; border-bottom:1px solid rgba(255,255,255,.10)}
+.numrow b{
+  display:block; font-family:var(--f-display); font-weight:800;
+  font-size:clamp(2.5rem,5vw,4.5rem); line-height:1;
+  letter-spacing:-.04em; color:var(--acc-soft);
+  text-shadow:0 0 44px rgba(var(--rgb-acc),.3);
+}
+.numrow span{
+  display:block; margin-top:.7em; color:var(--g-400);
+  font-family:var(--f-num); font-size:.75rem; letter-spacing:.12em; text-transform:uppercase;
+}
+.numrow .ic{width:1em;height:1em;stroke-width:1.4}
+
+/* ---- спецификации в строку ---- */
+.specs{
+  display:grid; gap:0; border-top:1px solid rgba(255,255,255,.10);
+  margin:clamp(28px,3.4vw,48px) 0 0;
+}
+@media (min-width:620px){ .specs{grid-template-columns:repeat(3,minmax(0,1fr)); column-gap:clamp(24px,3vw,56px)} }
+.specs > div{padding:clamp(18px,2.2vw,26px) 0; border-bottom:1px solid rgba(255,255,255,.10)}
+.specs b{
+  display:block; font-family:var(--f-display); font-weight:700;
+  font-size:clamp(1.25rem,2vw,1.75rem); line-height:1;
+  letter-spacing:-.02em; color:var(--acc-soft);
+}
+.specs span{display:block; margin-top:.6em; color:var(--g-400);
+  font-family:var(--f-num); font-size:.6875rem; letter-spacing:.14em; text-transform:uppercase}
+.specs .ic{width:1.1em;height:1.1em;stroke-width:1.4}
+
+/* ---- выноска с левой линией ---- */
+.note{
+  padding:clamp(18px,2.2vw,26px) 0 clamp(18px,2.2vw,26px) clamp(18px,2vw,26px);
+  border-left:2px solid var(--acc);
+  color:var(--acc-soft); line-height:1.65; margin:clamp(24px,3vw,38px) 0 0;
+  max-width:62ch;
+}
+.note b{color:#F5F3FF}
+
+/* ---- слоганы строками ---- */
+.slogans{border-top:1px solid rgba(255,255,255,.10); margin-top:clamp(44px,5.5vw,80px)}
+.slogans p{
+  margin:0; padding:clamp(20px,2.6vw,34px) 0;
+  border-bottom:1px solid rgba(255,255,255,.10);
+  font-family:var(--f-display); font-weight:700;
+  font-size:clamp(1.125rem,2.2vw,1.75rem); line-height:1.25;
+  letter-spacing:-.02em; color:#F5F3FF;
+}
+
+/* ---- города строкой ---- */
+.cities{
+  display:flex; flex-wrap:wrap; gap:0 clamp(20px,3vw,48px);
+  border-top:1px solid rgba(255,255,255,.10);
+  margin-top:clamp(40px,5vw,72px); padding-top:clamp(24px,3vw,40px);
+}
+.cities div{min-width:120px; padding-bottom:clamp(18px,2vw,26px)}
+.cities b{
+  display:block; font-family:var(--f-display); font-weight:700;
+  font-size:clamp(1.25rem,2.4vw,2rem); line-height:1;
+  letter-spacing:-.03em; color:#F5F3FF;
+}
+.cities span{display:block; margin-top:.6em; color:var(--g-400);
+  font-family:var(--f-num); font-size:.6875rem; letter-spacing:.12em; text-transform:uppercase}
+
+/* ---- крупная плашка Play ---- */
+.play-link{
+  display:inline-flex; align-items:center; gap:clamp(16px,2vw,26px);
+  margin:clamp(30px,4vw,54px) 0 0; color:#F5F3FF;
+}
+.play-link .dot{
+  display:grid; place-items:center; width:clamp(56px,6vw,78px); aspect-ratio:1;
+  border-radius:50%; border:1px solid rgba(var(--rgb-acc),.5);
+  color:var(--acc-soft); flex:none;
+  transition:transform .5s var(--e-out), border-color .5s var(--e-out),
+             background-color .5s var(--e-out);
+}
+.play-link .dot .ic{width:40%;height:40%;fill:currentColor;stroke:none;margin-left:8%}
+.play-link:hover .dot{transform:scale(1.06); border-color:var(--acc);
+  background:rgba(var(--rgb-acc),.10)}
+.play-link em{
+  font-family:var(--f-num); font-style:normal; font-size:.8125rem;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--g-400);
+}
+
+/* ============================================================
+   ТЕМАТИЧЕСКИЙ 3D-ДЕКОР СЕКЦИИ (CSS 3D, без Three.js)
+
+   Размещение: справа на уровне заголовка секции. Это единственная
+   зона, свободная при любой ширине ≥1024px — заголовок ограничен
+   15ch, а колонка с суммами лежит ниже, в строках. За текст
+   элементы не заходят никогда.
+
+   Анимация только на transform/opacity в CSS-кейфреймах: считает
+   композитор, JS в кадре не участвует. Пауза за вьюпортом через
+   animation-play-state.
+   ============================================================ */
+.dim{
+  position:absolute; top:0; right:0;
+  width:46%; height:clamp(300px,32vw,500px);
+  z-index:-1; pointer-events:none;
+  perspective:1400px; perspective-origin:58% 42%;
+  transform-style:preserve-3d;
+  -webkit-mask-image:radial-gradient(72% 72% at 60% 44%, #000 34%, transparent 100%);
+          mask-image:radial-gradient(72% 72% at 60% 44%, #000 34%, transparent 100%);
+}
+.dim.idle *{animation-play-state:paused!important}
+@media (max-width:1023px){ .dim{display:none} }
+@media (prefers-reduced-motion:reduce){ .dim{display:none} }
+
+/* --- японская свеча как объём: 4 грани квадратной призмы --- */
+.cndl{
+  position:absolute; left:var(--x); top:var(--y);
+  transform-style:preserve-3d; color:var(--c1);
+  animation:cndlDrift var(--dur) var(--e-io) var(--dly) infinite alternate;
+}
+.cndl .bx{
+  position:relative; width:var(--w); height:var(--h);
+  transform-style:preserve-3d;
+  animation:cndlSpin var(--spin) linear var(--dly) infinite;
+}
+.cndl .bx > i{
+  position:absolute; inset:0; border-radius:2px; backface-visibility:visible;
+  background:linear-gradient(180deg, var(--c1), var(--c2)); opacity:.32;
+}
+.cndl .bx > i:nth-child(1){ transform:translateZ(calc(var(--w) / 2)) }
+.cndl .bx > i:nth-child(2){ transform:rotateY(180deg) translateZ(calc(var(--w) / 2)) }
+.cndl .bx > i:nth-child(3){ transform:rotateY(90deg)  translateZ(calc(var(--w) / 2)); filter:brightness(.55) }
+.cndl .bx > i:nth-child(4){ transform:rotateY(-90deg) translateZ(calc(var(--w) / 2)); filter:brightness(.55) }
+/* фитиль */
+.cndl .bx::before{
+  content:''; position:absolute; left:50%; top:-38%; width:1px; height:176%;
+  transform:translateX(-50%); background:currentColor; opacity:.26;
+}
+@keyframes cndlSpin{ to{ transform:rotateY(360deg) } }
+@keyframes cndlDrift{
+  from{ transform:translate3d(0,0,var(--z)) rotateX(0deg) }
+  to  { transform:translate3d(var(--dx),var(--dy),var(--z)) rotateX(var(--rx)) }
+}
+
+/* --- частицы ликвидности --- */
+.lq{
+  position:absolute; left:var(--x); top:var(--y);
+  width:var(--s); aspect-ratio:1; border-radius:50%;
+  background:radial-gradient(circle, rgba(var(--rgb-acc),.85), transparent 70%);
+  opacity:0; animation:lqFloat var(--dur) linear var(--dly) infinite;
+}
+@keyframes lqFloat{
+  0%  { opacity:0;   transform:translate3d(0,24px,var(--z)) scale(.6) }
+  22% { opacity:.55 }
+  76% { opacity:.38 }
+  100%{ opacity:0;   transform:translate3d(var(--dx),-130px,var(--z)) scale(1.15) }
+}
+
+/* полоса живого терминала — без рамки и подложки */
+.strip{position:relative; margin:0 0 clamp(40px,5vw,72px)}
+.strip canvas{display:block; width:100%; opacity:.85}
+.strip__hud{
+  position:absolute; top:0; left:0; right:0; display:flex;
+  justify-content:space-between; gap:12px; pointer-events:none;
+  font-family:var(--f-num); font-size:.75rem; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--g-400);
+}
+.strip__hud b{font-size:1.0625rem; letter-spacing:-.01em; transition:color .2s linear}
+.strip__hud b.up{color:var(--em-300)} .strip__hud b.down{color:var(--rd-300)}
 .hud b.up{color:var(--em-300)} .hud b.down{color:var(--rd-300)}
 
 .flow{width:100%;height:auto}
@@ -486,34 +690,7 @@ h1.h-cine{font-size:var(--fs-h1);letter-spacing:-.035em;line-height:1.02}
   font-size:var(--fs-lead);font-style:italic;color:var(--cy-300);
   text-shadow:0 0 22px rgba(var(--rgb-cy),.35);
 }
-
-/* ---------------- ГОРОДА ---------------- */
-.city{align-items:center;text-align:center;padding:24px 16px}
-.city .emo{font-size:1.9rem;margin-bottom:6px}
-.city b{font-family:var(--f-display);font-weight:700;font-size:1.0625rem;color:var(--g-50)}
-.city span{font-size:.8125rem;color:var(--g-400)}
-
-/* ---------------- 18+ БЛОК ---------------- */
-.note-18{
-  padding:18px 20px;border-radius:var(--r-md);
-  border-left:3px solid var(--pk);
-  background:rgba(var(--rgb-pk),.10);
-  color:var(--pk-300);font-weight:600;line-height:1.6;
-}
-
-/* ---------------- YOUTUBE ---------------- */
-.play{
-  display:grid;place-items:center;width:84px;aspect-ratio:1;margin:0 auto;
-  border-radius:50%;color:#fff;
-  background:linear-gradient(140deg,#ef4444,#b91c1c);
-  box-shadow:0 0 50px rgba(var(--rgb-rd),.55),inset 0 2px 0 rgba(255,255,255,.28);
-  transition:transform .4s var(--e-out),box-shadow .4s var(--e-out);
-}
 .play .ic{width:32px;height:32px;fill:currentColor;stroke:none;margin-left:4px}
-a:hover > .play{transform:scale(1.06);box-shadow:0 0 78px rgba(var(--rgb-rd),.75)}
-.slogan-grid .card{align-items:center;text-align:center;justify-content:center;min-height:104px}
-.slogan-grid .card p{font-family:var(--f-display);font-weight:600;font-size:1rem;
-  line-height:1.4;color:var(--g-50)}
 
 /* ---------------- ФУТЕР (БАГ-5) ---------------- */
 .footer{
@@ -597,7 +774,6 @@ html.no-js [data-rv],html.rv-done [data-rv]{opacity:1}
     animation-duration:.001ms!important;animation-iteration-count:1!important;
     transition-duration:.001ms!important;scroll-behavior:auto!important;
   }
-  #ambient{display:none}
   [data-rv]{opacity:1!important;transform:none!important;clip-path:none!important}
   .rv-word > span{transform:none!important}
   .card:hover,.btn:hover{transform:none!important}
@@ -608,15 +784,8 @@ html.no-js [data-rv],html.rv-done [data-rv]{opacity:1}
   .card,.panel{background:rgba(6,2,18,.94);border-color:rgba(var(--rgb-acc),.6);
     backdrop-filter:none;-webkit-backdrop-filter:none}
   .copy,.muted{color:var(--g-300)}
-  #ambient,.bg-grain{display:none}
+  .bg-grain{display:none}
   .h-cine,.author{text-shadow:none}
-}
-
-/* ---------------- УЗКИЕ ЭКРАНЫ ---------------- */
-@media (max-width:420px){
-  .btn{width:100%;padding:15px 20px}
-  .btn-row{gap:12px}
-  .eyebrow{white-space:normal;text-align:center}
 }
 @media (min-width:2200px){
   :root{--wrap:1440px}
@@ -630,7 +799,6 @@ html.no-js [data-rv],html.rv-done [data-rv]{opacity:1}
 <a class="skip" href="#contracts">Перейти к инструментам заработка</a>
 
 <div class="bg-base" aria-hidden="true"></div>
-<canvas id="ambient" aria-hidden="true"></canvas>
 <div class="bg-vignette" aria-hidden="true"></div>
 <div class="bg-grain" aria-hidden="true"></div>
 
@@ -678,83 +846,102 @@ html.no-js [data-rv],html.rv-done [data-rv]{opacity:1}
 <!-- ============================================================
      HERO
      ============================================================ -->
-<header class="sec hero" id="hero" aria-labelledby="hero-t">
-  <div class="wrap center">
-    <div class="hero-orb" data-rv="fade" aria-hidden="true">
-      <svg class="ic"><use href="#i-bolt"/></svg>
+<!-- ============ ТОНКАЯ ВЕРХНЯЯ ПОЛОСА ============ -->
+<header class="topbar" id="topbar">
+  <a class="topbar__brand" href="#hero">Pro Max Hub</a>
+  <nav class="topbar__nav" aria-label="Разделы">
+    <a href="#motivation-1">Свобода</a>
+    <a href="#contracts">Контракты</a>
+    <a href="#prop">Проп</a>
+    <a href="#neural">Нейросети</a>
+    <a href="#vpn">VPN</a>
+    <a href="#youtube">Инструкции</a>
+  </nav>
+  <span class="topbar__now" id="topbar-now" aria-hidden="true">01 / 07</span>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="sec hero--wide" id="hero" aria-labelledby="hero-t">
+  <div class="sec-video" data-video data-src16="assets/video/hero-wilderness.mp4"
+       data-dur="5.042" data-scrim="left" aria-hidden="true">
+    <div class="sec-video__fade">
+      <video muted loop playsinline preload="none"></video>
+      <video muted loop playsinline preload="none"></video>
+      <div class="sec-video__scrim"></div>
     </div>
+  </div>
 
-    <p data-rv="fade"><span class="eyebrow"><svg class="ic"><use href="#i-spark"/></svg>Ультра-премиальный доступ</span></p>
+  <div class="wrap">
+    <h1 class="hero-title" id="hero-t">
+      <span class="ln"><span>Спокойный</span></span>
+      <span class="ln"><span>заработок</span></span>
+    </h1>
 
-    <h1 class="h-cine" id="hero-t" data-rv="words">Pro Max Hub</h1>
-
-    <p class="lead copy--tight" data-rv="up" style="margin-inline:auto">
-      Твой путь к <strong>финансовой свободе</strong>.
+    <p class="hero-sub" data-rv="up">
+      <b data-count>До 18 000 ₽ в день</b> — из дома, без начальников и офиса.
+      Работай на своих условиях, из любой точки мира.
     </p>
-    <p class="copy" data-rv="up" style="margin-top:14px">
-      Спокойный заработок без стресса, начальников и офисов.
-      Работай из дома. Живи на своих условиях. Зарабатывай столько, сколько хочешь.
+
+    <p class="hero-facts" data-rv="up">
+      <span data-count>7+</span> инструментов заработка
+      <i aria-hidden="true">·</i>
+      <span data-count>24/7</span> доступ
+      <i aria-hidden="true">·</i>
+      доход в ₽ и $
     </p>
 
-    <div class="grid g-3 hero-stats" data-rv="stagger">
-      <div class="card"><div class="stat" data-count>7+</div><div class="stat-label">Инструментов заработка</div></div>
-      <div class="card"><div class="stat" data-count>24/7</div><div class="stat-label">Доступ из любой точки</div></div>
-      <div class="card"><div class="stat">₽ + $</div><div class="stat-label">Доход в любой валюте</div></div>
-    </div>
-
-    <div class="btn-row" data-rv="stagger">
-      <a href="#contracts" class="btn btn--gold">
-        <svg class="ic"><use href="#i-rocket"/></svg>
-        Начать зарабатывать
-        <svg class="ic ic--arrow"><use href="#i-arrow"/></svg>
-      </a>
-      <a href="#motivation-1" class="btn btn--ghost">
-        <svg class="ic"><use href="#i-spark"/></svg>
-        Узнать больше
-      </a>
-    </div>
-
-    <a class="scroll-hint" href="#motivation-1" data-rv="fade">
-      Листай ниже
-      <svg class="ic" aria-hidden="true"><use href="#i-down"/></svg>
+    <a href="#contracts" class="hero-cta" data-rv="up">
+      Начать зарабатывать
+      <svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg>
     </a>
   </div>
-</header>
+
+  <span class="hero-count" aria-hidden="true">
+    01 / 07
+    <svg class="ic"><use href="#i-down"/></svg>
+  </span>
+</section>
 
 <!-- ============ МОТИВАЦИЯ 1 ============ -->
 <section class="sec" id="motivation-1" aria-labelledby="m1-t">
-  <div class="wrap wrap--narrow">
-    <div class="panel">
-      <div class="center" style="margin-bottom:clamp(28px,3.4vw,46px)">
-        <p data-rv="fade"><span class="eyebrow"><svg class="ic"><use href="#i-spark"/></svg>Свобода и независимость</span></p>
-        <h2 class="h-cine" id="m1-t" data-rv="words">Работа из дома</h2>
-        <p class="lead copy--tight" data-rv="up">
-          Забудь о пробках, офисах и ранних подъёмах. Твоё рабочее место — там, где тебе комфортно.
-          Чашка кофе, удобный диван, свой график — и <strong>стабильный доход каждый день</strong>.
-        </p>
-      </div>
+  <div class="sec-video" data-video data-src16="assets/video/amb-room-b.mp4" data-dur="5.042"
+       data-scrim="left" aria-hidden="true">
+    <div class="sec-video__fade">
+      <video muted loop playsinline preload="none"></video>
+      <video muted loop playsinline preload="none"></video>
+      <div class="sec-video__scrim"></div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="sec-head" data-rv="up">
+      <span class="kicker">Свобода и независимость</span>
+      <h2 class="sec-title" id="m1-t">Работа из дома</h2>
+      <p class="sec-lead">
+        Забудь о пробках, офисах и ранних подъёмах. Твоё рабочее место — там, где тебе комфортно.
+        Чашка кофе, удобный диван, свой график — и <b>стабильный доход каждый день</b>.
+      </p>
+    </div>
 
-      <div class="grid g-2" data-rv="stagger">
-        <article class="card">
-          <div class="ic-box"><svg class="ic"><use href="#i-home"/></svg></div>
-          <h3 class="h3">Свобода места</h3>
-          <p class="copy">Работай из любой точки мира — Москва, Бали, Дубай, Лиссабон. Главное — ноутбук и интернет.</p>
-        </article>
-        <article class="card">
-          <div class="ic-box"><svg class="ic"><use href="#i-clock"/></svg></div>
-          <h3 class="h3">Свобода времени</h3>
-          <p class="copy">Сам выбираешь, когда и сколько работать. Утром, днём или ночью — решаешь только ты.</p>
-        </article>
-        <article class="card">
-          <div class="ic-box"><svg class="ic"><use href="#i-briefcase"/></svg></div>
-          <h3 class="h3">Без начальников</h3>
-          <p class="copy">Никаких отчётов, планёрок, «надо задержаться». Ты сам себе босс и сам строишь свой день.</p>
-        </article>
-        <article class="card">
-          <div class="ic-box"><svg class="ic"><use href="#i-wallet"/></svg></div>
-          <h3 class="h3">Без лишних затрат</h3>
-          <p class="copy">Экономия на дороге, обедах в кафе, офисной одежде. Все деньги остаются у тебя.</p>
-        </article>
+    <div class="facts" data-rv="lines">
+      <div class="fact">
+        <span class="fact__i">01</span>
+        <h3>Свобода места</h3>
+        <p>Работай из любой точки мира — Москва, Бали, Дубай, Лиссабон. Главное — ноутбук и интернет.</p>
+      </div>
+      <div class="fact">
+        <span class="fact__i">02</span>
+        <h3>Свобода времени</h3>
+        <p>Сам выбираешь, когда и сколько работать. Утром, днём или ночью — решаешь только ты.</p>
+      </div>
+      <div class="fact">
+        <span class="fact__i">03</span>
+        <h3>Без начальников</h3>
+        <p>Никаких отчётов, планёрок, «надо задержаться». Ты сам себе босс и сам строишь свой день.</p>
+      </div>
+      <div class="fact">
+        <span class="fact__i">04</span>
+        <h3>Без лишних затрат</h3>
+        <p>Экономия на дороге, обедах в кафе, офисной одежде. Все деньги остаются у тебя.</p>
       </div>
     </div>
   </div>
@@ -762,18 +949,28 @@ html.no-js [data-rv],html.rv-done [data-rv]{opacity:1}
 
 <!-- ============ КОНТРАКТЫ ============ -->
 <section class="sec" id="contracts" aria-labelledby="c-t">
+  <div class="sec-video" data-video data-src16="assets/video/sec-trading.mp4" data-dur="5.042"
+       data-scrim="left" aria-hidden="true">
+    <div class="sec-video__fade">
+      <video muted loop playsinline preload="none"></video>
+      <video muted loop playsinline preload="none"></video>
+      <div class="sec-video__scrim"></div>
+    </div>
+  </div>
   <div class="wrap">
-    <div class="center" style="margin-bottom:clamp(30px,3.6vw,52px)">
-      <p data-rv="fade"><span class="eyebrow"><svg class="ic"><use href="#i-candle"/></svg>Trading Utilities</span></p>
-      <h2 class="h-cine" id="c-t" data-rv="words">Заработок на контрактах&nbsp;— легко</h2>
-      <p class="lead" data-rv="up">
+    <div class="sec-head" data-rv="up">
+      <span class="kicker">Trading Utilities</span>
+      <h2 class="sec-title" id="c-t">Заработок на контрактах</h2>
+      <p class="sec-lead">
         Профессиональные утилиты для системного заработка на криптовалюте и валюте.
-        <strong>Автоматические сигналы</strong> — минимум усилий, максимум результата.
+        <b>Автоматические сигналы</b> — минимум усилий, максимум результата.
       </p>
     </div>
 
-    <figure class="figure" data-rv="up" id="term">
-      <div class="hud"><span>BTC / USDT · 5M</span><b id="px">68 400.00</b></div>
+    <div class="dim" data-dim="trading" aria-hidden="true"></div>
+
+    <figure class="strip" data-rv="up">
+      <div class="strip__hud"><span>BTC / USDT · 5M</span><b id="px">68 400.00</b></div>
       <canvas id="chart" height="240" aria-hidden="true"></canvas>
       <figcaption class="sr-only">
         Демонстрационный график микроструктуры рынка Bitcoin: японские свечи на пятиминутном
@@ -782,99 +979,98 @@ html.no-js [data-rv],html.rv-done [data-rv]{opacity:1}
       </figcaption>
     </figure>
 
-    <div class="grid g-3" data-rv="stagger">
-      <article class="card card--term">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
-          <span class="eyebrow"><span class="emo">🔥</span>Хит</span>
-          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-currency"/></svg></div>
+    <div class="rows">
+      <article class="row" data-rv="row">
+        <div class="row__idx">01</div>
+        <div>
+          <h3 class="row__title">Утилита для заработка</h3>
+          <p class="row__desc">Профессиональный анализ микроструктуры рынка Bitcoin. Автоматический поиск точных сигналов для скальпинга на 5-минутном таймфрейме. Система сама определяет лучшие точки входа.</p>
+          <p class="row__tags">5-мин таймфрейм<i>·</i>Авто-сигналы<i>·</i>Для новичков</p>
+          <a href="https://jocehabuwa643-svg.github.io/gordeev_btc_radar" target="_blank" rel="noopener" class="row__cta">
+            Запустить утилиту <svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg>
+            <span class="sr-only">(откроется в новой вкладке)</span>
+          </a>
         </div>
-        <h3 class="h3">Утилита для заработка</h3>
-        <p class="copy">Профессиональный анализ микроструктуры рынка Bitcoin. Автоматический поиск точных сигналов для скальпинга на 5-минутном таймфрейме. Система сама определяет лучшие точки входа.</p>
-        <div class="tags"><span class="tag">5-мин таймфрейм</span><span class="tag">Авто-сигналы</span><span class="tag">Для новичков</span></div>
-        <div class="badge"><svg class="ic"><use href="#i-wallet"/></svg><span data-count>Возможный доход: 1 500 – 5 000 ₽ / день</span></div>
-        <div class="push"></div>
-        <a href="https://jocehabuwa643-svg.github.io/gordeev_btc_radar" target="_blank" rel="noopener" class="btn btn--primary btn--full">
-          <svg class="ic"><use href="#i-rocket"/></svg>Запустить утилиту
-          <svg class="ic ic--arrow"><use href="#i-arrow"/></svg>
-          <span class="sr-only">(откроется в новой вкладке)</span>
-        </a>
+        <div class="row__money">
+          <span class="row__cap">Возможный доход</span>
+          <span class="row__num" data-count>1 500 – 5 000 ₽</span>
+          <span class="row__per">в день</span>
+        </div>
       </article>
 
-      <article class="card card--term">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
-          <span class="eyebrow"><svg class="ic"><use href="#i-chart"/></svg>Ликвидность</span>
-          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-exchange"/></svg></div>
+      <article class="row" data-rv="row">
+        <div class="row__idx">02</div>
+        <div>
+          <h3 class="row__title">Утилита для заработка на евро-доллар</h3>
+          <p class="row__desc">Мощный скальпинг на самой ликвидной валютной паре мира. Анализ паттернов ликвидности, зон спроса и предложения, объёмов. Точные сигналы на развороты тренда.</p>
+          <p class="row__tags">24/5 работа<i>·</i>Паттерны<i>·</i>Универсальная</p>
+          <a href="https://jocehabuwa643-svg.github.io/eur-usdt_pro_max_terminal" target="_blank" rel="noopener" class="row__cta">
+            Запустить утилиту <svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg>
+            <span class="sr-only">(откроется в новой вкладке)</span>
+          </a>
         </div>
-        <h3 class="h3">Утилита для заработка на евро-доллар</h3>
-        <p class="copy">Мощный скальпинг на самой ликвидной валютной паре мира. Анализ паттернов ликвидности, зон спроса и предложения, объёмов. Точные сигналы на развороты тренда.</p>
-        <div class="tags"><span class="tag">24/5 работа</span><span class="tag">Паттерны</span><span class="tag">Универсальная</span></div>
-        <div class="badge"><svg class="ic"><use href="#i-wallet"/></svg><span data-count>Возможный доход: 1 500 – 6 000 ₽ / день</span></div>
-        <div class="push"></div>
-        <a href="https://jocehabuwa643-svg.github.io/eur-usdt_pro_max_terminal" target="_blank" rel="noopener" class="btn btn--primary btn--full">
-          <svg class="ic"><use href="#i-rocket"/></svg>Запустить утилиту
-          <svg class="ic ic--arrow"><use href="#i-arrow"/></svg>
-          <span class="sr-only">(откроется в новой вкладке)</span>
-        </a>
+        <div class="row__money">
+          <span class="row__cap">Возможный доход</span>
+          <span class="row__num" data-count>1 500 – 6 000 ₽</span>
+          <span class="row__per">в день</span>
+        </div>
       </article>
 
-      <article class="card card--term">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
-          <span class="eyebrow"><svg class="ic"><use href="#i-bolt"/></svg>Быстрый старт</span>
-          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-chart"/></svg></div>
+      <article class="row" data-rv="row">
+        <div class="row__idx">03</div>
+        <div>
+          <h3 class="row__title">Биржа для заработка</h3>
+          <p class="row__desc">Прозрачная торговая площадка с мгновенным исполнением ордеров. Честные котировки, низкие спреды, быстрые выплаты. Идеально для применения сигналов наших утилит.</p>
+          <p class="row__tags">Мгновенно<i>·</i>Низкие спреды<i>·</i>Поддержка 24/7</p>
+          <a href="https://intrade35.bar/311164" target="_blank" rel="noopener" class="row__cta">
+            Открыть биржу <svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg>
+            <span class="sr-only">(откроется в новой вкладке)</span>
+          </a>
         </div>
-        <h3 class="h3">Биржа для заработка</h3>
-        <p class="copy">Прозрачная торговая площадка с мгновенным исполнением ордеров. Честные котировки, низкие спреды, быстрые выплаты. Идеально для применения сигналов наших утилит.</p>
-        <div class="tags"><span class="tag">Мгновенно</span><span class="tag">Низкие спреды</span><span class="tag">Поддержка 24/7</span></div>
-        <div class="badge"><svg class="ic"><use href="#i-wallet"/></svg><span data-count>Возможный доход: 2 000 – 7 000 ₽ / день</span></div>
-        <div class="push"></div>
-        <a href="https://intrade35.bar/311164" target="_blank" rel="noopener" class="btn btn--emerald btn--full">
-          <svg class="ic"><use href="#i-bolt"/></svg>Открыть биржу
-          <svg class="ic ic--arrow"><use href="#i-arrow"/></svg>
-          <span class="sr-only">(откроется в новой вкладке)</span>
-        </a>
+        <div class="row__money">
+          <span class="row__cap">Возможный доход</span>
+          <span class="row__num" data-count>2 000 – 7 000 ₽</span>
+          <span class="row__per">в день</span>
+        </div>
       </article>
     </div>
 
-    <div class="panel center" style="margin-top:var(--gap)" data-rv="up">
-      <div style="display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap">
-        <div class="ic-box"><svg class="ic"><use href="#i-diamond"/></svg></div>
-        <h3 class="h3" style="margin:0">Суммарный потенциал</h3>
-      </div>
-      <p class="stat" style="margin-top:18px;color:var(--em-300);text-shadow:0 0 30px rgba(16,185,129,.5)" data-count>До 18 000 ₽ в день</p>
-      <p class="copy" style="margin-top:10px">при грамотном использовании всех трёх инструментов</p>
+    <div class="claim" data-rv="up">
+      <p class="claim__big" data-count>До 18 000 ₽ в день</p>
+      <p class="claim__note">
+        <b>Суммарный потенциал</b>
+        при грамотном использовании всех трёх инструментов
+      </p>
     </div>
   </div>
 </section>
 
 <!-- ============ МОТИВАЦИЯ 2 ============ -->
 <section class="sec" id="motivation-2" aria-labelledby="m2-t">
-  <div class="wrap wrap--narrow">
-    <div class="panel">
-      <div class="center" style="margin-bottom:clamp(28px,3.4vw,46px)">
-        <p data-rv="fade"><span class="eyebrow"><svg class="ic"><use href="#i-spark"/></svg>Независимость</span></p>
-        <h2 class="h-cine" id="m2-t" data-rv="words">Никаких начальников</h2>
-        <p class="lead copy--tight" data-rv="up">
-          Больше никаких планёрок, отчётов и фразы «надо задержаться». Ты сам себе босс.
-          Сам ставишь цели, сам выбираешь темп, сам решаешь, когда взять выходной.
-        </p>
-      </div>
+  <div class="sec-video" data-video data-src16="assets/video/sec-boss.mp4" data-dur="5.042"
+       data-scrim="left" aria-hidden="true">
+    <div class="sec-video__fade">
+      <video muted loop playsinline preload="none"></video>
+      <video muted loop playsinline preload="none"></video>
+      <div class="sec-video__scrim"></div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="sec-head" data-rv="up">
+      <span class="kicker">Независимость</span>
+      <h2 class="sec-title" id="m2-t">Никаких начальников</h2>
+      <p class="sec-lead">
+        Больше никаких планёрок, отчётов и фразы «надо задержаться». Ты сам себе босс.
+        Сам ставишь цели, сам выбираешь темп, сам решаешь, когда взять выходной.
+      </p>
+    </div>
 
-      <div class="grid g-3" data-rv="stagger">
-        <div class="card" style="text-align:center;align-items:center">
-          <div class="ic-box"><svg class="ic"><use href="#i-chart"/></svg></div>
-          <div class="stat" data-count data-from="40">0</div>
-          <p class="copy">отчётов и планёрок</p>
-        </div>
-        <div class="card" style="text-align:center;align-items:center">
-          <div class="ic-box"><svg class="ic"><use href="#i-target"/></svg></div>
-          <div class="stat" data-count>100%</div>
-          <p class="copy">контроль над временем</p>
-        </div>
-        <div class="card" style="text-align:center;align-items:center">
-          <div class="ic-box"><svg class="ic"><use href="#i-globe"/></svg></div>
-          <div class="stat"><svg class="ic" style="width:1em;height:1em" aria-label="бесконечно"><use href="#i-infinity"/></svg></div>
-          <p class="copy">возможностей для роста</p>
-        </div>
+    <div class="numrow" data-rv="lines">
+      <div><b data-count data-from="40">0</b><span>отчётов и планёрок</span></div>
+      <div><b data-count>100%</b><span>контроль над временем</span></div>
+      <div>
+        <b><svg class="ic" aria-label="бесконечно"><use href="#i-infinity"/></svg></b>
+        <span>возможностей для роста</span>
       </div>
     </div>
   </div>
@@ -882,120 +1078,141 @@ html.no-js [data-rv],html.rv-done [data-rv]{opacity:1}
 
 <!-- ============ ПРОП-ТРЕЙДИНГ ============ -->
 <section class="sec" id="prop" aria-labelledby="p-t">
+  <div class="sec-video" data-video data-src16="assets/video/sec-prop.mp4" data-dur="5.042"
+       data-scrim="left" aria-hidden="true">
+    <div class="sec-video__fade">
+      <video muted loop playsinline preload="none"></video>
+      <video muted loop playsinline preload="none"></video>
+      <div class="sec-video__scrim"></div>
+    </div>
+  </div>
   <div class="wrap">
-    <div class="center" style="margin-bottom:clamp(30px,3.6vw,52px)">
-      <p data-rv="fade"><span class="eyebrow"><svg class="ic"><use href="#i-diamond"/></svg>Capital Access</span></p>
-      <h2 class="h-cine" id="p-t" data-rv="words">Проп-трейдинг</h2>
-      <p class="lead" data-rv="up">
-        Торгуй на <strong>капитале компании от $10 000 до $200 000</strong>. Получи funded-счёт и забирай до <strong>80%</strong> прибыли.
-        Масштабируй доход <strong>без риска своими деньгами</strong>.
+    <div class="sec-head" data-rv="up">
+      <span class="kicker">Capital Access</span>
+      <h2 class="sec-title" id="p-t">Проп-трейдинг</h2>
+      <p class="sec-lead">
+        Торгуй на <b>капитале компании от $10 000 до $200 000</b>. Получи funded-счёт
+        и забирай до <b>80%</b> прибыли. Масштабируй доход без риска своими деньгами.
       </p>
     </div>
 
-    <div class="grid g-prop" data-rv="stagger">
-      <article class="card card--term">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
-          <span class="eyebrow"><svg class="ic"><use href="#i-target"/></svg>Для челленджей</span>
-          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-laptop"/></svg></div>
-        </div>
-        <h3 class="h3">Утилита для прохождения проп-челленджей</h3>
-        <p class="copy">Специализированный терминал для прохождения evaluation-челленджей проп-фирм. <strong>Встроенный риск-контроль</strong> автоматически следит за дневным лимитом убытков и максимальной просадкой. Система предупреждает, когда нужно остановиться.</p>
-        <p class="copy">Помогает пройти челлендж с первой попытки и сохранить funded-счёт после получения. Торгуй спокойно, не думая о нарушениях правил.</p>
-        <div class="tags">
-          <span class="tag">Риск-контроль</span><span class="tag">Аналитика</span><span class="tag">Автостоп</span>
-          <span class="tag">Статистика</span><span class="tag">Советник</span>
-        </div>
-        <div class="badge"><svg class="ic"><use href="#i-wallet"/></svg><span data-count>Потенциальный доход: $500 – $2 000+ на funded-счёте</span></div>
-        <div class="push"></div>
-        <a href="https://jocehabuwa643-svg.github.io/upscale-prop-terminal_pro_max" target="_blank" rel="noopener" class="btn btn--gold btn--full">
-          <svg class="ic"><use href="#i-bolt"/></svg>Запустить терминал
-          <svg class="ic ic--arrow"><use href="#i-arrow"/></svg>
-          <span class="sr-only">(откроется в новой вкладке)</span>
-        </a>
-      </article>
-
-      <article class="card">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
-          <span class="eyebrow"><span class="emo">💎</span>Премиум</span>
-          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-building"/></svg></div>
-        </div>
-        <h3 class="h3">Высококачественная проп-биржа</h3>
-        <p class="copy">Прозрачная проп-биржа с честными условиями. Быстрая регистрация, понятные правила evaluation, <strong>мгновенные выплаты</strong>. Масштабирование счёта при успешной торговле — от $10K до $200K.</p>
-        <div class="badge"><svg class="ic"><use href="#i-wallet"/></svg><span data-count>До $10 000+ в месяц</span></div>
-        <div class="push"></div>
-        <div class="btn-row btn--full" style="flex-direction:column;gap:12px">
-          <a href="https://app.bookflow.sh?ref=3NCYI" target="_blank" rel="noopener" class="btn btn--gold btn--full">
-            <svg class="ic"><use href="#i-key"/></svg>Получить доступ
-            <svg class="ic ic--arrow"><use href="#i-arrow"/></svg>
+    <div class="rows">
+      <article class="row" data-rv="row">
+        <div class="row__idx">01</div>
+        <div>
+          <h3 class="row__title">Утилита для прохождения проп-челленджей</h3>
+          <p class="row__desc">Специализированный терминал для прохождения evaluation-челленджей проп-фирм. <b style="color:#F5F3FF">Встроенный риск-контроль</b> автоматически следит за дневным лимитом убытков и максимальной просадкой. Система предупреждает, когда нужно остановиться.</p>
+          <p class="row__desc">Помогает пройти челлендж с первой попытки и сохранить funded-счёт после получения. Торгуй спокойно, не думая о нарушениях правил.</p>
+          <p class="row__tags">Риск-контроль<i>·</i>Аналитика<i>·</i>Автостоп<i>·</i>Статистика<i>·</i>Советник</p>
+          <a href="https://jocehabuwa643-svg.github.io/upscale-prop-terminal_pro_max" target="_blank" rel="noopener" class="row__cta">
+            Запустить терминал <svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg>
             <span class="sr-only">(откроется в новой вкладке)</span>
           </a>
-          <a href="#youtube" class="btn btn--ghost btn--full">
-            <svg class="ic"><use href="#i-tv"/></svg>Узнать подробнее
-          </a>
+        </div>
+        <div class="row__money">
+          <span class="row__cap">Потенциальный доход</span>
+          <span class="row__num" data-count>$500 – $2 000+</span>
+          <span class="row__per">на funded-счёте</span>
+        </div>
+      </article>
+
+      <article class="row" data-rv="row">
+        <div class="row__idx">02</div>
+        <div>
+          <h3 class="row__title">Высококачественная проп-биржа</h3>
+          <p class="row__desc">Прозрачная проп-биржа с честными условиями. Быстрая регистрация, понятные правила evaluation, <b style="color:#F5F3FF">мгновенные выплаты</b>. Масштабирование счёта при успешной торговле — от $10K до $200K.</p>
+          <p class="row__tags">Премиум<i>·</i>Мгновенные выплаты<i>·</i>Масштабирование</p>
+          <div class="cta-pair">
+            <a href="https://app.bookflow.sh?ref=3NCYI" target="_blank" rel="noopener" class="row__cta">
+              Получить доступ <svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg>
+              <span class="sr-only">(откроется в новой вкладке)</span>
+            </a>
+            <a href="#youtube" class="row__cta">
+              Узнать подробнее <svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="row__money">
+          <span class="row__cap">Потенциальный доход</span>
+          <span class="row__num" data-count>До $10 000+</span>
+          <span class="row__per">в месяц</span>
         </div>
       </article>
     </div>
 
-    <div class="panel center" style="margin-top:var(--gap)" data-rv="up">
-      <div style="display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap">
-        <div class="ic-box"><svg class="ic"><use href="#i-handshake"/></svg></div>
-        <h3 class="h3" style="margin:0" data-count>Split profit 80/20</h3>
-      </div>
-      <p class="stat" style="margin-top:18px;color:var(--go-300);text-shadow:0 0 30px rgba(251,191,36,.5)" data-count>Забирай 80% прибыли</p>
-      <p class="copy" style="margin-top:10px">с каждого funded-счёта — честно и прозрачно</p>
+    <div class="claim" data-rv="up">
+      <p class="claim__big" data-count>Забирай 80% прибыли</p>
+      <p class="claim__note">
+        <b data-count>Split profit 80/20</b>
+        с каждого funded-счёта — честно и прозрачно
+      </p>
     </div>
   </div>
 </section>
 
 <!-- ============ МОТИВАЦИЯ 3 ============ -->
 <section class="sec" id="motivation-3" aria-labelledby="m3-t">
-  <div class="wrap wrap--narrow">
-    <div class="panel">
-      <div class="center" style="margin-bottom:clamp(28px,3.4vw,46px)">
-        <p data-rv="fade"><span class="eyebrow"><svg class="ic"><use href="#i-zen"/></svg>Peace of mind</span></p>
-        <h2 class="h-cine" id="m3-t" data-rv="words">Заработок без стресса</h2>
-        <p class="lead copy--tight" data-rv="up">
-          Никакой гонки. Никаких дедлайнов. Никаких нервотрёпок.
-          <strong>Системный подход</strong>, проверенные инструменты, понятные стратегии.
-        </p>
-      </div>
-
-      <div class="grid g-3" data-rv="stagger">
-        <article class="card" style="text-align:center;align-items:center">
-          <div class="ic-box"><svg class="ic"><use href="#i-zen"/></svg></div>
-          <h3 class="h3">Спокойствие</h3>
-          <p class="copy">Без гонки, без давления, без выгорания. Ты работаешь в своём ритме.</p>
-        </article>
-        <article class="card" style="text-align:center;align-items:center">
-          <div class="ic-box"><svg class="ic"><use href="#i-grid"/></svg></div>
-          <h3 class="h3">Система</h3>
-          <p class="copy">Проверенные стратегии и алгоритмы, которые работают стабильно день за днём.</p>
-        </article>
-        <article class="card" style="text-align:center;align-items:center">
-          <div class="ic-box"><svg class="ic"><use href="#i-target"/></svg></div>
-          <h3 class="h3">Результат</h3>
-          <p class="copy">Стабильный доход, который можно планировать. Без сюрпризов и рисков.</p>
-        </article>
-      </div>
-
-      <p class="quote center" data-rv="up">«Спокойствие — это новая роскошь»</p>
+  <div class="sec-video" data-video data-src16="assets/video/sec-calm.mp4" data-dur="5.042"
+       data-scrim="left" aria-hidden="true">
+    <div class="sec-video__fade">
+      <video muted loop playsinline preload="none"></video>
+      <video muted loop playsinline preload="none"></video>
+      <div class="sec-video__scrim"></div>
     </div>
+  </div>
+  <div class="wrap">
+    <div class="sec-head" data-rv="up">
+      <span class="kicker">Peace of mind</span>
+      <h2 class="sec-title" id="m3-t">Заработок без стресса</h2>
+      <p class="sec-lead">
+        Никакой гонки. Никаких дедлайнов. Никаких нервотрёпок.
+        <b>Системный подход</b>, проверенные инструменты, понятные стратегии.
+      </p>
+    </div>
+
+    <div class="facts" data-rv="lines">
+      <div class="fact">
+        <span class="fact__i">01</span>
+        <h3>Спокойствие</h3>
+        <p>Без гонки, без давления, без выгорания. Ты работаешь в своём ритме.</p>
+      </div>
+      <div class="fact">
+        <span class="fact__i">02</span>
+        <h3>Система</h3>
+        <p>Проверенные стратегии и алгоритмы, которые работают стабильно день за днём.</p>
+      </div>
+      <div class="fact">
+        <span class="fact__i">03</span>
+        <h3>Результат</h3>
+        <p>Стабильный доход, который можно планировать. Без сюрпризов и рисков.</p>
+      </div>
+    </div>
+
+    <p class="quote" data-rv="up">«Спокойствие — это новая роскошь»</p>
   </div>
 </section>
 
 <!-- ============ НЕЙРОСЕТИ ============ -->
 <section class="sec" id="neural" aria-labelledby="n-t">
+  <div class="sec-video" data-video data-src16="assets/video/sec-neural.mp4" data-dur="5.042"
+       data-scrim="left" aria-hidden="true">
+    <div class="sec-video__fade">
+      <video muted loop playsinline preload="none"></video>
+      <video muted loop playsinline preload="none"></video>
+      <div class="sec-video__scrim"></div>
+    </div>
+  </div>
   <div class="wrap">
-    <div class="center" style="margin-bottom:clamp(30px,3.6vw,52px)">
-      <p data-rv="fade"><span class="eyebrow"><svg class="ic"><use href="#i-brain"/></svg>Artificial Intelligence</span></p>
-      <h2 class="h-cine" id="n-t" data-rv="words">Нейросети для заработка</h2>
-      <p class="lead" data-rv="up">
-        Одна подписка — <strong>неограниченный доступ</strong> ко всем топовым AI-моделям мира.
+    <div class="sec-head" data-rv="up">
+      <span class="kicker">Artificial Intelligence</span>
+      <h2 class="sec-title" id="n-t">Нейросети для заработка</h2>
+      <p class="sec-lead">
+        Одна подписка — <b>неограниченный доступ</b> ко всем топовым AI-моделям мира.
         Создавай контент без цензуры, монетизируй творчество, зарабатывай на рефералах.
       </p>
     </div>
 
-    <figure class="figure" data-rv="up" style="border:0;background:none">
+    <figure class="strip" data-rv="up" style="max-width:760px">
       <svg id="aigraph" viewBox="0 0 800 400" role="img" aria-labelledby="ai-cap"></svg>
       <figcaption id="ai-cap" class="sr-only">
         Схема: одна подписка в центре соединена с восемью группами AI-моделей —
@@ -1004,101 +1221,94 @@ html.no-js [data-rv],html.rv-done [data-rv]{opacity:1}
       </figcaption>
     </figure>
 
-    <div class="panel" data-rv="up">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:22px">
-        <span class="eyebrow"><span class="emo">🔥</span>Хит сезона</span>
-        <div class="ic-box"><svg class="ic"><use href="#i-brain"/></svg></div>
-      </div>
-
-      <h3 class="h3">Доступ ко всем нейросетям</h3>
-      <p class="copy">Единая подписка открывает доступ ко всем передовым AI-инструментам без ограничений. Создавай любое видео, генерируй арт, пиши тексты, автоматизируй бизнес — всё в одном месте.</p>
-
-      <p class="note-18" style="margin-top:20px">
-        <span class="emo">🎬</span>
-        Создание и монетизация контента 18+ без цензуры — эксклюзивные видео, арт и сценарии,
-        которые можно продавать на OnlyFans, Patreon, Fansly и других платформах.
-        Полная свобода творчества и высокие доходы.
-      </p>
-
-      <div class="grid g-feat" style="margin-top:26px" data-rv="stagger">
-        <div class="card" style="flex-direction:row;gap:14px;align-items:flex-start;padding:18px">
-          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-video"/></svg></div>
-          <div><b style="display:block;color:var(--g-50)">Видео 18+</b><span class="copy" style="font-size:var(--fs-sm)">Без цензуры, любые сценарии и жанры</span></div>
+    <div class="rows">
+      <article class="row" data-rv="row">
+        <div class="row__idx">01</div>
+        <div>
+          <h3 class="row__title">Доступ ко всем нейросетям</h3>
+          <p class="row__desc">Единая подписка открывает доступ ко всем передовым AI-инструментам без ограничений. Создавай любое видео, генерируй арт, пиши тексты, автоматизируй бизнес — всё в одном месте.</p>
+          <p class="note">
+            <b>Создание и монетизация контента 18+ без цензуры</b> — эксклюзивные видео, арт
+            и сценарии, которые можно продавать на OnlyFans, Patreon, Fansly и других платформах.
+            Полная свобода творчества и высокие доходы.
+          </p>
+          <div class="specs">
+            <div><b>Видео 18+</b><span>без цензуры, любые жанры</span></div>
+            <div><b>Арт</b><span>фотореализм, любые стили</span></div>
+            <div><b>Тексты</b><span>любые форматы и объёмы</span></div>
+            <div><b>Музыка</b><span>любые жанры и настроения</span></div>
+            <div><b>Автоматизация</b><span>бизнес-процессы и рутина</span></div>
+            <div><b>AI-блоги</b><span>уникальный контент 24/7</span></div>
+          </div>
+          <a href="https://syntx.ai/welcome/mr0UAykB" target="_blank" rel="noopener" class="row__cta" style="margin-top:28px">
+            Получить доступ ко всем AI <svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg>
+            <span class="sr-only">(откроется в новой вкладке)</span>
+          </a>
         </div>
-        <div class="card" style="flex-direction:row;gap:14px;align-items:flex-start;padding:18px">
-          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-image"/></svg></div>
-          <div><b style="display:block;color:var(--g-50)">Арт и изображения</b><span class="copy" style="font-size:var(--fs-sm)">Фотореализм, любые стили и концепты</span></div>
+        <div class="row__money">
+          <span class="row__cap">Возможный доход</span>
+          <span class="row__num" data-count>5 000 – 50 000 ₽</span>
+          <span class="row__per">в месяц</span>
+          <span class="row__cap" style="margin-top:1.6em">Рефералы</span>
+          <span class="row__num" data-count>до 30%</span>
+          <span class="row__per">с каждой подписки</span>
         </div>
-        <div class="card" style="flex-direction:row;gap:14px;align-items:flex-start;padding:18px">
-          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-pen"/></svg></div>
-          <div><b style="display:block;color:var(--g-50)">Тексты и сценарии</b><span class="copy" style="font-size:var(--fs-sm)">Любые форматы, объёмы, стили</span></div>
-        </div>
-        <div class="card" style="flex-direction:row;gap:14px;align-items:flex-start;padding:18px">
-          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-music"/></svg></div>
-          <div><b style="display:block;color:var(--g-50)">Музыка</b><span class="copy" style="font-size:var(--fs-sm)">Любые жанры и настроения</span></div>
-        </div>
-        <div class="card" style="flex-direction:row;gap:14px;align-items:flex-start;padding:18px">
-          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-bot"/></svg></div>
-          <div><b style="display:block;color:var(--g-50)">Автоматизация</b><span class="copy" style="font-size:var(--fs-sm)">Бизнес-процессы и рутина</span></div>
-        </div>
-        <div class="card" style="flex-direction:row;gap:14px;align-items:flex-start;padding:18px">
-          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-mobile"/></svg></div>
-          <div><b style="display:block;color:var(--g-50)">AI-блоги</b><span class="copy" style="font-size:var(--fs-sm)">Уникальный контент 24/7</span></div>
-        </div>
-      </div>
-
-      <div class="grid g-2" style="margin-top:26px">
-        <div class="badge"><svg class="ic"><use href="#i-wallet"/></svg><span data-count>Возможный доход: 5 000 – 50 000 ₽ / месяц</span></div>
-        <div class="badge"><svg class="ic"><use href="#i-link"/></svg><span data-count>Рефералы: до 30% с каждой подписки</span></div>
-      </div>
-
-      <div class="btn-row" style="margin-top:26px">
-        <a href="https://syntx.ai/welcome/mr0UAykB" target="_blank" rel="noopener" class="btn btn--pink btn--full">
-          <svg class="ic"><use href="#i-brain"/></svg>Получить доступ ко всем AI
-          <svg class="ic ic--arrow"><use href="#i-arrow"/></svg>
-          <span class="sr-only">(откроется в новой вкладке)</span>
-        </a>
-      </div>
+      </article>
     </div>
   </div>
 </section>
 
 <!-- ============ МОТИВАЦИЯ 4 ============ -->
 <section class="sec" id="motivation-4" aria-labelledby="m4-t">
-  <div class="wrap wrap--narrow">
-    <div class="panel">
-      <div class="center" style="margin-bottom:clamp(28px,3.4vw,46px)">
-        <p data-rv="fade"><span class="eyebrow"><svg class="ic"><use href="#i-globe"/></svg>Geographic Freedom</span></p>
-        <h2 class="h-cine" id="m4-t" data-rv="words">Живи где хочешь</h2>
-        <p class="lead copy--tight" data-rv="up">
-          Сегодня Москва, завтра Бали, послезавтра Дубай.
-          Твой <strong>доход не привязан к месту</strong>. Ноутбук, стабильный интернет — и ты в бизнесе из любой точки мира.
-        </p>
-      </div>
+  <div class="sec-video" data-video data-src16="assets/video/sec-geo.mp4" data-dur="5.042"
+       data-scrim="left" aria-hidden="true">
+    <div class="sec-video__fade">
+      <video muted loop playsinline preload="none"></video>
+      <video muted loop playsinline preload="none"></video>
+      <div class="sec-video__scrim"></div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="sec-head" data-rv="up">
+      <span class="kicker">Geographic Freedom</span>
+      <h2 class="sec-title" id="m4-t">Живи где хочешь</h2>
+      <p class="sec-lead">
+        Сегодня Москва, завтра Бали, послезавтра Дубай.
+        Твой <b>доход не привязан к месту</b>. Ноутбук, стабильный интернет —
+        и ты в бизнесе из любой точки мира.
+      </p>
+    </div>
 
-      <div class="grid g-4" data-rv="stagger">
-        <div class="card city"><span class="emo">🇷🇺</span><b>Москва</b><span>Старт отсюда</span></div>
-        <div class="card city"><span class="emo">🏝️</span><b>Бали</b><span>Океан и закаты</span></div>
-        <div class="card city"><span class="emo">🏙️</span><b>Дубай</b><span>Роскошь и комфорт</span></div>
-        <div class="card city"><span class="emo">🌍</span><b>Весь мир</b><span>Твой офис</span></div>
-      </div>
+    <div class="cities" data-rv="lines">
+      <div><b>Москва</b><span>старт отсюда</span></div>
+      <div><b>Бали</b><span>океан и закаты</span></div>
+      <div><b>Дубай</b><span>роскошь и комфорт</span></div>
+      <div><b>Весь мир</b><span>твой офис</span></div>
     </div>
   </div>
 </section>
 
 <!-- ============ VPN ============ -->
 <section class="sec" id="vpn" aria-labelledby="v-t">
+  <div class="sec-video" data-video data-src16="assets/video/sec-vpn.mp4" data-dur="5.042"
+       data-scrim="left" aria-hidden="true">
+    <div class="sec-video__fade">
+      <video muted loop playsinline preload="none"></video>
+      <video muted loop playsinline preload="none"></video>
+      <div class="sec-video__scrim"></div>
+    </div>
+  </div>
   <div class="wrap">
-    <div class="center" style="margin-bottom:clamp(30px,3.6vw,52px)">
-      <p data-rv="fade"><span class="eyebrow"><svg class="ic"><use href="#i-shield"/></svg>Digital Privacy</span></p>
-      <h2 class="h-cine" id="v-t" data-rv="words">Virtual Private Network</h2>
-      <p class="lead" style="color:var(--cy-300);font-weight:600" data-rv="up">Заработок на раздаче VPN</p>
-      <p class="lead" data-rv="up" style="margin-top:12px">
-        Защита данных + <strong>пассивный доход</strong>. Рекомендуй сервис друзьям и получай процент с каждой их подписки — <strong>навсегда</strong>.
+    <div class="sec-head" data-rv="up">
+      <span class="kicker">Digital Privacy</span>
+      <h2 class="sec-title" id="v-t">Virtual Private Network</h2>
+      <p class="sec-lead">
+        <b>Заработок на раздаче VPN.</b> Защита данных плюс пассивный доход: рекомендуй
+        сервис друзьям и получай процент с каждой их подписки — навсегда.
       </p>
     </div>
 
-    <figure class="figure" data-rv="up" style="border:0;background:none">
+    <figure class="strip" data-rv="up">
       <svg class="flow" id="flow" viewBox="0 0 1080 180" role="img" aria-labelledby="v-cap"></svg>
       <div class="speed" id="speed" aria-hidden="true"></div>
       <figcaption id="v-cap" class="sr-only">
@@ -1108,112 +1318,79 @@ html.no-js [data-rv],html.rv-done [data-rv]{opacity:1}
       </figcaption>
     </figure>
 
-    <div class="panel" data-rv="up">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:22px">
-        <span class="eyebrow"><svg class="ic"><use href="#i-shield"/></svg>Максимальная защита</span>
-        <div class="ic-box"><svg class="ic"><use href="#i-lock"/></svg></div>
-      </div>
-
-      <h3 class="h3">Премиум VPN-сервис</h3>
-      <p class="copy">
-        Высококачественный VPN со скоростью до <strong>10 Gbps</strong> — идеально для 8K стриминга, онлайн-игр без лагов и быстрой работы.
-        40+ локаций по всему миру, неограниченное количество подключений на одну подписку.
-        Полная приватность, обход любых блокировок, поддержка от реальных специалистов 24/7.
-      </p>
-
-      <div class="grid g-4" style="margin-top:26px" data-rv="stagger">
-        <div class="card" style="text-align:center;align-items:center;padding:20px 14px">
-          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-bolt"/></svg></div>
-          <b class="num" style="font-size:1.25rem;color:var(--cy-300)" data-count>10 Gbps</b>
-          <span class="copy" style="font-size:.75rem">скорость</span>
+    <div class="rows">
+      <article class="row" data-rv="row">
+        <div class="row__idx">01</div>
+        <div>
+          <h3 class="row__title">Премиум VPN-сервис</h3>
+          <p class="row__desc">Высококачественный VPN со скоростью до <b style="color:#F5F3FF">10 Gbps</b> — идеально для 8K стриминга, онлайн-игр без лагов и быстрой работы. 40+ локаций по всему миру, неограниченное количество подключений на одну подписку. Полная приватность, обход любых блокировок, поддержка от реальных специалистов 24/7.</p>
+          <div class="specs">
+            <div><b data-count>10 Gbps</b><span>скорость</span></div>
+            <div><b data-count>40+</b><span>локаций</span></div>
+            <div><b><svg class="ic" aria-label="неограниченно"><use href="#i-infinity"/></svg></b><span>подключений</span></div>
+            <div><b>No-log</b><span>политика</span></div>
+            <div><b data-count>8K</b><span>стриминг</span></div>
+            <div><b data-count>24/7</b><span>поддержка</span></div>
+          </div>
+          <a href="https://blnc.to/friend/5f412c5c9e0f4541a562" target="_blank" rel="noopener" class="row__cta" style="margin-top:28px">
+            Подключить VPN <svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg>
+            <span class="sr-only">(откроется в новой вкладке)</span>
+          </a>
         </div>
-        <div class="card" style="text-align:center;align-items:center;padding:20px 14px">
-          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-globe"/></svg></div>
-          <b class="num" style="font-size:1.25rem;color:var(--cy-300)" data-count>40+</b>
-          <span class="copy" style="font-size:.75rem">локаций</span>
+        <div class="row__money">
+          <span class="row__cap">Пассивный доход</span>
+          <span class="row__num" data-count>3 000 – 30 000 ₽</span>
+          <span class="row__per">в месяц</span>
+          <span class="row__cap" style="margin-top:1.6em">Бонус другу</span>
+          <span class="row__num" data-count>+30 дней</span>
+          <span class="row__per">бесплатно</span>
         </div>
-        <div class="card" style="text-align:center;align-items:center;padding:20px 14px">
-          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-mobile"/></svg></div>
-          <b style="font-size:1.25rem;color:var(--cy-300);display:grid;place-items:center">
-            <svg class="ic" style="width:1.4em;height:1.4em" aria-label="неограниченно"><use href="#i-infinity"/></svg>
-          </b>
-          <span class="copy" style="font-size:.75rem">подключений</span>
-        </div>
-        <div class="card" style="text-align:center;align-items:center;padding:20px 14px">
-          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-lock"/></svg></div>
-          <b class="num" style="font-size:1.25rem;color:var(--cy-300)">No-log</b>
-          <span class="copy" style="font-size:.75rem">политика</span>
-        </div>
-        <div class="card" style="text-align:center;align-items:center;padding:20px 14px">
-          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-tv"/></svg></div>
-          <b class="num" style="font-size:1.25rem;color:var(--cy-300)" data-count>8K</b>
-          <span class="copy" style="font-size:.75rem">стриминг</span>
-        </div>
-        <div class="card" style="text-align:center;align-items:center;padding:20px 14px">
-          <div class="ic-box ic-box--sm"><svg class="ic"><use href="#i-support"/></svg></div>
-          <b class="num" style="font-size:1.25rem;color:var(--cy-300)" data-count>24/7</b>
-          <span class="copy" style="font-size:.75rem">поддержка</span>
-        </div>
-      </div>
-
-      <div class="grid g-2" style="margin-top:26px">
-        <div class="badge"><svg class="ic"><use href="#i-wallet"/></svg><span data-count>Пассивный доход: 3 000 – 30 000 ₽ / месяц</span></div>
-        <div class="badge"><svg class="ic"><use href="#i-gift"/></svg><span data-count>+30 бесплатных дней для друзей</span></div>
-      </div>
-
-      <div class="btn-row" style="margin-top:26px">
-        <a href="https://blnc.to/friend/5f412c5c9e0f4541a562" target="_blank" rel="noopener" class="btn btn--cyan btn--full">
-          <svg class="ic"><use href="#i-lock"/></svg>Подключить VPN
-          <svg class="ic ic--arrow"><use href="#i-arrow"/></svg>
-          <span class="sr-only">(откроется в новой вкладке)</span>
-        </a>
-      </div>
+      </article>
     </div>
   </div>
 </section>
 
 <!-- ============ YOUTUBE ============ -->
 <section class="sec" id="youtube" aria-labelledby="y-t">
-  <div class="wrap wrap--narrow">
-    <div class="panel center">
-      <p data-rv="fade"><span class="eyebrow"><svg class="ic"><use href="#i-play"/></svg>Education &amp; Community</span></p>
-      <h2 class="h-cine" id="y-t" data-rv="words">Инструкция по заработку</h2>
-
-      <div style="margin:clamp(26px,3.4vw,44px) 0" data-rv="fade">
-        <a href="https://www.youtube.com/@slava666gordeev" target="_blank" rel="noopener"
-           aria-label="Смотреть инструкции на YouTube (откроется в новой вкладке)">
-          <span class="play"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg></span>
-        </a>
-      </div>
-
-      <h3 class="h-cine" style="font-size:clamp(1.5rem,1.1rem + 1.8vw,2.75rem)" data-rv="words">Сделай свою жизнь лучше</h3>
-
-      <p class="lead" data-rv="up">
-        На нашем YouTube-канале — все инструкции: настройка утилит, прохождение проп-челленджей,
-        монетизация нейросетей, пассивный доход на VPN. <strong>Простые видео без воды</strong> —
-        посмотрел, применил, получил результат.
+  <div class="sec-video" data-video data-src16="assets/video/sec-learn.mp4" data-dur="5.042"
+       data-scrim="left" aria-hidden="true">
+    <div class="sec-video__fade">
+      <video muted loop playsinline preload="none"></video>
+      <video muted loop playsinline preload="none"></video>
+      <div class="sec-video__scrim"></div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="sec-head" data-rv="up">
+      <span class="kicker">Education &amp; Community</span>
+      <h2 class="sec-title" id="y-t">Инструкция по заработку</h2>
+      <p class="sec-lead">
+        На нашем YouTube-канале — все инструкции: настройка утилит, прохождение
+        проп-челленджей, монетизация нейросетей, пассивный доход на VPN.
+        <b>Простые видео без воды</b> — посмотрел, применил, получил результат.
       </p>
+    </div>
 
-      <div class="btn-row" style="margin-top:28px" data-rv="fade">
-        <a href="https://www.youtube.com/@slava666gordeev" target="_blank" rel="noopener" class="btn btn--red">
-          <svg class="ic"><use href="#i-play"/></svg>Смотреть инструкции
-          <svg class="ic ic--arrow"><use href="#i-arrow"/></svg>
-          <span class="sr-only">(откроется в новой вкладке)</span>
+    <a href="https://www.youtube.com/@slava666gordeev" target="_blank" rel="noopener" class="play-link" data-rv="up"
+       aria-label="Смотреть инструкции на YouTube (откроется в новой вкладке)">
+      <span class="dot"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg></span>
+      <em>Смотреть инструкции</em>
+    </a>
+
+    <div class="slogans" data-rv="lines">
+      <p>Начни сегодня — получи результат завтра</p>
+      <p>Твой доход = твои действия</p>
+      <p>Свобода — это твой выбор</p>
+    </div>
+
+    <div class="claim" data-rv="up">
+      <p class="claim__big">Сделай свою жизнь лучше</p>
+      <p class="claim__note">
+        <b>Стать свободным</b>
+        <a href="#contracts" class="row__cta" style="margin-top:10px">
+          Начать с контрактов <svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg>
         </a>
-      </div>
-
-      <div class="grid g-3 slogan-grid" style="margin-top:clamp(30px,4vw,50px)" data-rv="stagger">
-        <div class="card"><p>Начни сегодня — получи результат завтра</p></div>
-        <div class="card"><p>Твой доход = твои действия</p></div>
-        <div class="card"><p>Свобода — это твой выбор</p></div>
-      </div>
-
-      <div class="btn-row" style="margin-top:clamp(30px,4vw,50px)" data-rv="fade">
-        <a href="#contracts" class="btn btn--gold">
-          <svg class="ic"><use href="#i-rocket"/></svg>Стать свободным
-          <svg class="ic ic--arrow"><use href="#i-arrow"/></svg>
-        </a>
-      </div>
+      </p>
     </div>
   </div>
 </section>
@@ -1288,113 +1465,86 @@ document.addEventListener('visibilitychange', function(){
    1. FLUID AMBIENT — один слой, тема морфит по scroll-progress
    Trading (свечи) → Neural (узлы+связи) → VPN (пакеты)
    ============================================================ */
-function ambient(){
-  var cv = document.getElementById('ambient');
-  if (!cv || RM) { if(cv) cv.style.display='none'; return; }
-  var ctx = cv.getContext('2d', {alpha:true});
-  var W=0,H=0,DPR=1;
-  var N = LITE ? 26 : (window.innerWidth < 768 ? 34 : 92);
-  var P = [];
+/* ============================================================
+   1b. ВИДЕО-ФОН СЕКЦИИ — бесшовная петля из обычного клипа
+   ============================================================ */
+function sectionVideo(sec){
+  var wrap = sec.querySelector('[data-video]');
+  if (!wrap) return null;
 
-  var TH = {
-    trade:{ c1:[16,185,129], c2:[239,68,68] },
-    neur: { c1:[232,121,249], c2:[167,139,250] },
-    vpn:  { c1:[34,211,238],  c2:[96,165,250] }
-  };
-  var w = {t:1,n:0,v:0};
-
-  function resize(){
-    var r = cv.getBoundingClientRect();
-    DPR = Math.min(window.devicePixelRatio||1, window.innerWidth<768?1.5:2);
-    W = r.width; H = r.height;
-    cv.width = Math.round(W*DPR); cv.height = Math.round(H*DPR);
-    ctx.setTransform(DPR,0,0,DPR,0,0);
-  }
-  function mk(){
-    return {
-      x:Math.random(), y:Math.random(),
-      vx:(Math.random()-.5)*0.010,
-      vy:-(0.006 + Math.random()*0.020),
-      s:0.4 + Math.random()*0.6,
-      up:Math.random()<0.52,
-      ph:Math.random()*Math.PI*2
-    };
-  }
-  for (var i=0;i<N;i++) P.push(mk());
-  resize();
-  addEventListener('resize', function(){ clearTimeout(resize._t); resize._t=setTimeout(resize,140); }, {passive:true});
-
-  function smooth(a,b,x){ var t=Math.min(1,Math.max(0,(x-a)/(b-a))); return t*t*(3-2*t); }
-  function mix(A,B,k){ return [A[0]+(B[0]-A[0])*k, A[1]+(B[1]-A[1])*k, A[2]+(B[2]-A[2])*k]; }
-
-  function themeFromScroll(){
-    var max = document.documentElement.scrollHeight - innerHeight;
-    var p = max > 0 ? scrollY / max : 0;
-    var n = smooth(0.26,0.46,p);
-    var v = smooth(0.58,0.76,p);
-    w.v = v; w.n = n*(1-v); w.t = (1-n)*(1-v);
+  /* Кому видео НЕ отдаём. Файл 4 МБ — гейт жёсткий. */
+  var c = navigator.connection || {};
+  if (RM || c.saveData || /(^|-)2g/.test(c.effectiveType || '') ||
+      (navigator.hardwareConcurrency || 4) < 4 ||
+      matchMedia('(max-width:900px)').matches){
+    wrap.remove(); return null;
   }
 
-  addJob({ paused:false, tick:function(dt,now){
-    themeFromScroll();
-    ctx.clearRect(0,0,W,H);
-    if (!W||!H) return;
+  var vs = wrap.querySelectorAll('video');
+  var A = vs[0], B = vs[1];
+  var dur = parseFloat(wrap.dataset.dur) || 10;
+  var half = dur / 2;
+  var started = false, timer = 0, live = A;
 
-    var linkOn = w.n > 0.18;
-    var pts = [];
+  A.src = B.src = wrap.dataset.src16;
 
-    for (var i=0;i<P.length;i++){
-      var p = P[i];
-      p.x += p.vx*dt/W; p.y += p.vy*dt/H;
-      if (p.y < -0.08){ p.y = 1.08; p.x = Math.random(); }
-      if (p.x < -0.06) p.x = 1.06; else if (p.x > 1.06) p.x = -0.06;
-
-      var x = p.x*W + Math.sin(now/2600 + p.ph)*6;
-      var y = p.y*H;
-      if (linkOn) pts.push([x,y,p]);
-
-      var base = mix(
-        mix(p.up?TH.trade.c1:TH.trade.c2, TH.neur.c1, w.n/(w.t+w.n||1)),
-        TH.vpn.c1, w.v);
-      var col = 'rgba('+(base[0]|0)+','+(base[1]|0)+','+(base[2]|0)+',';
-
-      /* Trading: вертикальная свеча */
-      if (w.t > 0.02){
-        var h = (26 + p.s*70) * w.t;
-        ctx.fillStyle = col + (0.12*w.t).toFixed(3) + ')';
-        ctx.fillRect(x - 3*p.s, y - h/2, 6*p.s, h);
-      }
-      /* Neural: узел */
-      if (w.n > 0.02){
-        ctx.beginPath();
-        ctx.arc(x, y, (1.4 + p.s*2.0)*w.n, 0, 6.2832);
-        ctx.fillStyle = col + (0.5*w.n).toFixed(3) + ')';
-        ctx.fill();
-      }
-      /* VPN: горизонтальный пакет-штрих */
-      if (w.v > 0.02){
-        var L = (10 + p.s*26) * w.v;
-        ctx.fillStyle = col + (0.34*w.v).toFixed(3) + ')';
-        ctx.fillRect(x - L/2, y - 1.4*p.s, L, 2.8*p.s);
-      }
+  /* Сдвиг приходится подтверждать: seek асинхронный, и play(),
+     вызванный сразу после присвоения currentTime, стартует со
+     старой позиции — смещение схлопывается почти в ноль. */
+  function align(){
+    var want = (A.currentTime + half) % dur;
+    if (Math.abs(B.currentTime - want) > 0.25) {
+      try { B.currentTime = want; } catch(e){}
     }
+  }
 
-    /* связи только в нейро-фазе */
-    if (linkOn){
-      var R = 150, a;
-      ctx.lineWidth = 1;
-      for (var i2=0;i2<pts.length;i2++){
-        for (var j=i2+1;j<pts.length;j++){
-          var dx = pts[i2][0]-pts[j][0], dy = pts[i2][1]-pts[j][1];
-          var d2 = dx*dx+dy*dy;
-          if (d2 > R*R) continue;
-          a = (1 - Math.sqrt(d2)/R) * 0.16 * w.n;
-          ctx.strokeStyle = 'rgba(200,150,250,'+a.toFixed(3)+')';
-          ctx.beginPath(); ctx.moveTo(pts[i2][0],pts[i2][1]); ctx.lineTo(pts[j][0],pts[j][1]); ctx.stroke();
-        }
-      }
-    }
-  }});
+  function start(){
+    if (started) return;
+    started = true;
+    Promise.all([A.play(), B.play()].map(function(p){
+      return (p && p.catch) ? p.catch(function(){}) : p;
+    })).then(function(){
+      align();
+      setTimeout(align, 250);          // после того как оба реально пошли
+      A.classList.add('on');
+      wrap.classList.add('ready');
+      /* переключаемся строго в середине клипа — шов всегда скрыт */
+      timer = setInterval(function(){
+        align();                        // самовосстановление при дрейфе
+        live = (live === A) ? B : A;
+        A.classList.toggle('on', live === A);
+        B.classList.toggle('on', live === B);
+      }, half * 1000);
+    });
+  }
+  function kill(){ clearInterval(timer); wrap.remove(); }
+
+  function load(){
+    if (A.preload === 'auto') return;
+    vs.forEach(function(v){ v.preload = 'auto'; v.load(); });
+    A.addEventListener('canplay', start, {once:true});
+    A.addEventListener('error', kill, {once:true});
+    setTimeout(function(){ if (!started && A.readyState >= 2) start(); }, 1500);
+    setTimeout(function(){ if (!started) kill(); }, 9000);
+  }
+
+  /* Секция уже на экране (hero) — грузим сразу, не ждём наблюдателя:
+     у IntersectionObserver есть задержка первого колбэка, а для
+     первого экрана это лишнее звено отказа. */
+  var r = sec.getBoundingClientRect();
+  if (r.top < innerHeight && r.bottom > 0) load();
+  else new IntersectionObserver(function(e){
+    if (e[0].isIntersecting) load();
+  }, {rootMargin:'700px'}).observe(sec);
+
+  /* экономим батарею и CPU на скрытой вкладке */
+  document.addEventListener('visibilitychange', function(){
+    if (!started) return;
+    if (document.hidden){ A.pause(); B.pause(); }
+    else { A.play().catch(function(){}); B.play().catch(function(){}); }
+  });
+
+  return wrap;
 }
 
 /* ============================================================
@@ -1418,8 +1568,125 @@ function splitWords(el){
   return el.querySelectorAll('.rv-word > span');
 }
 
+/* ============================================================
+   3b. ТЕМАТИЧЕСКИЙ 3D-ДЕКОР (CSS 3D)
+   Строит узлы один раз, дальше всё считает композитор.
+   ============================================================ */
+function dim3d(){
+  if (RM || matchMedia('(max-width:1023px)').matches) return;
+
+  var THEMES = {
+    trading: function(host){
+      /* 5 свечей: bull/bear, разная высота, глубина, скорость вращения */
+      var C = [
+        { x:'8%',  y:'18%', w:16, h:96,  z:-140, up:1, spin:26, dur:9,  dx:'6px',  dy:'-18px', rx:'6deg'  },
+        { x:'26%', y:'46%', w:22, h:150, z:0,    up:0, spin:34, dur:11, dx:'-8px', dy:'14px',  rx:'-5deg' },
+        { x:'48%', y:'12%', w:13, h:72,  z:-220, up:1, spin:21, dur:8,  dx:'10px', dy:'20px',  rx:'8deg'  },
+        { x:'64%', y:'52%', w:19, h:124, z:-60,  up:1, spin:30, dur:12, dx:'-6px', dy:'-16px', rx:'-7deg' },
+        { x:'84%', y:'26%', w:15, h:88,  z:-180, up:0, spin:24, dur:10, dx:'8px',  dy:'12px',  rx:'5deg'  }
+      ];
+      C.forEach(function(c, i){
+        var el = document.createElement('i');
+        el.className = 'cndl';
+        el.style.cssText =
+          '--x:' + c.x + ';--y:' + c.y + ';--w:' + c.w + 'px;--h:' + c.h + 'px;' +
+          '--z:' + c.z + 'px;--spin:' + c.spin + 's;--dur:' + c.dur + 's;' +
+          '--dly:' + (i * -1.7) + 's;--dx:' + c.dx + ';--dy:' + c.dy + ';--rx:' + c.rx + ';' +
+          (c.up ? '--c1:#34d399;--c2:#047857' : '--c1:#f87171;--c2:#991b1b');
+        var bx = document.createElement('i');
+        bx.className = 'bx';
+        for (var f = 0; f < 4; f++) bx.appendChild(document.createElement('i'));
+        el.appendChild(bx);
+        host.appendChild(el);
+      });
+
+      /* частицы ликвидности */
+      for (var p = 0; p < 12; p++){
+        var q = document.createElement('i');
+        q.className = 'lq';
+        q.style.cssText =
+          '--x:' + (6 + (p * 7.4) % 88) + '%;--y:' + (30 + (p * 13) % 55) + '%;' +
+          '--s:' + (3 + (p % 3) * 2) + 'px;--z:' + (-40 - (p % 4) * 60) + 'px;' +
+          '--dx:' + ((p % 2 ? 1 : -1) * (8 + p % 5 * 4)) + 'px;' +
+          '--dur:' + (7 + (p % 4) * 2.5) + 's;--dly:' + (p * -1.1) + 's';
+        host.appendChild(q);
+      }
+    }
+  };
+
+  document.querySelectorAll('[data-dim]').forEach(function(host){
+    var build = THEMES[host.dataset.dim];
+    if (!build) return;
+    build(host);
+    host.classList.add('idle');
+    new IntersectionObserver(function(e){
+      host.classList.toggle('idle', !e[0].isIntersecting);
+    }, {rootMargin:'160px'}).observe(host);
+  });
+}
+
+/* ============================================================
+   2b. ВЕРХНЯЯ ПОЛОСА + СЧЁТЧИК СЕКЦИЙ
+   ============================================================ */
+var SECTIONS = ['hero','motivation-1','contracts','prop','neural','vpn','youtube'];
+
+function topbar(gs){
+  var bar = document.getElementById('topbar');
+  var now = document.getElementById('topbar-now');
+  if (!bar) return;
+
+  /* фон полосы появляется только после отрыва от первого экрана */
+  var onScroll = function(){
+    bar.classList.toggle('stuck', window.scrollY > 40);
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, {passive:true});
+
+  if (!gs || !window.ScrollTrigger) return;
+
+  var links = bar.querySelectorAll('.topbar__nav a');
+  SECTIONS.forEach(function(id, i){
+    var el = document.getElementById(id);
+    if (!el) return;
+    ScrollTrigger.create({
+      trigger: el, start:'top 45%', end:'bottom 45%',
+      onToggle: function(self){
+        if (!self.isActive) return;
+        var n = String(i + 1).padStart(2, '0') + ' / 07';
+        if (now) now.textContent = n;
+        var hc = document.querySelector('.hero-count');
+        if (hc) hc.firstChild.textContent = n + ' ';
+        links.forEach(function(a){
+          if (a.getAttribute('href') === '#' + id) a.setAttribute('aria-current','true');
+          else a.removeAttribute('aria-current');
+        });
+      }
+    });
+  });
+}
+
+/* Оборачиваем стрелку CTA в круг. Делаем из JS, чтобы не дублировать
+   разметку в десяти местах; при выключенном JS кнопка остаётся рабочей
+   ссылкой, просто без кружка. */
+function dressCTA(){
+  document.querySelectorAll('.row__cta, .hero-cta').forEach(function(a){
+    var ic = a.querySelector(':scope > .ic');
+    if (!ic || a.querySelector('.cta__go')) return;
+    var go = document.createElement('span');
+    go.className = 'cta__go'; go.setAttribute('aria-hidden','true');
+    a.insertBefore(go, ic); go.appendChild(ic);
+  });
+}
+
 function reveals(gs){
   var ST = { start:'top 84%', once:true };
+
+  /* Hero: две строки выезжают из маски. Единственная анимация
+     первого экрана — дальше секцию ведёт только видео. */
+  var lines = document.querySelectorAll('.hero-title .ln > span');
+  if (lines.length){
+    gs.from(lines, {yPercent:108, duration:1.15, ease:'power3.out', stagger:0.08, delay:0.15});
+  }
 
   document.querySelectorAll('[data-rv="words"]').forEach(function(el){
     var inner = splitWords(el);
@@ -1430,9 +1697,40 @@ function reveals(gs){
     });
   });
 
+  /* ---- Заголовки секций ----
+     Раньше здесь одновременно ехал y и анимировался clip-path.
+     clip-path на боксе шириной во всю секцию заставляет браузер
+     перерисовывать поддерево каждый кадр, слой не промотируется,
+     и 68-пиксельные глифы ресемплятся — это и был рывок.
+     Теперь: статичная маска в CSS, внутри едет только translate,
+     плюс микро-scale. Композитор, ноль перерисовок. */
+  function mask(el){
+    /* div, а не span: внутрь попадают h2/p — span их содержать не может */
+    var w = document.createElement('div'); w.className = 'mk';
+    var i = document.createElement('div'); i.className = 'mk__i';
+    el.parentNode.insertBefore(w, el); i.appendChild(el); w.appendChild(i);
+    return i;
+  }
+
   document.querySelectorAll('[data-rv="up"]').forEach(function(el){
-    gs.fromTo(el, {opacity:0, y:26, clipPath:'inset(0 0 22% 0)'},
-      {opacity:1, y:0, clipPath:'inset(0 0 0% 0)', duration:.95, ease:'power3.out',
+    if (el.classList.contains('sec-head')){
+      var parts = Array.prototype.filter.call(el.children, function(c){
+        return c.offsetParent !== null || true;
+      }).map(mask);
+      gs.set(el, {opacity:1});
+      gs.fromTo(parts,
+        {yPercent:112, scale:1.035, opacity:0},
+        {yPercent:0, scale:1, opacity:1, duration:1.15, ease:'power3.out',
+         stagger:.09, force3D:true, transformOrigin:'0% 100%',
+         scrollTrigger:{trigger:el, start:ST.start, once:true},
+         onComplete:function(){
+           parts.forEach(function(p){ p.classList.add('done'); });
+         }});
+      return;
+    }
+    /* остальные блоки — только transform + opacity, без clip-path */
+    gs.fromTo(el, {opacity:0, y:26, scale:.99},
+      {opacity:1, y:0, scale:1, duration:.95, ease:'power3.out', force3D:true,
        scrollTrigger:{trigger:el, start:ST.start, once:true}});
   });
 
@@ -1441,13 +1739,107 @@ function reveals(gs){
       scrollTrigger:{trigger:el, start:'top 88%', once:true}});
   });
 
-  document.querySelectorAll('[data-rv="stagger"]').forEach(function(el){
-    var kids = el.children;
-    gs.set(el, {opacity:1});
-    gs.fromTo(kids, {opacity:0, y:34, clipPath:'inset(0 0 26% 0)'},
-      {opacity:1, y:0, clipPath:'inset(0 0 0% 0)', duration:.9, ease:'power3.out',
-       stagger:0.075, scrollTrigger:{trigger:el, start:ST.start, once:true}});
+  /* stagger обрабатывается тем же тематическим morph, что и строки —
+     объявление morphIn ниже, поэтому вызов отложен на конец функции */
+  var staggerHosts = document.querySelectorAll('[data-rv="stagger"]');
+
+  /* ---- Тематический morph появления ----
+     У каждой секции свой вектор, взятый из её смысла:
+       contracts  — котировка поднимается снизу вверх
+       prop       — капитал приходит слева, с глубиной
+       neural     — синапс раскрывается из центра
+       vpn        — пакет проходит по горизонтали
+       motivation — спокойный подъём с лёгким наклоном
+     Все профили только transform + opacity: анимация целиком
+     на композиторе, поэтому «выскакивания» и рывков нет. */
+  var MORPH = {
+    contracts : {y:56,  x:0,   z:0,   rx:0, ry:0,  s:.985, dur:1.00, st:.075},
+    prop      : {y:16,  x:-64, z:-90, rx:0, ry:7,  s:.97,  dur:1.15, st:.085},
+    neural    : {y:0,   x:0,   z:-70, rx:0, ry:0,  s:.90,  dur:1.10, st:.09},
+    vpn       : {y:0,   x:74,  z:0,   rx:0, ry:-5, s:.99,  dur:1.00, st:.08},
+    youtube   : {y:34,  x:0,   z:-40, rx:0, ry:0,  s:.96,  dur:1.05, st:.08},
+    _def      : {y:40,  x:0,   z:0,   rx:6, ry:0,  s:.985, dur:1.05, st:.08}
+  };
+  function morphOf(el){
+    var sec = el.closest('section[id]');
+    var k = sec && sec.id ? sec.id.replace(/-\d+$/, '') : '';
+    return MORPH[k] || MORPH._def;
+  }
+  /* на узких экранах гасим боковые векторы и глубину: иначе сдвиг
+     по X уводит блок за границу вьюпорта и рождает горизонтальный скролл */
+  var narrowM = matchMedia('(max-width:768px)').matches;
+
+  function morphIn(host, start){
+    var kids = Array.prototype.slice.call(host.children);
+    if (!kids.length) return;
+    var m = morphOf(host);
+    gs.set(host, {opacity:1});
+    if (!narrowM && (m.z || m.ry || m.rx)) gs.set(host, {perspective:1200});
+    gs.fromTo(kids,
+      {opacity:0, y:m.y, x:narrowM?0:m.x, z:narrowM?0:m.z,
+       rotateX:narrowM?0:m.rx, rotateY:narrowM?0:m.ry, scale:m.s},
+      {opacity:1, y:0, x:0, z:0, rotateX:0, rotateY:0, scale:1,
+       duration:m.dur, ease:'power3.out', stagger:m.st, force3D:true,
+       scrollTrigger:{trigger:host, start:start, once:true},
+       onStart:function(){
+         kids.forEach(function(k){ k.style.willChange = 'transform, opacity'; });
+       },
+       onComplete:function(){
+         kids.forEach(function(k){ k.style.willChange = 'auto'; });
+       }});
+  }
+
+  document.querySelectorAll('[data-rv="lines"]').forEach(function(host){
+    morphIn(host, 'top 86%');
   });
+  document.querySelectorAll('[data-rv="row"]').forEach(function(row){
+    morphIn(row, 'top 86%');
+  });
+  staggerHosts.forEach(function(host){ morphIn(host, ST.start); });
+
+  /* ---- Corner Unfold: каждая карточка разворачивается из своего
+     внешнего угла к центру. Четыре разных вектора вместо одного
+     общего fade-up — фирменный паттерн мотивационных секций. ---- */
+  var CORNERS = [
+    {clip:'polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%)',         x:-34, y:-26, rot:-3.5, org:'0% 0%'},
+    {clip:'polygon(100% 0%, 100% 0%, 100% 0%, 100% 0%)', x: 34, y:-26, rot: 3.5, org:'100% 0%'},
+    {clip:'polygon(0% 100%, 0% 100%, 0% 100%, 0% 100%)', x:-34, y: 26, rot: 3.5, org:'0% 100%'},
+    {clip:'polygon(100% 100%, 100% 100%, 100% 100%, 100% 100%)', x: 34, y: 26, rot:-3.5, org:'100% 100%'}
+  ];
+  var FULL = 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)';
+  var narrow = matchMedia('(max-width:768px)').matches;
+
+  document.querySelectorAll('[data-rv="corner"]').forEach(function(host){
+    gs.set(host, {opacity:1});
+    Array.prototype.forEach.call(host.children, function(card, i){
+      var k = CORNERS[i % 4];
+      gs.fromTo(card,
+        {clipPath:k.clip, x:narrow?0:k.x, y:narrow?20:k.y, rotate:narrow?0:k.rot,
+         scale:narrow?1:.94, opacity:0, transformOrigin:k.org, filter:'blur(6px)'},
+        {clipPath:FULL, x:0, y:0, rotate:0, scale:1, opacity:1, filter:'blur(0px)',
+         duration:1.05, ease:'power3.out', delay:i * 0.09,
+         scrollTrigger:{trigger:host, start:'top 82%', once:true},
+         onStart:function(){ card.style.willChange = 'transform, clip-path, filter'; },
+         onComplete:function(){ card.style.willChange = 'auto'; }});
+    });
+  });
+
+  /* ---- затухание видео-фона к границе секции ---- */
+  var heroFade = document.querySelector('#hero .sec-video__fade');
+  if (heroFade){
+    gs.fromTo(heroFade, {opacity:1}, {opacity:0, ease:'none',
+      scrollTrigger:{trigger:'#motivation-1', start:'top 40%', end:'bottom 60%', scrub:.9}});
+  }
+  var m1Fade = document.querySelector('#motivation-1 .sec-video__fade');
+  if (m1Fade){
+    gs.fromTo(m1Fade, {opacity:1}, {opacity:0, ease:'none',
+      scrollTrigger:{trigger:'#motivation-1', start:'bottom 78%', end:'bottom 18%', scrub:.9}});
+  }
+
+  /* мягкий морф границы: секция «стекает» в следующую */
+  gs.fromTo('#motivation-1', {borderBottomLeftRadius:0, borderBottomRightRadius:0},
+    {borderBottomLeftRadius:'56px', borderBottomRightRadius:'56px', ease:'none',
+     scrollTrigger:{trigger:'#motivation-1', start:'bottom 90%', end:'bottom 35%', scrub:1}});
 
   /* секционный шов */
   document.querySelectorAll('.sec').forEach(function(s){
@@ -1489,299 +1881,4 @@ function counters(gs){
       var o = {v:from};
       s.textContent = fmt(from);
       gs.to(o, {v:to, duration: to>=10000?1.9:(to>=1000?1.6:1.2), ease:'power2.out',
-        onUpdate:function(){ s.textContent = fmt(o.v); },
-        onComplete:function(){ s.textContent = fmt(to); },
-        scrollTrigger:{trigger:host, start:'top 88%', once:true}});
-    });
-  });
-}
-function countersFinal(){
-  document.querySelectorAll('.num[data-to]').forEach(function(s){ s.textContent = fmt(+s.dataset.to); });
-}
-
-/* ============================================================
-   4. ЖИВОЙ МИНИ-ТЕРМИНАЛ
-   ============================================================ */
-function chart(){
-  var cv = document.getElementById('chart'), hud = document.getElementById('px');
-  if (!cv) return;
-  var ctx = cv.getContext('2d');
-  var W=0,H=0,DPR=1, price=68400, pts=[], candles=[], cur=null, tick=0, acc=0, bands=null, bacc=0;
-
-  function resize(){
-    var r = cv.parentElement.getBoundingClientRect();
-    DPR = Math.min(devicePixelRatio||1, 2);
-    W = r.width; H = innerWidth<768 ? 190 : 240;
-    cv.style.height = H+'px';
-    cv.width = Math.round(W*DPR); cv.height = Math.round(H*DPR);
-    ctx.setTransform(DPR,0,0,DPR,0,0);
-  }
-  resize();
-  addEventListener('resize', function(){ clearTimeout(resize._t); resize._t=setTimeout(resize,150); }, {passive:true});
-
-  function step(){
-    var sh = (Math.random()+Math.random()+Math.random()-1.5)/1.5;
-    price *= 1 + 0.00002 + 0.0016*sh;
-    pts.push(price); if (pts.length > 180) pts.shift();
-    if (!cur) cur = {o:price,h:price,l:price,c:price};
-    cur.h = Math.max(cur.h, price); cur.l = Math.min(cur.l, price); cur.c = price;
-    if (++tick % 5 === 0){ candles.push(cur); if (candles.length>40) candles.shift(); cur = null; }
-  }
-  for (var i=0;i<180;i++) step();
-
-  function recalc(){
-    if (candles.length < 8) return;
-    var hi=-1e9, lo=1e9;
-    candles.forEach(function(k){ hi=Math.max(hi,k.h); lo=Math.min(lo,k.l); });
-    bands = {d: lo*0.9975, s: hi*1.0025};
-  }
-  recalc();
-
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    if (!W) return;
-    var hi=-1e9, lo=1e9;
-    pts.forEach(function(p){ hi=Math.max(hi,p); lo=Math.min(lo,p); });
-    candles.forEach(function(k){ hi=Math.max(hi,k.h); lo=Math.min(lo,k.l); });
-    if (bands){ hi=Math.max(hi,bands.s); lo=Math.min(lo,bands.d); }
-    var pad = (hi-lo)*0.2 || 1; hi+=pad; lo-=pad;
-    var Y = function(p){ return H - ((p-lo)/(hi-lo))*H; };
-
-    if (bands){
-      ctx.fillStyle='rgba(16,185,129,.10)'; ctx.fillRect(0, Y(bands.d)-8, W, 16);
-      ctx.fillStyle='rgba(239,68,68,.10)';  ctx.fillRect(0, Y(bands.s)-8, W, 16);
-    }
-    var bw = innerWidth<768?8:13, gap = innerWidth<768?4:6;
-    var x = W - 14 - candles.length*(bw+gap);
-    candles.forEach(function(k){
-      var up = k.c >= k.o;
-      ctx.strokeStyle = up ? 'rgba(16,185,129,.7)' : 'rgba(239,68,68,.7)';
-      ctx.fillStyle   = up ? 'rgba(16,185,129,.5)' : 'rgba(239,68,68,.5)';
-      var cx = x + bw/2;
-      ctx.beginPath(); ctx.moveTo(cx, Y(k.h)); ctx.lineTo(cx, Y(k.l)); ctx.stroke();
-      var yo=Y(k.o), yc=Y(k.c);
-      ctx.fillRect(x, Math.min(yo,yc), bw, Math.max(1.5, Math.abs(yc-yo)));
-      x += bw+gap;
-    });
-
-    ctx.beginPath();
-    for (var i=0;i<pts.length;i++){
-      var px = 14 + (i/(pts.length-1))*(W-28), py = Y(pts[i]);
-      i ? ctx.lineTo(px,py) : ctx.moveTo(px,py);
-    }
-    ctx.strokeStyle = '#a78bfa'; ctx.lineWidth = 2; ctx.lineJoin='round'; ctx.stroke();
-    ctx.beginPath(); ctx.arc(W-14, Y(price), 3.2, 0, 6.2832);
-    ctx.fillStyle = '#c4b5fd'; ctx.fill();
-  }
-  draw();
-  if (RM) return;
-
-  var job = { paused:true, tick:function(dt){
-    acc += dt; bacc += dt;
-    while (acc >= 320){
-      acc -= 320; var prev = price; step();
-      if (hud){
-        hud.textContent = price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
-        hud.className = price >= prev ? 'up' : 'down';
-      }
-    }
-    if (bacc > 6400){ bacc = 0; recalc(); }
-    draw();
-  }};
-  addJob(job);
-  new IntersectionObserver(function(e){ job.paused = !e[0].isIntersecting; },
-    {rootMargin:'200px'}).observe(cv);
-}
-
-/* ============================================================
-   5. AI-ГРАФ
-   ============================================================ */
-function aigraph(){
-  var svg = document.getElementById('aigraph');
-  if (!svg) return;
-  var NS='http://www.w3.org/2000/svg';
-  var M = ['Видео','Арт','Тексты','Музыка','Код','Голос','Агенты','18+'];
-  var cx=400, cy=200, R = innerWidth<768 ? 130 : 165;
-  var defs = document.createElementNS(NS,'defs');
-  defs.innerHTML = '<linearGradient id="eg" x1="0" x2="1"><stop offset="0" stop-color="#e879f9"/><stop offset="1" stop-color="#a78bfa"/></linearGradient>';
-  svg.appendChild(defs);
-
-  var paths = [];
-  M.forEach(function(name,i){
-    var a = (i/M.length)*Math.PI*2 - Math.PI/2;
-    var x = cx + Math.cos(a)*R, y = cy + Math.sin(a)*R*0.8;
-    var mx = (cx+x)/2 + Math.cos(a+Math.PI/2)*24, my = (cy+y)/2 + Math.sin(a+Math.PI/2)*24;
-    var p = document.createElementNS(NS,'path');
-    p.setAttribute('d','M '+cx+' '+cy+' Q '+mx+' '+my+', '+x+' '+y);
-    p.setAttribute('stroke','url(#eg)'); p.setAttribute('stroke-width','1.4');
-    p.setAttribute('fill','none'); p.setAttribute('opacity','.5');
-    svg.appendChild(p); paths.push(p);
-
-    var g = document.createElementNS(NS,'g');
-    var c = document.createElementNS(NS,'circle');
-    c.setAttribute('cx',x); c.setAttribute('cy',y); c.setAttribute('r','32');
-    c.setAttribute('fill','rgba(232,121,249,.10)');
-    c.setAttribute('stroke','rgba(232,121,249,.42)');
-    var t = document.createElementNS(NS,'text');
-    t.setAttribute('x',x); t.setAttribute('y',y+4);
-    t.setAttribute('text-anchor','middle'); t.setAttribute('fill','#f0abfc');
-    t.setAttribute('font-size','12'); t.setAttribute('font-family','JetBrains Mono, monospace');
-    t.textContent = name;
-    g.appendChild(c); g.appendChild(t); svg.appendChild(g);
-  });
-
-  var core = document.createElementNS(NS,'circle');
-  core.setAttribute('cx',cx); core.setAttribute('cy',cy); core.setAttribute('r','52');
-  core.setAttribute('fill','rgba(167,139,250,.16)');
-  core.setAttribute('stroke','rgba(167,139,250,.6)');
-  svg.appendChild(core);
-  var ct = document.createElementNS(NS,'text');
-  ct.setAttribute('x',cx); ct.setAttribute('y',cy+5);
-  ct.setAttribute('text-anchor','middle'); ct.setAttribute('fill','#ddd6fe');
-  ct.setAttribute('font-size','13'); ct.setAttribute('font-weight','600');
-  ct.setAttribute('font-family','JetBrains Mono, monospace');
-  ct.textContent = '1 подписка';
-  svg.appendChild(ct);
-
-  if (RM) return;
-  var dots = paths.map(function(p,i){
-    var d = document.createElementNS(NS,'circle');
-    d.setAttribute('r','3'); d.setAttribute('fill','#22d3ee');
-    svg.appendChild(d);
-    return {el:d, p:p, t:i/paths.length, len:0};
-  });
-  var job = { paused:true, tick:function(dt){
-    dots.forEach(function(d){
-      if (!d.len) d.len = d.p.getTotalLength();
-      d.t += dt/1400; if (d.t > 1) d.t -= 1;
-      var pt = d.p.getPointAtLength(d.t*d.len);
-      d.el.setAttribute('cx', pt.x.toFixed(1));
-      d.el.setAttribute('cy', pt.y.toFixed(1));
-    });
-  }};
-  addJob(job);
-  new IntersectionObserver(function(e){ job.paused = !e[0].isIntersecting; },
-    {rootMargin:'150px'}).observe(svg);
-}
-
-/* ============================================================
-   6. VPN-СХЕМА
-   ============================================================ */
-function vpnflow(){
-  var svg = document.getElementById('flow'), sp = document.getElementById('speed');
-  if (!svg) return;
-  var NS='http://www.w3.org/2000/svg';
-  var N = [{x:110,t:'Вы'},{x:540,t:'VPN'},{x:970,t:'Сервер'}];
-  var paths = [];
-  for (var i=0;i<2;i++){
-    var a=N[i], b=N[i+1];
-    var p = document.createElementNS(NS,'path');
-    p.setAttribute('d','M '+(a.x+34)+' 90 C '+(a.x+150)+' 46, '+(b.x-150)+' 134, '+(b.x-34)+' 90');
-    p.setAttribute('stroke','#22d3ee'); p.setAttribute('stroke-width','2');
-    p.setAttribute('fill','none'); p.setAttribute('stroke-dasharray','6 10');
-    p.setAttribute('opacity','.55');
-    svg.appendChild(p); paths.push(p);
-  }
-  N.forEach(function(n){
-    var c=document.createElementNS(NS,'circle');
-    c.setAttribute('cx',n.x); c.setAttribute('cy',90); c.setAttribute('r','30');
-    c.setAttribute('fill','rgba(34,211,238,.10)'); c.setAttribute('stroke','rgba(34,211,238,.5)');
-    svg.appendChild(c);
-    var t=document.createElementNS(NS,'text');
-    t.setAttribute('x',n.x); t.setAttribute('y',148); t.setAttribute('text-anchor','middle');
-    t.textContent=n.t; svg.appendChild(t);
-  });
-
-  if (sp){ for (var k=0;k<10;k++) sp.appendChild(document.createElement('i')); }
-  var segs = sp ? sp.querySelectorAll('i') : [];
-  new IntersectionObserver(function(e){
-    if (!e[0].isIntersecting) return;
-    segs.forEach(function(s,i){ setTimeout(function(){ s.classList.add('on'); }, i*85); });
-  },{threshold:.2}).observe(svg);
-
-  if (RM) return;
-  var pk = [];
-  for (var j=0;j<5;j++){
-    var g=document.createElementNS(NS,'g');
-    var r=document.createElementNS(NS,'rect');
-    r.setAttribute('width','11'); r.setAttribute('height','4'); r.setAttribute('rx','2');
-    r.setAttribute('fill','#f87171');
-    var tg=document.createElementNS(NS,'text');
-    tg.setAttribute('x','5'); tg.setAttribute('y','-7'); tg.setAttribute('text-anchor','middle');
-    tg.setAttribute('font-size','9'); tg.setAttribute('fill','#fca5a5');
-    tg.textContent='RAW';
-    g.appendChild(r); g.appendChild(tg); svg.appendChild(g);
-    pk.push({g:g,r:r,t:tg,p:j/5});
-  }
-  var L = [0,0];
-  var job={paused:true, tick:function(dt){
-    if(!L[0]){ L[0]=paths[0].getTotalLength(); L[1]=paths[1].getTotalLength(); }
-    pk.forEach(function(o){
-      o.p += dt/3800; if (o.p>1) o.p-=1;
-      var seg = o.p<0.5?0:1, loc = seg===0 ? o.p*2 : (o.p-0.5)*2;
-      var pt = paths[seg].getPointAtLength(L[seg]*loc);
-      o.g.setAttribute('transform','translate('+(pt.x-5).toFixed(1)+','+(pt.y-2).toFixed(1)+')');
-      var enc = seg===1;
-      o.r.setAttribute('fill', enc ? '#22d3ee' : '#f87171');
-      if (o.t.textContent !== (enc?'AES':'RAW')) o.t.textContent = enc?'AES':'RAW';
-      o.t.setAttribute('fill', enc ? '#67e8f9' : '#fca5a5');
-    });
-  }};
-  addJob(job);
-  new IntersectionObserver(function(e){ job.paused=!e[0].isIntersecting; },{rootMargin:'150px'}).observe(svg);
-}
-
-/* ============================================================
-   7. ЯКОРЯ
-   ============================================================ */
-function anchors(){
-  document.addEventListener('click', function(e){
-    var a = e.target.closest('a[href^="#"]');
-    if (!a) return;
-    var id = a.getAttribute('href');
-    if (id.length < 2) return;
-    var t = document.querySelector(id);
-    if (!t) return;
-    e.preventDefault();
-    t.scrollIntoView({behavior: RM ? 'auto' : 'smooth', block:'start'});
-    history.replaceState(null,'',id);
-  });
-}
-
-/* ============================================================
-   СТАРТ
-   ============================================================ */
-ready(function(){
-  anchors();
-  ambient();
-  chart();
-  aigraph();
-  vpnflow();
-
-  waitGsap(function(ok){
-    if (!ok || RM){
-      document.documentElement.classList.add('rv-done');
-      counters(null); countersFinal();
-      return;
-    }
-    gsap.registerPlugin(ScrollTrigger);
-    reveals(gsap);
-    counters(gsap);
-
-    /* страховка: если через 4 c что-то осталось скрытым — показать */
-    setTimeout(function(){
-      document.querySelectorAll('[data-rv]').forEach(function(el){
-        if (parseFloat(getComputedStyle(el).opacity) < 0.05){
-          document.documentElement.classList.add('rv-done');
-          gsap.set('[data-rv]', {opacity:1, y:0, clipPath:'none'});
-          gsap.set('.rv-word > span', {yPercent:0});
-          countersFinal();
-        }
-      });
-    }, 4000);
-  });
-});
-})();
-</script>
-</body>
-</html>
+        on
